@@ -448,7 +448,7 @@ class SubmitController < ApplicationController
     #     "outputs":[
     #        {
     #           "id":911,
-    #           "name":"output",
+    #           "name":"ojutput",
     #           "desc":"output of double testing",
     #           "files":[
     #              {
