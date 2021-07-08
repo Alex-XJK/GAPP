@@ -1,0 +1,115 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
+<% if false %>
+<div class="container-fluid">
+    <div class="row">
+        <%= yield :sidebar %>
+    </div>
+</div>
+<% end %>
+
+<% content_for:head do%>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <%= javascript_pack_tag "table_style" %>
+    
+  <%end%>
+  
+  <% content_for :title, "Users" %>
+  
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%=link_to 'Admin home', '/admin' %>
+      </li> 
+      <li class="breadcrumb-item">
+        <%=link_to 'User', '/users' %>
+      </li> 
+      
+    </ol>
+  
+  
+    <h1>
+    User
+    </h1>
+  
+    <p>
+        This page is made for admin to :
+        <ul>
+          <li>check out all users in the system</li>
+          <li>edit user role</li>
+        </ul>
+    </p>
+  
+    <hr>
+  
+    <section id="project_admin" class="admin_block">
+  
+      <div id='hidden_helper'>
+      Hide columns: 
+      <br>
+      <% i=0 %>
+      <% @usercolumn.each do |attr| %>
+        
+        <button class="toggle-vis" data-column='<%=i.to_s%>'> 
+          <%= attr.capitalize %>
+        </button>
+        <%i += 1%>
+        
+      <%end%>
+      <br>
+    </div><br>
+  
+      <table id="pj_table" class="display">
+        <thead>
+          
+          <% @usercolumn.each do |attr| %>
+            
+            <th> <%= attr.capitalize %> </th>
+            
+          <% end %>
+          <th>
+            Action
+          </th>
+          
+        </thead>
+  
+        <tbody>
+          <% @users.each do |pj| %>
+          
+            <tr>
+              <% @usercolumn.each do |attr| %>
+                
+                <td> 
+                  <div class="table_cell"> 
+                    <%= pj[attr] %>
+                  </div>
+                </td>
+              
+              <% end %>
+              <td>
+                
+                <%= link_to 'Delete', project_path(pj), method: :delete,
+                        data: { confirm: 'Are you sure?' } %>
+  
+                <%= link_to 'Edit', edit_project_path(pj) %>
+              </td>
+              
+            </tr>
+          
+          <% end %>
+        </tbody>
+  
+      </table>
+  
+    </section>
+
+    <hr>
+    <br/>
+  
+  </div>
+
