@@ -14,12 +14,14 @@ const ALERT_TIMEOUT = 5000;
 import JobSubmit from '../job-submit.vue';
 import JobQuery from '../job-query.vue';
 import JobSubmitPipeline from "../job-submit-pipeline.vue";
+import StarApps from "../star-app-pagination.vue";
 
 document.addEventListener('DOMContentLoaded', (event) =>  {
     const vueLoadList = [
         ['#vapp-job-submit', JobSubmit],
         ['#vapp-job-query', JobQuery],
         ['#vapp-job-submit-pipeline', JobSubmitPipeline],
+        ['#vapp-star-app-pagination', StarApps],
     ];
 
     $('[data-toggle="tooltip"]').tooltip();
