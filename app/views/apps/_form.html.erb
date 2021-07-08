@@ -1,0 +1,60 @@
+<%= form_with model: app do |form| %>
+    <div>
+        <%= form.hidden_field :user_id, value: "1" %>
+    </div>
+    <div>
+        <%= form.label :app_no %>
+        <%= form.text_field :app_no %>
+        <% app.errors.full_messages_for(:app_no).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+        <% app.errors.full_messages_for(:name).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :description %>
+        <%= form.text_area :description, size: "30x5" %>
+        <% app.errors.full_messages_for(:description).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :price %>
+        <%= form.number_field :price, in: 1..10000, step: 1 %>
+        <% app.errors.full_messages_for(:price).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :create_report %>
+        <%= form.radio_button :create_report, "true" %>
+        <%= form.label :create_report_true, "Yes, I want!" %>
+        <%= form.radio_button :create_report, "false" %>
+        <%= form.label :create_report_false, "No, thanks." %>
+        <% app.errors.full_messages_for(:create_report).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :status %>
+        <%= form.select :status, ["ONLINE", "AUDIT", "OFFLINE"] %>
+        <% app.errors.full_messages_for(:status).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :analysis_id %>
+        <%= form.select :analysis_id, [["General Check", "1"], ["Under construct", "2"]] %>
+        <% app.errors.full_messages_for(:analysis_id).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.submit %>
+    </div>
+<% end %>

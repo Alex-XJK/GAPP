@@ -1,0 +1,29 @@
+<h1>Welcome to use GAPP</h1>
+
+<%= link_to "+ NEW", new_app_path %>
+
+<table>
+    <thead>
+        <tr>
+            <th>App number</th>
+            <th>App name</th>
+            <th>Cover image</th>
+            <th>Status</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @apps.each do |app| %>
+            <tr>
+                <td> <%= app.app_no %> </td>
+                <td> <%= app.name %> </td>
+                <td> Image... </td>
+                <td> <%= app.status %> </td>
+                <td>
+                    <%= link_to "info", app %>
+                    <%= link_to "Destroy", app_path(app), method: :delete, data: { confirm: "Are you sure?" } %>
+                </td>
+            </tr>
+        <% end %>
+    <tbody>
+</table>

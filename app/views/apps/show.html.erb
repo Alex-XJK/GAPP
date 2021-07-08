@@ -1,0 +1,38 @@
+<h1>Detailed information display for Application [ <%= @app.name %> ] </h1>
+<br>
+<hr>
+<%= link_to "<-- BACK", "../apps" %> <br>
+<table>
+    <tr>
+        <td>Number</td>
+        <td><%= @app.app_no %></td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td><%= @app.description %></td>
+    </tr>
+    <tr>
+        <td>Price in HKD</td>
+        <td><%= @app.price %></td>
+    </tr>
+    <tr>
+        <td>Create Report?</td>
+        <td><%= @app.create_report %></td>
+    </tr>
+    <tr>
+        <td>Publish Status</td>
+        <td><%= @app.status %></td>
+    </tr>
+    <tr>
+        <td>Analysis type(need db action in the future)</td>
+        <td><%= @app.analysis_id %></td>
+    </tr>
+    <tr>
+        <td>Created at</td>
+        <td><%= @app.created_at %></td>
+    </tr>
+    <tr>
+        <td>Last Modified at</td>
+        <td><%= @app.updated_at %></td>
+    </tr>
+</table>

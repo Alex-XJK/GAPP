@@ -118,4 +118,6 @@ Rails.application.routes.draw do
   match 'data/static_viz_data/*path', to: 'raw_files#viz_file', via: :get
   match 'app/data/abd_files/*path', to: 'raw_files#viz_abd_file', via: :get
 
+  resources :apps
+
 end
