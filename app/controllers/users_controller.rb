@@ -18,8 +18,14 @@ class UsersController < ApplicationController
             file.write(file_dict[key])
             file.close
         end
-
     end
 
+
+    def data
+    end
+
+
+    def task
+    end
     
 end

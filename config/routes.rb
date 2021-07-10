@@ -34,6 +34,8 @@ Rails.application.routes.draw do
       member { post :delect_sample}
     end
   end
+  get 'users/data', to: 'user#data'
+  get 'users/task', to: 'user#task'
 
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
