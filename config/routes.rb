@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     end
   end
 
+
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
   post 'submit_app_task_dummy', to: 'submit#submit_app_task_dummy'

@@ -16,7 +16,7 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <%= javascript_pack_tag "table_style" %>
-    
+  
   <%end%>
   
   <% content_for :title, "Users" %>
@@ -31,8 +31,7 @@
       </li> 
       
     </ol>
-  
-  
+
     <h1>
     User
     </h1>
@@ -40,8 +39,8 @@
     <p>
         This page is made for admin to :
         <ul>
-          <li>check out all users in the system</li>
-          <li>edit user role</li>
+          <li>Check out all users in the system</li>
+          <li>Edit user role</li>
         </ul>
     </p>
   
@@ -89,27 +88,34 @@
                     <%= usr[attr] %>
                   </div>
                 </td>
-              
+            
               <% end %>
-              <td>
-                
-                <button>
-                <%= link_to 'Delete', project_path(usr), method: :delete,
+
+              <td>     
+                <%= link_to '<button type="button">Delete</button>'.html_safe, "/users/" + String(usr.id), method: :delete,
                         data: { confirm: 'Are you sure?' } %>
-                </button>
 
-                <button>
-                <%= link_to 'Edit', edit_project_path(usr) %>
+                <a href="/users/<%= usr.id %>">
+                <button type="button">     
+                        Show
                 </button>
-
+                </a>
               </td>
-              
+            
             </tr>
           
           <% end %>
         </tbody>
   
       </table>
+
+      <div>
+      <a href="/users/new">
+        <button type="button">
+            New User
+        </button>
+      </a>
+      </div>
   
     </section>
 
