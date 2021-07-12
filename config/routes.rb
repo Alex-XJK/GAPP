@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   resources :users do 
     resources :data
+    resources :tasks
   end
   
 

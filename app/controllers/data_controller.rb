@@ -5,6 +5,9 @@ class DataController < ApplicationController
         redirect_to user_path(@user)
     end
 
+    def index
+    end
+
     private
         def datum_param
             params.require(:datum).permit(:dataType, :dataName)
