@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  delete '/users/dr/:id', to: 'users#destroyRole'
+  get '/users/newrole', to: 'users#newrole'
+  post '/users/newrole', to: 'users#createRole'
+
   resources :projects do
     resources :samples do
       collection do

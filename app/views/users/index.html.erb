@@ -95,9 +95,15 @@
                 <%= link_to '<button type="button">Delete</button>'.html_safe, "/users/" + String(usr.id), method: :delete,
                         data: { confirm: 'Are you sure?' } %>
 
+                <a href = "/users/<%= usr.id %>/edit">
+                <button type="button">
+                    Edit Role
+                </button>
+                </a>
+
                 <a href="/users/<%= usr.id %>">
-                <button type="button">     
-                        Show
+                <button type="button"> 
+                    Show
                 </button>
                 </a>
               </td>
