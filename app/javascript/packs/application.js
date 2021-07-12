@@ -15,6 +15,7 @@ import JobSubmit from '../job-submit.vue';
 import JobQuery from '../job-query.vue';
 import JobSubmitPipeline from "../job-submit-pipeline.vue";
 import StarApps from "../star-app-pagination.vue";
+import dataForm from "../data-form.vue";
 
 document.addEventListener('DOMContentLoaded', (event) =>  {
     const vueLoadList = [
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', (event) =>  {
         ['#vapp-job-query', JobQuery],
         ['#vapp-job-submit-pipeline', JobSubmitPipeline],
         ['#vapp-star-app-pagination', StarApps],
+        ['#vapp-data-form', dataForm],
     ];
 
     $('[data-toggle="tooltip"]').tooltip();
