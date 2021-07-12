@@ -15,7 +15,7 @@ class AppsController < ApplicationController
     @app = App.new(app_params)
 
     if @app.save
-      redirect_to @app
+      redirect_to apps_path
     else
       render :new
     end
@@ -29,7 +29,7 @@ class AppsController < ApplicationController
     @app = App.find(params[:id])
 
     if @app.update(app_params)
-      redirect_to @app
+      redirect_to apps_path
     else
       render :edit
     end
@@ -44,6 +44,6 @@ class AppsController < ApplicationController
 
   private
     def app_params
-      params.require(:app).permit(:app_no, :name, :price, :description, :create_report, :status, :user_id, :analysis_id)
+      params.require(:app).permit(:app_no, :name, :price, :description, :create_report, :status, :user_id, :analysis_id, :cover_image, :panel)
     end
 end

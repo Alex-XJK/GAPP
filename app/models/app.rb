@@ -4,7 +4,6 @@ class App < ApplicationRecord
   validates :name, presence: true
   validates :price, presence: true
   validates :description, presence: true
-  validates :create_report, presence: true
   validates :status, presence: true
   validates :user_id, presence: true
   validates :analysis_id, presence: true
@@ -12,4 +11,6 @@ class App < ApplicationRecord
   belongs_to :analysis
   belongs_to :user
 
+  has_one_attached :cover_image
+  has_one_attached :panel
 end

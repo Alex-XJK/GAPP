@@ -5,10 +5,11 @@
 <table>
     <thead>
         <tr>
-            <th>App number</th>
-            <th>App name</th>
-            <th>Cover image</th>
+            <th>App Number</th>
+            <th>App Name</th>
+            <th>Cover Image</th>
             <th>Status</th>
+            <th>Last Modified At</th>
             <th>Operations</th>
         </tr>
     </thead>
@@ -17,11 +18,15 @@
             <tr>
                 <td> <%= app.app_no %> </td>
                 <td> <%= app.name %> </td>
-                <td> Image... </td>
+                <td> <%= image_tag app.cover_image, alt: "image", style: "height:100px" %> </td>
                 <td> <%= app.status %> </td>
+                <td> <%= app.updated_at %> </td>
                 <td>
-                    <%= link_to "info", app %>
-                    <%= link_to "Destroy", app_path(app), method: :delete, data: { confirm: "Are you sure?" } %>
+                    <%= link_to "[ info ]", app %>
+                     
+                    <%= link_to "[ edit ]", edit_app_path(app) %>
+                     
+                    <%= link_to "[ delete ]", app_path(app), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
             </tr>
         <% end %>

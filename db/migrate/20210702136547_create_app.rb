@@ -9,6 +9,8 @@ class CreateApp < ActiveRecord::Migration[6.0]
       t.string :status, default:"offline"
       t.belongs_to :user
       t.belongs_to :analysis 
+      t.string :cover_image
+      t.string :panel
       t.timestamps
     end
   end

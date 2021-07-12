@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 2021_07_08_043735) do
     t.string "status", default: "offline"
     t.bigint "user_id"
     t.bigint "analysis_id"
+    t.string "cover_image"
+    t.string "panel"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["analysis_id"], name: "index_apps_on_analysis_id"

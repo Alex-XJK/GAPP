@@ -25,7 +25,7 @@
     </div>
     <div>
         <%= form.label :price %>
-        <%= form.number_field :price, in: 1..10000, step: 1 %>
+        <%= form.number_field :price, in: 0..10000, step: 1 %>
         <% app.errors.full_messages_for(:price).each do |message| %>
             <div><%= message %><div>
         <% end %>
@@ -33,24 +33,38 @@
     <div>
         <%= form.label :create_report %>
         <%= form.radio_button :create_report, "true" %>
-        <%= form.label :create_report_true, "Yes, I want!" %>
+        <%= form.label :create_report, "Yes, I want!" %>
         <%= form.radio_button :create_report, "false" %>
-        <%= form.label :create_report_false, "No, thanks." %>
+        <%= form.label :create_report, "No, thanks." %>
         <% app.errors.full_messages_for(:create_report).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
         <%= form.label :status %>
-        <%= form.select :status, ["ONLINE", "AUDIT", "OFFLINE"] %>
+        <%= form.select :status, [["OFFLINE", "offline"], ["AUDIT", "audit"], ["ONLINE", "online"]] %>
         <% app.errors.full_messages_for(:status).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
         <%= form.label :analysis_id %>
-        <%= form.select :analysis_id, [["General Check", "1"], ["Under construct", "2"]] %>
+        <%= form.select :analysis_id, [["General Check", "1"], ["Special Check", "2"], ["Under construct", "3"]] %>
         <% app.errors.full_messages_for(:analysis_id).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :cover_image %>
+        <%= form.file_field :cover_image, accept: 'image/jpeg,image/png,image/gif' %>
+        <% app.errors.full_messages_for(:cover_image).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+    </div>
+    <div>
+        <%= form.label :panel %>
+        <%= form.file_field :panel, accept: 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,' %>
+        <% app.errors.full_messages_for(:panel).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
