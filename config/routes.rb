@@ -26,8 +26,7 @@ Rails.application.routes.draw do
   end
 
   resources :users do 
-    get 'data', to: 'user#data'
-    get 'task', to: 'user#task'
+    resources :data
   end
   
 
