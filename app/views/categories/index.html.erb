@@ -17,30 +17,32 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <%= javascript_pack_tag "table_style" %>
   
-  <%end%>
+  <% end %>
+
+  <%= javascript_pack_tag 'category_js' %>
   
-  <% content_for :title, "Users" %>
+  <% content_for :title, "Categories" %>
   
-  <div class="container">
+  <div class="container" onload="init()">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
       </li> 
       <li class="breadcrumb-item">
-        <%=link_to 'User', '/users' %>
+        <%=link_to 'Category', '/categories' %>
       </li> 
       
     </ol>
 
     <h1>
-    User
+    Category
     </h1>
   
     <p>
         This page is made for admin to :
         <ul>
-          <li>Check out all users in the system</li>
-          <li>Edit user role</li>
+          <li>Check out all categories in the system</li>
+          <li>Edit category names</li>
         </ul>
     </p>
   
@@ -52,7 +54,7 @@
       Hide columns: 
       <br>
       <% i=0 %>
-      <% @usercolumn.each do |attr| %>
+      <% @cat_attrs.each do |attr| %>
         
         <button class="toggle-vis" data-column='<%=i.to_s%>'> 
           <%= attr.capitalize %>
@@ -66,47 +68,49 @@
       <table id="pj_table" class="display" style="margin: 0;">
         <thead>
           
-          <% @usercolumn.each do |attr| %>
+          <% @cat_attrs.each do |attr| %>
             
             <th> <%= attr.capitalize %> </th>
             
           <% end %>
-          <th>
-            Action
-          </th>
           
         </thead>
   
         <tbody>
-          <% @users.each do |usr| %>
+          <% @cats.each do |cts| %>
           
             <tr>
-              <% @usercolumn.each do |attr| %>
+              <% @cat_attrs.each do |attr| %>
                 
                 <td> 
-                  <div class="table_cell"> 
-                    <%= usr[attr] %>
+
+                  <% if attr == 'name' %>
+                  <div class="table_cell name_cell">
+                    <form action="/categories/edit" method="post">
+                    <input type="hidden" name="id" value=<%= cts["id"] %>>
+                    <input type="hidden" name="name" class="target" value="">
+                    <span class="name">
+                    <%= cts[attr] %>
+                    </span>
+                    &nbsp;
+                    <button type="button" class="edit" id= <%= cts["name"] %> >
+                        <i class="far fa-edit"></i>
+                    </button>
+                    <button type="submit" class="submit" style="">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                    </form>
                   </div>
+                  <% else %>
+                  <div class="table_cell"> 
+                    <%= cts[attr] %>
+                  </div>
+                  <% end %>
+
                 </td>
             
               <% end %>
-
-              <td>     
-                <%= link_to '<button type="button">Delete</button>'.html_safe, "/users/" + String(usr.id), method: :delete,
-                        data: { confirm: 'Are you sure?' } %>
-
-                <a href = "/users/<%= usr.id %>/edit">
-                <button type="button">
-                    Edit Role
-                </button>
-                </a>
-
-                <a href="/users/<%= usr.id %>">
-                <button type="button"> 
-                    Show
-                </button>
-                </a>
-              </td>
             
             </tr>
           
@@ -116,9 +120,9 @@
       </table>
 
       <div>
-      <a href="/users/new">
+      <a href="/categories/new">
         <button type="button">
-            New User
+            New Category
         </button>
       </a>
       </div>

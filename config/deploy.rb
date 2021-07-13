@@ -2,7 +2,7 @@
 lock "~> 3.14.1"
 
 set :application, "gapp_rails"
-set :repo_url, "git@delta.cs.cityu.edu.hk:chelijia/meta_platform.git"
+set :repo_url, "git@delta.cs.cityu.edu.hk:Minties/gapp_rails.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

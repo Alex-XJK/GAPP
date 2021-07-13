@@ -15,3 +15,4 @@
 //= require rails-ujs
 //= require datatables
 //= require turbolinks
+
