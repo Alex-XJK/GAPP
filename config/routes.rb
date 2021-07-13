@@ -50,6 +50,9 @@ Rails.application.routes.draw do
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
   post 'submit_app_task_dummy', to: 'submit#submit_app_task_dummy'
   root 'welcome#index'
+
+  get "welcome", to: 'welcome#index', as: "welcome"
+
   # get 'tutorial', to: 'welcome#tutorial', as: 'tutorial'
   get 'contact', to: 'welcome#contact', as: 'contact'
   get 'docs', to: redirect('docs/index.html')
@@ -101,7 +104,7 @@ Rails.application.routes.draw do
   post 'remove-task', to: 'submit#remove_task', format: 'json'
 
   # admin
-  get '/admin', to: 'admin#index'
+  get '/admin', to: 'admin#index', as: "admin"
   post "admin/modify_sample_metadata" => "admin#modify_sample_metadata", :as => "admin/modify_sample_metadata"
   post "admin/modify_sample_abd" => "admin#modify_sample_abd", :as => "admin/modify_sample_abd"
   post "admin/modify_viz" => "admin#modify_viz", :as => "admin/modify_viz"

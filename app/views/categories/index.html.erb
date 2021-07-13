@@ -67,12 +67,12 @@
   
       <table id="pj_table" class="display" style="margin: 0;">
         <thead>
-          
-          <% @cat_attrs.each do |attr| %>
+               
+            <th> Id </th>
+            <th> Name </th>
+            <th> Action </th>
+            <th> Created_at </th>
             
-            <th> <%= attr.capitalize %> </th>
-            
-          <% end %>
           
         </thead>
   
@@ -81,34 +81,42 @@
           
             <tr>
               <% @cat_attrs.each do |attr| %>
-                
+
+
+                <% if attr == 'name' %>
                 <td> 
 
-                  <% if attr == 'name' %>
                   <div class="table_cell name_cell">
-                    <form action="/categories/edit" method="post">
-                    <input type="hidden" name="id" value=<%= cts["id"] %>>
-                    <input type="hidden" name="name" class="target" value="">
                     <span class="name">
                     <%= cts[attr] %>
                     </span>
-                    &nbsp;
-                    <button type="button" class="edit" id= <%= cts["name"] %> >
+                  </div>
+
+                </td>
+
+                <td>
+                <form action="/categories/edit" method="post">
+                    <input type="hidden" name="id" value=<%= cts["id"] %>>
+                    <input type="hidden" name="name" class="target" value="">
+                    <button type="button" title="Edit" class="edit" id= <%= cts["name"] %> >
                         <i class="far fa-edit"></i>
                     </button>
-                    <button type="submit" class="submit" style="">
+                    <button type="submit" title="OK" class="submit" style="">
                         <i class="fas fa-check"></i>
                     </button>
                     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
-                    </form>
-                  </div>
-                  <% else %>
-                  <div class="table_cell"> 
-                    <%= cts[attr] %>
-                  </div>
-                  <% end %>
-
+                </form>
                 </td>
+
+                <% else %>
+                <td> 
+                <div class="table_cell"> 
+                    <%= cts[attr] %>
+                    &nbsp;
+                </div>
+                </td> 
+                <% end %>
+
             
               <% end %>
             

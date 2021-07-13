@@ -82,28 +82,36 @@
           
             <tr>
               <% @usercolumn.each do |attr| %>
-                
+
+                <% if attr == 'role_id' && String(usr[attr]) != ""  %>
+                <td> 
+                  <div class="table_cell">
+                    <%= @roles.find(usr[attr])["name"] %>
+                  </div>
+                </td>
+                <% else %>
                 <td> 
                   <div class="table_cell"> 
                     <%= usr[attr] %>
                   </div>
                 </td>
+                <% end %>
             
               <% end %>
 
               <td>     
-                <%= link_to '<button type="button">Delete</button>'.html_safe, "/users/" + String(usr.id), method: :delete,
+                <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/users/" + String(usr.id), method: :delete,
                         data: { confirm: 'Are you sure?' } %>
 
                 <a href = "/users/<%= usr.id %>/edit">
-                <button type="button">
-                    Edit Role
+                <button type="button" title="Edit Role">
+                    <i class="far fa-edit"></i>
                 </button>
                 </a>
 
                 <a href="/users/<%= usr.id %>">
-                <button type="button"> 
-                    Show
+                <button type="button" title="View"> 
+                    <i class="far fa-eye"></i>
                 </button>
                 </a>
               </td>

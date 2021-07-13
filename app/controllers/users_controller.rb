@@ -11,8 +11,9 @@ class UsersController < ApplicationController
         @ana = Analysis.order(:name)
         @a_attrs = Analysis.column_names
 
-        @users = User.select(:id, :username, :created_at) 
-        @usercolumn = ["id", "username", "created_at"] 
+        @users = User.select(:id, :username, :created_at, :role_id) 
+        @usercolumn = ["id", "username", "role_id", "created_at"]
+        @roles = Role.select(:id, :name)
     end
 
     def show
@@ -55,7 +56,9 @@ class UsersController < ApplicationController
     def create
         @user = User.new(user_params)
         @user.save()
-        redirect_to action: "index" and return
+        Rails.logger.debug "=====>#{@user.id}"
+        # redirect_to action: "index" and return
+        redirect_to admin_path
         
     end
 
@@ -63,7 +66,7 @@ class UsersController < ApplicationController
         @roles_attrs = ["id", "name", "app_id"]
         @roles = Role.where({ id: UserRole.where({ user_id: params[:id] }).select(:role_id) }).select(@roles_attrs)
         @user = User.find(params[:id])
-
+        redirect_to admin_path
     end
         
     def update
@@ -95,7 +98,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        params.require(:user).permit(:username, :password_digest)
+        params.require(:user).permit(:username, :password_digest, :role_id)
     end
 
     def role_params
