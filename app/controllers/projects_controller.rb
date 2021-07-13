@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-    http_basic_authenticate_with name: "admin", password: "gapp", only: [:new, :create, :edit, :new, :update, :destroy]
+    http_basic_authenticate_with name: "admin", password: "chelijia", only: [:new, :create, :edit, :new, :update, :destroy]
     $seq_dir = "#{Rails.root}/app/data/seq/"
     $abd_dir = "#{Rails.root}/app/data/abd_files/"
     $tmp_dir = "#{Rails.root}/app/data/tmp/"

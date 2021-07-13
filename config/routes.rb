@@ -1,15 +1,5 @@
 Rails.application.routes.draw do
 
-  delete '/users/dr/:id', to: 'users#destroyRole'
-  get '/users/newrole', to: 'users#newrole'
-  post '/users/newrole', to: 'users#createRole'
-
-  resources :categories do
-    
-  end
-
-  post '/categories/edit', to: 'categories#update'
-
   resources :projects do
     resources :samples do
       collection do
@@ -44,7 +34,6 @@ Rails.application.routes.draw do
       member { post :delect_sample}
     end
   end
-
 
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
