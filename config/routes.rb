@@ -4,6 +4,12 @@ Rails.application.routes.draw do
   get '/users/newrole', to: 'users#newrole'
   post '/users/newrole', to: 'users#createRole'
 
+  resources :categories do
+    
+  end
+
+  post '/categories/edit', to: 'categories#update'
+
   resources :projects do
     resources :samples do
       collection do
