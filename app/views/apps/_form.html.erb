@@ -3,72 +3,80 @@
         <%= form.hidden_field :user_id, value: "1" %>
     </div>
     <div>
-        <%= form.label :app_no %>
-        <%= form.text_field :app_no %>
+        <%= form.label :app_no, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
+        <%= form.text_field :app_no, style: "width: 100px; padding-left: 25px;" %>
         <% app.errors.full_messages_for(:app_no).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
-        <%= form.label :name %>
+        <%= form.label :name, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.text_field :name %>
         <% app.errors.full_messages_for(:name).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
-        <%= form.label :description %>
+        <%= form.label :description, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.text_area :description, size: "30x5" %>
         <% app.errors.full_messages_for(:description).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
-        <%= form.label :price %>
+        <%= form.label :price, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.number_field :price, in: 0..10000, step: 1 %>
         <% app.errors.full_messages_for(:price).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
-        <%= form.label :create_report %>
+        <%= form.label :create_report, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.radio_button :create_report, "true" %>
-        <%= form.label :create_report, "Yes, I want!" %>
+        <%= form.label :create_report_true, "Yes, I want!" %>
         <%= form.radio_button :create_report, "false" %>
-        <%= form.label :create_report, "No, thanks." %>
+        <%= form.label :create_report_false, "No, thanks." %>
         <% app.errors.full_messages_for(:create_report).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
+
     <div>
-        <%= form.label :status %>
-        <%= form.select :status, [["OFFLINE", "offline"], ["AUDIT", "audit"], ["ONLINE", "online"]] %>
-        <% app.errors.full_messages_for(:status).each do |message| %>
-            <div><%= message %><div>
-        <% end %>
-    </div>
-    <div>
-        <%= form.label :analysis_id %>
+        <%= form.label :analysis_id, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.select :analysis_id, [["General Check", "1"], ["Special Check", "2"], ["Under construct", "3"]] %>
         <% app.errors.full_messages_for(:analysis_id).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
-        <%= form.label :cover_image %>
+        <%= form.label :cover_image, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.file_field :cover_image, accept: 'image/jpeg,image/png,image/gif' %>
         <% app.errors.full_messages_for(:cover_image).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
     <div>
-        <%= form.label :panel %>
+        <%= form.label :panel, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.file_field :panel, accept: 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,' %>
         <% app.errors.full_messages_for(:panel).each do |message| %>
             <div><%= message %><div>
         <% end %>
     </div>
+    <br>
     <div>
+        <%= form.label :status, style: "width: 100px; padding-left: 5px;" %>
+        <% if app.status == 'online' %>
+            <%= form.select :status, [["SAVE", "online"], ["LOCAL", "offline"]] %>
+        <% elsif app.status == 'audit' %>
+            <%= form.select :status, [["SAVE", "audit"], ["LOCAL", "offline"]] %>
+        <% else %>
+            <%= form.select :status, [["SAVE", "offline"], ["SUBMIT", "audit"]] %>
+        <% end %>
+        
+        <% app.errors.full_messages_for(:status).each do |message| %>
+            <div><%= message %><div>
+        <% end %>
+
         <%= form.submit %>
     </div>
 <% end %>

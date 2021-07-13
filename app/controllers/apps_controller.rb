@@ -1,14 +1,36 @@
 class AppsController < ApplicationController
   def index
     @apps = App.all
+    @count_online = App.where(status: 'online').count
+    @count_audit = App.where(status: 'audit').count
+    @count_offline = App.where(status: 'offline').count
   end
 
   def show
     @app = App.find(params[:id])
+    @user = User.find(@app.user_id)
+  end
+
+  def details
+    @app = App.find(params[:id])
+    @user = User.find(@app.user_id)
+    @analysis = Analysis.find(@app.analysis_id)
   end
 
   def new
     @app = App.new
+  end
+
+  def downgrade
+    @app = App.find(params[:id])
+    @app.update(status: 'offline')
+    redirect_to apps_path
+  end
+
+  def upgrade
+    @app = App.find(params[:id])
+    @app.update(status: 'online')
+    redirect_to apps_path
   end
 
   def create
@@ -29,7 +51,7 @@ class AppsController < ApplicationController
     @app = App.find(params[:id])
 
     if @app.update(app_params)
-      redirect_to apps_path
+      redirect_to check_detail_app_path
     else
       render :edit
     end

@@ -1,8 +1,35 @@
+<% content_for:head do%>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <%= javascript_pack_tag "table_style" %>
+    <script>
+        $( document ).on('turbolinks:load', function() {
+            $('#data-table').DataTable({
+                paging: false,
+                searching: false,
+                order: [0, 'asc'],
+                columnDefs: [
+                    {orderable: false, targets: 2},
+                    {orderable: false, targets: 5}
+                ]
+            });
+        });
+    </script>
+<% end %>
+
+<% content_for :title, "Producer" %>
+
 <h1>Welcome to use GAPP</h1>
 
-<%= link_to "+ NEW", new_app_path %>
+<p>
+    Currently you have created <%= @apps.count %> Apps: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .  
 
-<table>
+    <%= link_to " + CREATE NEW APP", new_app_path %>
+</p> 
+
+<table id="data-table">
     <thead>
         <tr>
             <th>App Number</th>
@@ -15,19 +42,32 @@
     </thead>
     <tbody>
         <% @apps.each do |app| %>
-            <tr>
+            <tr style="height: 100px">
                 <td> <%= app.app_no %> </td>
                 <td> <%= app.name %> </td>
-                <td> <%= image_tag app.cover_image, alt: "image", style: "height:100px" %> </td>
+                <td> 
+                    <% if app.cover_image.attached? %>
+                        <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
+                    <%  else %>
+                        No Image
+                    <% end %>
+                </td>
                 <td> <%= app.status %> </td>
                 <td> <%= app.updated_at %> </td>
                 <td>
-                    <%= link_to "[ info ]", app %>
+                    <%= link_to "[ info ]", check_detail_app_path(app) %>
                      
                     <%= link_to "[ edit ]", edit_app_path(app) %>
                      
                     <%= link_to "[ delete ]", app_path(app), method: :delete, data: { confirm: "Are you sure?" } %>
-                </td>
+                
+                    <% if app.published? %>
+                        <%= link_to "[ hide ]", offshelf_app_path(app), data: { confirm: "Hide this app?" } %>
+                    <% end %>
+                    <% if app.awaiting? %>
+                        <%= link_to "[ pass ]", onshelf_app_path(app), data: { confirm: "Release to the public?" } %>
+                    <% end %>
+                    </td>
             </tr>
         <% end %>
     <tbody>

@@ -1,7 +1,7 @@
-<h1>Detailed information display for Application [ <%= @app.name %> ] </h1>
+<h1>Application [ <%= @app.name %> ] </h1>
 <br>
 <hr>
-<%= link_to "<-- BACK", "../apps" %> <br>
+<%= link_to "<-- BACK", apps_path %> <br>
 <table>
     <tr>
         <td>Number</td>
@@ -12,37 +12,19 @@
         <td><%= @app.description %></td>
     </tr>
     <tr>
-        <td>Created By(need db look-up in the future)</td>
-        <td><%= @app.user_id %></td>
-    </tr>
-    <tr>
-        <td>Price in HKD</td>
-        <td><%= @app.price %></td>
-    </tr>
-    <tr>
-        <td>Create Report?</td>
-        <td><%= @app.create_report %></td>
-    </tr>
-    <tr>
-        <td>Publish Status</td>
-        <td><%= @app.status %></td>
-    </tr>
-    <tr>
-        <td>Analysis Type(need db look-up in the future)</td>
-        <td><%= @app.analysis_id %></td>
+        <td>Created By</td>
+        <td>
+            <%= @user.username %>
+        </td>
     </tr>
     <tr>
         <td>Cover Image</td>
         <td>
-            <%= link_to rails_blob_path(@app.cover_image, disposition: "attachment") do %>
+            <% if @app.cover_image.attached? %>
                 <%= image_tag @app.cover_image, alt: "Cover Image", style: "width:200px" %>
+            <%  else %>
+                No Cover Image Found...
             <% end %>
-        </td>
-    </tr>
-    <tr>
-        <td>Panel File</td>
-        <td>
-            <%= link_to "Panel File Download", rails_blob_path(@app.panel, disposition: "attachment") %>
         </td>
     </tr>
     <tr>
