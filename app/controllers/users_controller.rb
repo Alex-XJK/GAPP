@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
         @users = User.select(:id, :username, :created_at, :role_id) 
         @usercolumn = ["id", "username", "role_id", "created_at"]
+        @usercolumnname = ["id", "username", "role", "register time"]
         @roles = Role.select(:id, :name)
     end
 
@@ -37,6 +38,10 @@ class UsersController < ApplicationController
         redirect_to action: "index"
     end
 
+    def editRole
+        @user = User.find(params[:id])
+        @user.update(edit_params)
+    end
 
     def new
         @user = User.new
@@ -58,7 +63,7 @@ class UsersController < ApplicationController
         @user.save()
         Rails.logger.debug "=====>#{@user.id}"
         # redirect_to action: "index" and return
-        redirect_to admin_path
+        redirect_to action: "index"
         
     end
 
@@ -66,7 +71,6 @@ class UsersController < ApplicationController
         @roles_attrs = ["id", "name", "app_id"]
         @roles = Role.where({ id: UserRole.where({ user_id: params[:id] }).select(:role_id) }).select(@roles_attrs)
         @user = User.find(params[:id])
-        redirect_to admin_path
     end
         
     def update
@@ -105,5 +109,8 @@ class UsersController < ApplicationController
         params.permit(:authenticity_token, :uid, :name, :app_id, :commit)
     end
     
+    def edit_params
+        params.permit(:id, :role_id)
+    end
     
 end

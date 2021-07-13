@@ -8,17 +8,12 @@ $(document).ready(function() {
     console.log(ss);
     for (let i of ss) {
         i.style.display = "none";
+        i.onclick = toSub;
     }
 
     buttons = document.querySelectorAll(".edit");
     for (let i of buttons) {
         i.onclick = edit;
-    }
-
-    buttons2 = document.querySelectorAll(".submit");
-
-    for (let i of buttons2) {
-        i.onclick = toSub;
     }
 });
 

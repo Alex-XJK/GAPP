@@ -16,8 +16,15 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <%= javascript_pack_tag "table_style" %>
+    <script>
+    $( document ).on('turbolinks:load', function() {
+      $('#pj_table').DataTable();
+    });
+    </script>
   
   <%end%>
+
+  <%= javascript_pack_tag 'users_js' %>
   
   <% content_for :title, "Users" %>
   
@@ -63,16 +70,16 @@
       <br>
     </div><br>
   
-      <table id="pj_table" class="display" style="margin: 0;">
+      <table id="pj_table" class="display" style="margin: 0;" data-page-length="-1">
         <thead>
           
-          <% @usercolumn.each do |attr| %>
+          <% @usercolumnname.each do |attr| %>
             
             <th> <%= attr.capitalize %> </th>
             
           <% end %>
           <th>
-            Action
+            Actions
           </th>
           
         </thead>
@@ -85,7 +92,7 @@
 
                 <% if attr == 'role_id' && String(usr[attr]) != ""  %>
                 <td> 
-                  <div class="table_cell">
+                  <div class="table_cell role_cell">
                     <%= @roles.find(usr[attr])["name"] %>
                   </div>
                 </td>
@@ -99,21 +106,27 @@
             
               <% end %>
 
-              <td>     
-                <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/users/" + String(usr.id), method: :delete,
-                        data: { confirm: 'Are you sure?' } %>
-
-                <a href = "/users/<%= usr.id %>/edit">
-                <button type="button" title="Edit Role">
-                    <i class="far fa-edit"></i>
-                </button>
-                </a>
-
-                <a href="/users/<%= usr.id %>">
-                <button type="button" title="View"> 
-                    <i class="far fa-eye"></i>
-                </button>
-                </a>
+              <td>
+                <form action="/users/edit" method="POST">  
+                  <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/users/" + String(usr.id), method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
+                  
+                  <button type="button" title="Edit Role" class="edit">
+                      <i class="far fa-edit"></i>
+                  </button>
+                  <button type="submit" title="OK" class="submit" style="">
+                      <i class="fas fa-check"></i>
+                  </button>
+                  
+                  <a href="/users/<%= usr.id %>">
+                  <button type="button" title="View"> 
+                      <i class="far fa-eye"></i>
+                  </button>
+                  </a>
+                  <input type="hidden" name="id" value=<%= usr["id"] %>>
+                  <input type="hidden" name="role_id" value="" class="target">
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                </form>
               </td>
             
             </tr>

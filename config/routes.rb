@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  post '/users/edit', to: 'users#editRole'
   delete '/users/dr/:id', to: 'users#destroyRole'
   get '/users/newrole', to: 'users#newrole'
   post '/users/newrole', to: 'users#createRole'
