@@ -11,9 +11,19 @@ class CategoriesController < ApplicationController
         @cat.update(name_params)
     end
 
+    def new
+        @cat = Category.new(name: new_params["name"])
+        @cat.save()
+        redirect_to action: "index"
+    end
+
     private
 
     def name_params
         params.permit(:id, :name)
+    end
+
+    def new_params
+        params.permit(:name)
     end
 end

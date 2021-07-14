@@ -77,7 +77,7 @@
             <th> Id </th>
             <th> Name </th>
             <th> Action </th>
-            <th> Created_at </th>
+            <th> Created At </th>
             
           
         </thead>
@@ -134,11 +134,20 @@
       </table>
 
       <div>
-      <a href="/categories/new">
-        <button type="button">
+      <form action="/categories/new" method="POST">
+        <button type="button" id="intro" style="display: block;">
             New Category
         </button>
-      </a>
+        <div id="fmain">
+        <label for="nm">Name: </label>
+        <input type="text" id="nm">
+        <input type="hidden" name="name" value="">
+        <button type="submit" title="OK" id="asub">
+            <i class="fas fa-check"></i>
+        </button>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        </div>
+      </form>
       </div>
   
     </section>

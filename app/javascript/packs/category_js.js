@@ -15,6 +15,10 @@ $(document).ready(function() {
     for (let i of buttons) {
         i.onclick = edit;
     }
+
+    document.querySelector("#fmain").style.display = "none";
+    document.querySelector("#intro").onclick = addHelper;
+    document.querySelector("#asub").onclick = toSubAdd;
 });
 
 function edit() {
@@ -32,4 +36,16 @@ function toSub() {
     console.log(text);
     this.parentNode.parentNode.parentNode.querySelector(".name").innerHTML = text;
     this.parentNode.querySelector(".target").value = text;
+}
+
+function addHelper() {
+    document.querySelector("#fmain").style.display = "block";
+    this.style.display = "none";
+}
+
+function toSubAdd() {
+    document.querySelector("#intro").style.display = "block";
+    document.querySelector("#fmain").style.display = "none";
+    document.querySelector("#fmain").querySelector("input[type=hidden]").value = document.querySelector("#nm").value;
+    document.querySelector("#nm").value = "";
 }

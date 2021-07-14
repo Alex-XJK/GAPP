@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   post '/categories/edit', to: 'categories#update'
+  post '/categories/new', to: 'categories#new'
 
   resources :projects do
     resources :samples do
