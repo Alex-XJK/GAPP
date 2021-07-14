@@ -52,9 +52,19 @@
                         No Image
                     <% end %>
                 </td>
-                <td> <%= app.status %> </td>
-                <td> <%= app.updated_at %> </td>
+                <td> 
+                    <% if app.status=="online" %>
+                        <b style="color: crimson;">online</b>
+                    <% elsif app.status=="audit" %>
+                        <b style="color: goldenrod;">audit</b>
+                    <% else %>
+                        <b style="color: forestgreen;">offline</b>
+                    <% end %>
+                </td>
+                <td> <%= app.updated_at.localtime %> </td>
                 <td>
+                    <%= link_to "[ use ]", app_path(app) %>
+
                     <%= link_to "[ info ]", check_detail_app_path(app) %>
                      
                     <%= link_to "[ edit ]", edit_app_path(app) %>

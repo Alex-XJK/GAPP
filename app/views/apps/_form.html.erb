@@ -18,7 +18,7 @@
     </div>
     <div>
         <%= form.label :description, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
-        <%= form.text_area :description, size: "30x5" %>
+        <%= form.text_area :description, size: "25x5" %>
         <% app.errors.full_messages_for(:description).each do |message| %>
             <div><%= message %><div>
         <% end %>
@@ -43,7 +43,7 @@
 
     <div>
         <%= form.label :analysis_id, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
-        <%= form.select :analysis_id, [["General Check", "1"], ["Special Check", "2"], ["Under construct", "3"]] %>
+        <%= form.select :analysis_id, analysis %>
         <% app.errors.full_messages_for(:analysis_id).each do |message| %>
             <div><%= message %><div>
         <% end %>
@@ -64,9 +64,8 @@
     </div>
     <br>
     <div>
-        <%= form.label :status, style: "width: 100px; padding-left: 5px;" %>
         <% if app.status == 'online' %>
-            <%= form.select :status, [["SAVE", "online"], ["LOCAL", "offline"]] %>
+            <%= form.select :status, [["SAVE", "audit"], ["LOCAL", "offline"]] %>
         <% elsif app.status == 'audit' %>
             <%= form.select :status, [["SAVE", "audit"], ["LOCAL", "offline"]] %>
         <% else %>
@@ -80,3 +79,9 @@
         <%= form.submit %>
     </div>
 <% end %>
+
+<style>
+    #app_analysis_id{
+        width: 200px;
+    }
+</style>

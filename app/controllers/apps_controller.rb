@@ -17,8 +17,10 @@ class AppsController < ApplicationController
     @analysis = Analysis.find(@app.analysis_id)
   end
 
-  def new
-    @app = App.new
+  def upgrade
+    @app = App.find(params[:id])
+    @app.update(status: 'online')
+    redirect_to apps_path
   end
 
   def downgrade
@@ -27,10 +29,9 @@ class AppsController < ApplicationController
     redirect_to apps_path
   end
 
-  def upgrade
-    @app = App.find(params[:id])
-    @app.update(status: 'online')
-    redirect_to apps_path
+  def new
+    @app = App.new
+    @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
   end
 
   def create
@@ -45,6 +46,7 @@ class AppsController < ApplicationController
 
   def edit
     @app = App.find(params[:id])
+    @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
   end
 
   def update

@@ -1,38 +1,66 @@
-<h1>Application [ <%= @app.name %> ] </h1>
+<style type="text/css">
+    h1 {
+        text-align: center;
+    }
+    table {
+        margin: auto;
+    }
+</style>
+
+<h1>Application : <%= @app.name %> </h1>
 <br>
 <hr>
 <%= link_to "<-- BACK", apps_path %> <br>
-<table>
+<table style="width: 90%;">
     <tr>
-        <td>Number</td>
-        <td><%= @app.app_no %></td>
-    </tr>
-    <tr>
-        <td>Description</td>
-        <td><%= @app.description %></td>
-    </tr>
-    <tr>
-        <td>Created By</td>
-        <td>
-            <%= @user.username %>
-        </td>
-    </tr>
-    <tr>
-        <td>Cover Image</td>
-        <td>
+        <td>App Number</td>
+        <td> <%= @app.app_no %> </td>
+        <td colspan="2" rowspan="5">
             <% if @app.cover_image.attached? %>
                 <%= image_tag @app.cover_image, alt: "Cover Image", style: "width:200px" %>
-            <%  else %>
-                No Cover Image Found...
             <% end %>
         </td>
     </tr>
     <tr>
-        <td>Created at</td>
-        <td><%= @app.created_at %></td>
+        <td>App Name</td>
+        <td> <%= @app.name %> </td>
     </tr>
     <tr>
-        <td>Last Modified at</td>
-        <td><%= @app.updated_at %></td>
+        <td>Created By</td>
+        <td> <%= @user.username %> </td>
     </tr>
+    <tr>
+        <td>Created At</td>
+        <td><%= @app.created_at.localtime %> </td>
+    </tr>
+    <tr>
+        <td>Last Modified At</td>
+        <td><%= @app.updated_at.localtime %> </td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td colspan="3"  style="word-wrap: break-word; word-break: break-all;"> <%= @app.description %> </td>
+    </tr>
+    <tr>
+        <td colspan="4"><hr></td>
+    </tr>
+    <% if !@app.panel.attached? || @app.analysis_id==nil %>
+        <tr>
+            <td colspan="4"> <b style="font-size: 1.5em; color: red;"> X - app not ready! </b> </td>
+        </tr>
+        <tr>
+            <td colspan="4"><hr></td>
+        </tr>
+        <tr>
+            <td colspan="2"> </td>
+            <td colspan="2"> <button> See Demo </button> </td>
+        </tr>
+    <% else %>
+        <tr>
+            <td colspan="2"> <button> Use This App </button> </td>
+            <td colspan="2"> <button> See Demo </button> </td>
+        </tr>
+    <% end %>
 </table>
+
+<br><br>
