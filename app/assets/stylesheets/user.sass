@@ -1,3 +1,96 @@
 // Place all the styles related to the user controller here.
 // They will automatically be included in application.css.
 // You can use Sass here: https://sass-lang.com/
+
+
+// Place all the styles related to the Project controller here.
+// They will automatically be included in application.css.
+// You can use Sass here: http://sass-lang.com/
+@import 'variables'
+
+.dashboard
+    .card-projects
+        a.list-group-item
+            color: inherit
+            transition: all 0.2s
+            border-left: 2px solid transparent
+            &:hover
+                background: darken($gray-700, 5%)
+                border-left-color: $theme
+            .proj-info
+                font-size: 90%
+                margin: 0.5rem -2px 0 -2px
+                padding: 0.25rem 0.75rem
+                background: $gray-800
+                border-radius: 4px
+    .user-stats
+        h6
+            text-align: center
+            margin-top: 0.75rem
+    .user-news
+        margin: 0
+        padding: 0
+        list-style: none
+
+.project
+    @media (min-width: 1050px)
+        display: flex
+    .news-card
+        margin: 0.5rem 0 0 0
+        @media (min-width: 1050px)
+            margin: 0 0 0 0.5rem
+            width: 250px
+            min-width: 250px
+        @media (min-width: 1250px)
+            width: 300px
+            min-width: 300px
+        .news-container
+            overflow: auto
+        .news
+            margin-bottom: 0.5rem
+            h1, h2, h3
+                font-size: 0.928rem
+                padding-bottom: 0.25rem
+            ul, ol
+                margin: 0
+                padding-left: 1.5rem
+                line-height: 1.2
+            .name
+                padding-bottom: 0.5rem
+            .desc
+                font-size: 0.928rem
+    .analysis-category
+        padding: 1rem
+        &:not(:first-child)
+            border-top: 1px solid $gray-800
+        .analysis-category-name
+            margin-bottom: 0.75rem
+    .analyses
+        display: flex
+        flex-wrap: wrap
+        .analysis-item
+            min-width: 200px
+            padding: 0.5em
+            .analysis-block
+                display: block
+                padding: 0.5em 1em
+                background: lighten($gray-700, 10%)
+                border-radius: 3px
+                color: $white
+                text-shadow: 0 0 2px #333
+                &:hover
+                    text-decoration: none
+                    background: lighten($gray-700, 20%)
+                &.active
+                    background: darken($theme, 10%)
+                    &:hover
+                        background: $theme
+
+.file-manage-table
+    th, td
+        padding: 0.75rem 2rem
+    th
+        border-top: none
+    .fk td
+        padding: 0.5rem 2rem
+        background: #343a40
