@@ -1,16 +1,32 @@
 Rails.application.routes.draw do
 
-  post '/users/edit', to: 'users#editRole'
-  delete '/users/dr/:id', to: 'users#destroyRole'
-  get '/users/newrole', to: 'users#newrole'
-  post '/users/newrole', to: 'users#createRole'
+  get '/admin/users/', to: 'admin/users#index'
+  get '/admin/users/new', to: 'admin/users#new'
+  get '/admin/users/:id', to: 'admin/users#show'
+  delete '/admin/users/:id', to: 'admin/users#destroy'
+  post '/admin/users/new', to: 'admin/users#create'
+
+
+  post '/admin/users/edit', to: 'admin/users#editRole'
+  delete '/admin/users/dr/:id', to: 'admin/users#destroyRole'
+  get '/admin/users/newrole', to: 'admin/users#newrole'
+  post '/admin/users/newrole', to: 'admin/users#createRole'
+
+  get '/admin/categories/', to: 'admin/categories#index'
+  post '/admin/categories/edit', to: 'admin/categories#update'
+  post '/admin/categories/new', to: 'admin/categories#new'
+
+
+  get '/admin/apps/', to: 'admin/apps#index'
+
 
   resources :categories do
     
   end
 
-  post '/categories/edit', to: 'categories#update'
-  post '/categories/new', to: 'categories#new'
+  resources :apps do
+    
+  end
 
   resources :projects do
     resources :samples do

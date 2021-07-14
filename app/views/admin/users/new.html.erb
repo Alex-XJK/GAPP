@@ -2,7 +2,7 @@
 
 <div style="margin : 20px;">
 
-<%= form_with model: @user do |form| %>
+<%= form_with url: "/admin/users/new/", model: @user do |form| %>
   <div>
     <%= form.label :username %><br>
     <%= form.text_field :username %>
@@ -24,7 +24,7 @@
 <% end %>
 
 <br>
-<a href="/users">
+<a href="/admin/users">
 <button type="button">     
   <i class="fas fa-angle-double-left"></i>
 </button>

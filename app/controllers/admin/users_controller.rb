@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class Admin::UsersController < ApplicationController
     http_basic_authenticate_with name: "admin", password: "gapp"
     $user_stor_dir = "#{Rails.root}/data/user"
 

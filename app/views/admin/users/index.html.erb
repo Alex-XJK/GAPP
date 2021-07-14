@@ -34,7 +34,7 @@
         <%=link_to 'Admin home', '/admin' %>
       </li> 
       <li class="breadcrumb-item">
-        <%=link_to 'User', '/users' %>
+        <%=link_to 'User', '/admin/users' %>
       </li> 
       
     </ol>
@@ -107,8 +107,8 @@
               <% end %>
 
               <td>
-                <form action="/users/edit" method="POST">  
-                  <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/users/" + String(usr.id), method: :delete,
+                <form action="/admin/users/edit" method="POST">  
+                  <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/users/" + String(usr.id), method: :delete,
                           data: { confirm: 'Are you sure?' } %>
                   
                   <button type="button" title="Edit Role" class="edit">
@@ -118,7 +118,7 @@
                       <i class="fas fa-check"></i>
                   </button>
                   
-                  <a href="/users/<%= usr.id %>">
+                  <a href="/admin/users/<%= usr.id %>">
                   <button type="button" title="View"> 
                       <i class="far fa-eye"></i>
                   </button>
@@ -137,7 +137,7 @@
       </table>
 
       <div>
-      <a href="/users/new">
+      <a href="/admin/users/new">
         <button type="button">
             New User
         </button>

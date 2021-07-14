@@ -35,7 +35,7 @@
         <%=link_to 'Admin home', '/admin' %>
       </li> 
       <li class="breadcrumb-item">
-        <%=link_to 'Category', '/categories' %>
+        <%=link_to 'Category', '/admin/categories' %>
       </li> 
       
     </ol>
@@ -101,7 +101,7 @@
                 </td>
 
                 <td>
-                <form action="/categories/edit" method="post">
+                <form action="/admin/categories/edit" method="post">
                     <input type="hidden" name="id" value=<%= cts["id"] %>>
                     <input type="hidden" name="name" class="target" value="">
                     <button type="button" title="Edit" class="edit" id= <%= cts["name"] %> >
@@ -134,7 +134,7 @@
       </table>
 
       <div>
-      <form action="/categories/new" method="POST">
+      <form action="/admin/categories/new" method="POST">
         <button type="button" id="intro" style="display: block;">
             New Category
         </button>
