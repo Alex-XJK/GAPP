@@ -8,27 +8,43 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+    <%= javascript_pack_tag 'apps_js' %>
     <%= javascript_pack_tag "table_style" %>
 
     <script>
-    $( document ).on('turbolinks:load', function() {
-      $('#pj_table').DataTable({
-          "paging":   false,
-          "ordering": false,
-          "info":     false
-      });
-    });
-
-    // $(document).ready(function() {
-    //   $('#pj_table').DataTable( {
+    // $( document ).on('turbolinks:load', function() {
+    //   $('#pj_table').DataTable({
     //       "paging":   false,
     //       "ordering": false,
     //       "info":     false
-    //   } );
-    // } );
+    //   });
+    // });
 
-     $( function() {
-        $( "#accordion" ).accordion();
+    $(document).ready(function() {
+        $('#pj_table').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            "info":     false
+        } );
+    } );
+
+      $( function() {
+        $( "#accordion" )
+          .accordion({
+            header: "> div > h3"
+          })
+          .sortable({
+            axis: "y",
+            handle: "h3",
+            stop: function( event, ui ) {
+              // IE doesn't register the blur when sorting
+              // so trigger focusout handlers to remove .ui-state-focus
+              ui.item.children( "h3" ).triggerHandler( "focusout" );
+    
+              // Refresh accordion to handle new order
+              $( this ).accordion( "refresh" );
+            }
+          });
       } );
 
     </script>
@@ -36,6 +52,7 @@
   <% end %>
 
 
+  <body data-turbolinks="false">
 
   <div class="container" onload="init()">
     <ol class="breadcrumb">
@@ -53,7 +70,7 @@
     </h1>
   
     <p>
-        This page is made for admin to :
+        This page is made for admin to : 
         <ul>
           <li>Check out all apps in the system</li>
           <li>Edit app details (through producer's page)</li>
@@ -62,14 +79,19 @@
   
     <hr>
 
+    <form action="/admin/apps/search" method="POST">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
     Search for an app by Name: &nbsp;
-    <input type="text">
-    <button type="submit"><i class="fas fa-search"></i></button>
-    <br><br>
+    <input type="text" id="text" name="name">
+    <button type="submit" id="search"><i class="fas fa-search"></i></button>
+    </form>
 
     <div id="accordion">
+      <br>
 
       <% @cats.each do |cts| %>
+
+      <div class="group">
 
       <h3><%= cts["name"] %></h3>
       <div>
@@ -112,6 +134,8 @@
         <% end %>
         </tbody>
       </table>
+
+      </div>
 
       </div>
       <% end %>

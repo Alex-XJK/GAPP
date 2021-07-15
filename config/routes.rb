@@ -16,8 +16,8 @@ Rails.application.routes.draw do
   post '/admin/categories/edit', to: 'admin/categories#update'
   post '/admin/categories/new', to: 'admin/categories#new'
 
-
   get '/admin/apps/', to: 'admin/apps#index'
+  post '/admin/apps/search', to: 'admin/apps#search'
 
 
   resources :categories do
