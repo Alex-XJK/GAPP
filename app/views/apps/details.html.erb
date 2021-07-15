@@ -2,10 +2,14 @@
 <br>
 <hr>
 <%= link_to "<-- BACK", apps_path %> <br>
-<table>
+<table cellspacing="5px" cellpadding="10px">
     <tr>
         <td>Number</td>
         <td><%= @app.app_no %></td>
+    </tr>
+    <tr>
+        <td>Category</td>
+        <td><%= @category.name %></td>
     </tr>
     <tr>
         <td>Description</td>
@@ -18,8 +22,8 @@
         </td>
     </tr>
     <tr>
-        <td>Price in HKD</td>
-        <td><%= @app.price %></td>
+        <td>Price</td>
+        <td>$ <%= @app.price %> HKD</td>
     </tr>
     <tr>
         <td>Create Report?</td>
@@ -31,7 +35,7 @@
     </tr>
     <tr>
         <td>Analysis Type</td>
-        <td><%= @analysis.name %> (DOAP : <%= @analysis.doap_id %> )</td>
+        <td><%= @analysis.name %> ( DOAP : <%= @analysis.doap_id %> )</td>
     </tr>
     <tr>
         <td>Cover Image</td>
@@ -41,7 +45,7 @@
                     <%= image_tag @app.cover_image, alt: "Cover Image", style: "width:200px" %>
                 <% end %>
             <%  else %>
-                No Cover Image Found...
+                <span style="color: LightSlateGray;"> No Cover Image Found...</span>
             <% end %>
         </td>
     </tr>
@@ -52,7 +56,7 @@
                 <% fname = @app.panel.filename %>
                 <%= link_to fname, rails_blob_path(@app.panel, disposition: "attachment") %>
             <%  else %>
-                No Panel File Uploaded...
+                <span style="color: LightSlateGray;"> No Panel File Uploaded...</span>
             <% end %>
         </td>
     </tr>
@@ -65,3 +69,10 @@
         <td><%= @app.updated_at.localtime %></td>
     </tr>
 </table>
+
+<style>
+    table {
+        cellspacing: "100px";
+        cellpadding: "100px";
+    }
+</style>

@@ -14,7 +14,7 @@
 <table style="width: 90%;">
     <tr>
         <td>App Number</td>
-        <td> <%= @app.app_no %> </td>
+        <td> [<%= @category.name %>] <%= @app.app_no %> </td>
         <td colspan="2" rowspan="5">
             <% if @app.cover_image.attached? %>
                 <%= image_tag @app.cover_image, alt: "Cover Image", style: "width:200px" %>

@@ -9,12 +9,14 @@ class AppsController < ApplicationController
   def show
     @app = App.find(params[:id])
     @user = User.find(@app.user_id)
+    @category = Category.find(@app.category_id)
   end
 
   def details
     @app = App.find(params[:id])
     @user = User.find(@app.user_id)
     @analysis = Analysis.find(@app.analysis_id)
+    @category = Category.find(@app.category_id)
   end
 
   def upgrade
@@ -32,10 +34,16 @@ class AppsController < ApplicationController
   def new
     @app = App.new
     @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
+    @category = Category.all.order(:name).collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
   end
 
   def create
     @app = App.new(app_params)
+    cate = Category.find(@app.category_id)
+    appnostr = "%s-%.6d" % [cate.initial, cate.serial]
+    @app.update(app_no: appnostr)
+    newnum = cate.serial + 1
+    cate.update(serial: newnum)
 
     if @app.save
       redirect_to apps_path
@@ -68,6 +76,6 @@ class AppsController < ApplicationController
 
   private
     def app_params
-      params.require(:app).permit(:app_no, :name, :price, :description, :create_report, :status, :user_id, :analysis_id, :cover_image, :panel)
+      params.require(:app).permit(:app_no, :name, :price, :description, :create_report, :status, :user_id, :analysis_id, :category_id, :cover_image, :panel)
     end
 end
