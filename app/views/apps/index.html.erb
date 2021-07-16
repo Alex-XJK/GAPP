@@ -54,11 +54,11 @@
                 </td>
                 <td> 
                     <% if app.status=="online" %>
-                        <b style="color: crimson;">online</b>
+                        <b style="color: forestgreen;">online</b>
                     <% elsif app.status=="audit" %>
                         <b style="color: goldenrod;">audit</b>
                     <% else %>
-                        <b style="color: forestgreen;">offline</b>
+                        <b style="color: crimson;">offline</b>
                     <% end %>
                 </td>
                 <td> <%= app.updated_at.localtime %> </td>
