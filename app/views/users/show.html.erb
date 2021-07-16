@@ -1,0 +1,81 @@
+
+<% content_for:head do%>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <%= javascript_pack_tag "table_style" %>
+  
+<%end%>
+
+
+<table border>
+
+<tbody>
+
+<tr><td><%= @user.id %></td></tr>
+
+<tr><td><%= @user.username %></td></tr>
+
+<tr><td><%= @user.created_at %></td></tr>
+
+</tbody>
+
+</table>
+
+<br><hr>
+
+<h2> Role(s): </h2>
+
+<br>
+
+<table id="pj_table" class="display" style="margin: 0;">
+        <thead>
+          
+          <% @roles_attrs.each do |attr| %>
+            
+            <th> <%= attr.capitalize %> </th>
+            
+          <% end %>
+          <th>
+            Action
+          </th>
+          
+        </thead>
+  
+        <tbody>
+          <% @roles.each do |rol| %>
+          
+            <tr>
+              <% @roles_attrs.each do |attr| %>
+                
+                <td> 
+                  <div class="table_cell"> 
+                    <%= rol[attr] %>
+                  </div>
+                </td>
+            
+              <% end %>
+
+              <td>     
+                
+                <button type="button" disabled> 
+                    No Actions Available
+                </button>
+                
+              </td>
+            
+            </tr>
+          
+          <% end %>
+        </tbody>
+  
+      </table>
+
+<br>
+<a href="/admin/users">
+<button type="button">     
+  <i class="fas fa-angle-double-left"></i>
+</button>
+</a>
+<br><br>
