@@ -56,23 +56,6 @@ ActiveRecord::Schema.define(version: 2021_07_12_090532) do
     t.index ["user_id"], name: "index_apps_on_user_id"
   end
 
-  create_table "data", force: :cascade do |t|
-    t.string "dataType"
-    t.string "dataName"
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_data_on_user_id"
-  end
-
-  create_table "roles", force: :cascade do |t|
-    t.string "name"
-    t.bigint "app_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["app_id"], name: "index_roles_on_app_id"
-  end
-
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.string "progess"
@@ -82,23 +65,14 @@ ActiveRecord::Schema.define(version: 2021_07_12_090532) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "user_roles", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "role_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["role_id"], name: "index_user_roles_on_role_id"
-    t.index ["user_id"], name: "index_user_roles_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
+    t.string "dataFiles", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "data", "users"
   add_foreign_key "tasks", "users"
 end

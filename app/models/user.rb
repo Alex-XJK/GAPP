@@ -1,4 +1,4 @@
 class User < ApplicationRecord
-    has_many :datum
     has_many :task
+    has_many_attached :dataFiles
 end

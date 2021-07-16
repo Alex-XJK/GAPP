@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resources :data
     resources :tasks
   end
+  post 'data-file-upload', to: 'users#data_file_upload', format: 'json'
   
 
   # get 'welcome/index'

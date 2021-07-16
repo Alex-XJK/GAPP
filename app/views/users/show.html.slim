@@ -52,6 +52,20 @@
         h5.mb-3
           = icon 'fa', 'rss'
           | Data Management
+      .sub-content
+        h6 
+          | Upload File(s) 
+        i 
+          | Only .bam and .fq file can be accepted.    
+        #vapp-data-upload
+      br/
+      br/
+      hr.dash
+      .sub-content
+        h6
+          | Data
+        #vapp-data-form
+
     /   .news-container
     /     - @analysis_categories.flat_map(&:analyses).each do |a|
     /       - unless a.updates&.empty?
