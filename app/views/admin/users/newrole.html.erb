@@ -1,0 +1,34 @@
+<h1>New Role</h1>
+
+<div style="margin : 20px;">
+
+<%= form_with do |form| %>
+  <div>
+    <%= form.label :User_Id %><br>
+    <%= form.text_field :uid %>
+  </div>
+
+  <div>
+    <%= form.label :Role_Name %><br>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :App_Id %><br>
+    <%= form.text_field :app_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<br>
+<a href="/users">
+<button type="button">     
+  <i class="fas fa-angle-double-left"></i>
+</button>
+</a>
+
+</div>
+<br>

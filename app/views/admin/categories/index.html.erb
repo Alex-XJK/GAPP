@@ -1,0 +1,159 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
+<% if false %>
+<div class="container-fluid">
+    <div class="row">
+        <%= yield :sidebar %>
+    </div>
+</div>
+<% end %>
+
+<% content_for:head do%>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <%= javascript_pack_tag "table_style" %>
+    <script>
+    $( document ).on('turbolinks:load', function() {
+      $('#pj_table').DataTable();
+    });
+
+    </script>
+  
+  <% end %>
+
+  <%= javascript_pack_tag 'category_js' %>
+  
+  <% content_for :title, "Categories" %>
+  
+  <div class="container" onload="init()">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%=link_to 'Admin home', '/admin' %>
+      </li> 
+      <li class="breadcrumb-item">
+        <%=link_to 'Category', '/admin/categories' %>
+      </li> 
+      
+    </ol>
+
+    <h1>
+    Category
+    </h1>
+  
+    <p>
+        This page is made for admin to :
+        <ul>
+          <li>Check out all categories in the system</li>
+          <li>Edit category names</li>
+        </ul>
+    </p>
+  
+    <hr>
+  
+    <section id="project_admin" class="admin_block">
+  
+      <div id='hidden_helper' style = 'display: none;'>
+      Hide columns: 
+      <br>
+      <% i=0 %>
+      <% @cat_attrs.each do |attr| %>
+        
+        <button class="toggle-vis" data-column='<%=i.to_s%>'> 
+          <%= attr.capitalize %>
+        </button>
+        <%i += 1%>
+        
+      <%end%>
+      <br>
+    </div><br>
+  
+      <table id="pj_table" class="display" style="margin: 0;" data-page-length="-1">
+        <thead>
+               
+            <th> Id </th>
+            <th> Name </th>
+            <th> Action </th>
+            <th> Created At </th>
+            
+          
+        </thead>
+  
+        <tbody>
+          <% @cats.each do |cts| %>
+          
+            <tr>
+              <% @cat_attrs.each do |attr| %>
+
+
+                <% if attr == 'name' %>
+                <td> 
+
+                  <div class="table_cell name_cell">
+                    <span class="name">
+                    <%= cts[attr] %>
+                    </span>
+                  </div>
+
+                </td>
+
+                <td>
+                <form action="/admin/categories/edit" method="post">
+                    <input type="hidden" name="id" value=<%= cts["id"] %>>
+                    <input type="hidden" name="name" class="target" value="">
+                    <button type="button" title="Edit" class="edit" id= <%= cts["name"] %> >
+                        <i class="far fa-edit"></i>
+                    </button>
+                    <button type="submit" title="OK" class="submit" style="">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+                </form>
+                </td>
+
+                <% else %>
+                <td> 
+                <div class="table_cell"> 
+                    <%= cts[attr] %>
+                    &nbsp;
+                </div>
+                </td> 
+                <% end %>
+
+            
+              <% end %>
+            
+            </tr>
+          
+          <% end %>
+        </tbody>
+  
+      </table>
+
+      <div>
+      <form action="/admin/categories/new" method="POST">
+        <button type="button" id="intro" style="display: block;">
+            New Category
+        </button>
+        <div id="fmain">
+        <label for="nm">Name: </label>
+        <input type="text" id="nm">
+        <input type="hidden" name="name" value="">
+        <button type="submit" title="OK" id="asub">
+            <i class="fas fa-check"></i>
+        </button>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        </div>
+      </form>
+      </div>
+  
+    </section>
+
+    <hr>
+    <br/>
+
+  </div>
+
