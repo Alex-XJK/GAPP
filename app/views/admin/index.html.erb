@@ -39,7 +39,7 @@
 
 
   <h1>
-  Admin Page
+  Admin page
   </h1>
 
   <p>
@@ -53,21 +53,21 @@
       </ul>
   </p>
 
-  <hr>
+  <hr />
 
 
   <br />
 
   <section id="project_admin" class="admin_block">
-    <h3>
-    User
-    </h3>
+    <h4>
+    Project management:
+    </h4>
 
     <div id='hidden_helper'>
     Hide columns: 
     <br />
     <% i=0 %>
-    <% @usercolumn.each do |attr| %>
+    <% @projects.column_names.each do |attr| %>
       
       <button class="toggle-vis" data-column='<%=i.to_s%>'> 
         <%= attr.capitalize %>
@@ -80,7 +80,7 @@
     <table id="pj_table" class="display">
       <thead>
         
-        <% @usercolumn.each do |attr| %>
+        <% @projects.column_names.each do |attr| %>
           
           <th> <%= attr.capitalize %> </th>
           
@@ -92,20 +92,20 @@
       </thead>
 
       <tbody>
-        <% @users.each do |pj| %>
+        <% @projects.each do |pj| %>
         
           <tr>
-            <% @usercolumn.each do |attr| %>
+            <% @projects.column_names.each do |attr| %>
               
               <td> 
                 <div class="table_cell"> 
-                  <%= pj[attr] %>
+                  <%= pj[attr] %> 
                 </div>
               </td>
             
             <% end %>
             <td>
-              
+              <%= link_to 'Show', project_path(pj) %>
               <%= link_to 'Delete', project_path(pj), method: :delete,
                       data: { confirm: 'Are you sure?' } %>
 
@@ -155,7 +155,7 @@
       <p>
         Please select the project whose samples need to be modified
       </p>
-      <%= select_tag :project_id, options_from_collection_for_select(@users, :id, :username, -1) %>
+      <%= select_tag :project_id, options_from_collection_for_select(@projects, :id, :name, -1) %>
       <p> 
         Please select tsv file to be imported:
       </p>

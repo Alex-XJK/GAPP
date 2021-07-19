@@ -2,6 +2,10 @@
 
 one:
   name: MyString
+  initial: MyString
+  serial: 1
 
 two:
   name: MyString
+  initial: MyString
+  serial: 1

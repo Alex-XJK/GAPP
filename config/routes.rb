@@ -63,7 +63,6 @@ Rails.application.routes.draw do
     end
   end
 
-
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
   post 'submit_app_task_dummy', to: 'submit#submit_app_task_dummy'
@@ -149,5 +148,11 @@ Rails.application.routes.draw do
   match 'data/outputs/*path', to: 'raw_files#outputs', as: 'get_outputs', via: :get
   match 'data/static_viz_data/*path', to: 'raw_files#viz_file', via: :get
   match 'app/data/abd_files/*path', to: 'raw_files#viz_abd_file', via: :get
+
+  # Application 
+  get 'apps/details/:id', to: 'apps#details', as: 'check_detail_app'
+  get 'apps/operate/offshelf/:id', to: 'apps#downgrade', as: 'offshelf_app'
+  get 'apps/operate/onshelf/:id', to: 'apps#upgrade', as: 'onshelf_app'
+  resources :apps
 
 end
