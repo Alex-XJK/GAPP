@@ -1,0 +1,63 @@
+<% content_for :title, "View Task " + String(@task["id"]) %>
+
+<% content_for:head do%>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <%= javascript_pack_tag "table_style" %>
+
+    <script>
+
+      $( function() {
+        $( "#accordion" )
+          .accordion({
+            header: "> div > h3"
+          })
+          .sortable({
+            axis: "y",
+            handle: "h3",
+            stop: function( event, ui ) {
+              // IE doesn't register the blur when sorting
+              // so trigger focusout handlers to remove .ui-state-focus
+              ui.item.children( "h3" ).triggerHandler( "focusout" );
+    
+              // Refresh accordion to handle new order
+              $( this ).accordion( "refresh" );
+            }
+          });
+      } );
+
+    </script>
+  
+  <% end %>
+
+<body data-turbolinks="false">
+
+<div id="accordion">
+
+<% @task_attrs.each do |attr| %>
+
+<div class="group">
+
+<h3><%= attr %></h3>
+<div>
+<%= @task[attr] %>
+</div>
+
+</div>
+
+<% end %>
+
+</div>
+<br>
+<a href="/admin/tasks">
+<button type="button">     
+  <i class="fas fa-angle-double-left"></i>
+</button>
+</a>
+<br><br>
+

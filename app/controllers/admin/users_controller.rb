@@ -6,8 +6,6 @@ class Admin::UsersController < ApplicationController
         @projects = App.order(:name)
         @ana_cate = Analysis.order(:name)
         @ac_attrs = Analysis.column_names
-        @viz = Task.order(:name)
-        @viz_attrs = Task.column_names
         @ana = Analysis.order(:name)
         @a_attrs = Analysis.column_names
 
