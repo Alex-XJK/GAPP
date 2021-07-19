@@ -9,6 +9,8 @@
 
 <% content_for :title, "Admin" %>
 
+<body data-turbolinks="false">
+
 <div class="container">
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -28,6 +30,12 @@
     </li> 
     
   </ol>
+
+  [&nbsp;
+  <%=link_to 'User', '/admin/users' %> |&nbsp;
+  <%=link_to 'Category', '/admin/categories' %> |&nbsp;
+  <%=link_to 'App', '/admin/apps' %>&nbsp;
+  ]
 
 
   <h1>
