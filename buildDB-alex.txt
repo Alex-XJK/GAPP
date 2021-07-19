@@ -1,18 +1,6 @@
 User.connection
 
-role1 = Role.new(name: 'admin', app_id: 1)
-
-role2 = Role.new(name: 'producer', app_id: 1)
-
-role3 = Role.new(name: 'user', app_id: 1)
-
-role1.save
-
-role2.save
-
-role3.save
-
-user = User.new(username: 'ALEX_XU', password_digest: '12345’, role_id: 2)
+user = User.new(username: 'ALEX_XU', password_digest: '12345')
 
 user.save
 
@@ -44,4 +32,21 @@ cat3.save
 
 cat4.save
 
+exit
+
+##### Go to apps page to create a app
+
+role1 = Role.new(name: 'admin', app_id: 1)
+
+role2 = Role.new(name: 'producer', app_id: 1)
+
+role3 = Role.new(name: 'user', app_id: 1)
+
+role1.save
+
+role2.save
+
+role3.save
+
+User.find(1).update(role_id: 2)
 
