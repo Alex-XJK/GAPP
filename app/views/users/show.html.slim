@@ -22,13 +22,17 @@
               | Task Status
           .text-muted
             | Apps are sorted by categories while tasks belong to apps.
-        / - @analysis_categories.each do |c|
+            | 
+          .selector
+            #vapp-app-selector
+            
+        / - @app_categories.each do |c|
         /   .card-body.analysis-category
         /     h6.analysis-category-name
         /       = icon 'fa', 'folder'
         /       = c.name
         /     .analyses
-        /       - c.analyses.each do |a|
+        /       - c.tasks.each do |a|
         /         - is_dovirus = Rails.configuration.x.features.dovirus && a.dovirus_enabled
         /         - if visible_analysis(a)
         /           .analysis-item

@@ -51,16 +51,11 @@ class UsersController < ApplicationController
     end
 
     def data_file_upload
-        @user.dataFiles.attach(user_params[:dataFiles])
-        # respond_to do |format|
-        #     if @user.update(user_params)
-        #       format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        #       format.json { render :show, status: :ok, location: @user }
-        #     else
-        #       format.html { render :edit }
-        #       format.json { render json: @user.errors, status: :unprocessable_entity }
-        #     end
-        #   end
+            @user = User.find(params[:id])
+            Rails.logger.debug "Here is #{@user}"
+            # @user.dataFiles.attach(user_params[:dataFiles])
+            @user.dataFiles = params[:dataFiles]
+            @user.save!
     end
         
     private
