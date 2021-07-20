@@ -26,7 +26,7 @@
 <p>
     Currently you have created <%= @apps.count %> Apps: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .  
 
-    <%= link_to " + CREATE NEW APP", new_app_path %>
+    <%= link_to " + CREATE NEW APP", createnew_app_path("1") %>
 </p> 
 
 <table id="data-table">

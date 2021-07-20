@@ -35,6 +35,11 @@ class AppsController < ApplicationController
     @app = App.new
     @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
     @category = Category.all.order(:name).collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
+    if params[:uid]
+      @user = params[:uid]
+    else
+      redirect_to apps_path
+    end
   end
 
   def create
@@ -55,6 +60,7 @@ class AppsController < ApplicationController
   def edit
     @app = App.find(params[:id])
     @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
+    @user = @app.user_id
   end
 
   def update
