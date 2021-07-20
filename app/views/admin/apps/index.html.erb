@@ -103,6 +103,7 @@
             <th> Name </th>
             <th> Author </th>
             <th> Last Update Time </th>
+            <th> Action </th>
           
         </thead>
   
@@ -125,6 +126,14 @@
                 </div>
                 </td> 
               <% end %>
+
+              <td>
+              <a href="/apps/details/<%= app.id %>" target="_blank">
+                  <button type="button" title="View"> 
+                      <i class="far fa-eye"></i>
+                  </button>
+              </a>
+              </td>
             
             </tr>
         
