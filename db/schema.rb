@@ -74,9 +74,8 @@ ActiveRecord::Schema.define(version: 2021_07_19_060817) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "name"
-    t.string "status", null: false
-    t.bigint "user_id"
-    t.bigint "analysis_id"
+    t.string "progess"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "app_id", null: false
@@ -97,6 +96,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_060817) do
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
+    t.string "dataFiles", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "role_id"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_060817) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "tasks", "users"
   add_foreign_key "apps", "categories"
   add_foreign_key "tasks", "apps"
   add_foreign_key "users", "roles"

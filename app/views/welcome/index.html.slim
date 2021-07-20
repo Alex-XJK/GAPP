@@ -32,12 +32,32 @@ section.heading.bg-light.text-light
       | of a single analysis treated by yourself or visualize other commonly used graph used in 
       | metagenomics analysis.
 
+section#demo
+  .container
+    h2
+      | Demo
+    #demo_container
+      .demo_body.demo_img
+        =link_to '#'
+          =image_tag "research.png", :alt=>"Demo of this site.png"
+      .demo_body.demo_text
+        h3
+          |Demo of GAPP
+        ul
+          li
+            |Intro-1
+          li
+            |Intro-2
 
+/ section#test
+/   .container 
+/     #vapp-star-app-pagination
+      
 
-section#function_card
+section#app_card
   .container
    h2
-      | Function
+      | Star Apps
 
   #cards_wrapper.container
     .card
@@ -75,6 +95,9 @@ section#function_card
           |contains  corresponding visualization of analysis result and basic sample and
           br
           |basic sample information visualization and so on
+    br
+    a.btn.btn-xlg.btn-doap.btn-outline-dark.text-uppercase.font-weight-bold href='#'
+      | Learn More
 
 / section#dataset_list
 /     .container

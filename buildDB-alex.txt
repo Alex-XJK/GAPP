@@ -1,0 +1,52 @@
+User.connection
+
+user = User.new(username: 'ALEX_XU', password_digest: '12345')
+
+user.save
+
+ana1 = Analysis.new(name: 'General Check', doap_id: 100)
+
+ana2 = Analysis.new(name: 'Special Check', doap_id: 107)
+
+ana3 = Analysis.new(name: 'Rare Disease', doap_id: 5)
+
+ana1.save
+
+ana2.save
+
+ana3.save
+
+cat1 = Category.new(name: 'General usage', initial: 'G')
+
+cat2 = Category.new(name: 'System test', initial: 'T')
+
+cat3 = Category.new(name: 'Cancer detection', initial: 'CD')
+
+cat4 = Category.new(name: 'Pregnancy screening', initial: 'PS')
+
+cat1.save
+
+cat2.save
+
+cat3.save
+
+cat4.save
+
+exit
+
+##### Go to apps page to create a app
+
+role1 = Role.new(name: 'admin', app_id: 1)
+
+role2 = Role.new(name: 'producer', app_id: 1)
+
+role3 = Role.new(name: 'user', app_id: 1)
+
+role1.save
+
+role2.save
+
+role3.save
+
+User.find(1).update(role_id: 2)
+

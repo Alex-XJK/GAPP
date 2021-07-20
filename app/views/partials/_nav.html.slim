@@ -15,6 +15,20 @@
             = icon 'fa', 'home'
             | Home
         li.nav-item
+          = link_to root_path, class: 'nav-link' do
+            = icon 'fa', 'bullseye'
+            | Apps
+        li.nav-item.dropdown
+          = link_to '#', class: 'nav-link dropdown-toggle', data: { toggle: 'dropdown' } do
+            = icon 'fa', 'user-alt'
+            |  Role
+            = icon 'fas', caret_icon
+          .dropdown-menu
+            = link_to "#", class: 'dropdown-item' do
+              | Producer
+            = link_to user_path(1), class: 'dropdown-item' do
+              | User
+        li.nav-item
           = link_to '/docs', class: 'nav-link' do
             = icon 'fa', 'file-alt'
             | Tutorial
