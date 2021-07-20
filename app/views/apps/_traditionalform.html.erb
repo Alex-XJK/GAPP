@@ -7,25 +7,25 @@
             <%= form.label :category_id, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
             <%= form.select :category_id, category %>
             <% app.errors.full_messages_for(:category_id).each do |message| %>
-                <div><%= message %><div>
+                <div><%= message %></div>
             <% end %>
         <% else %>
             <%= form.label :app_no, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
-            <input type="text" name="app_no" value= <%=@app.app_no %> disabled="disabled">  
+            <input type="text" name="app_no" value= <%=@app.app_no %> disabled="disabled">
         <% end %>
     </div>
     <div>
         <%= form.label :name, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.text_field :name %>
         <% app.errors.full_messages_for(:name).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
     </div>
     <div>
         <%= form.label :description, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.text_area :description, size: "25x5", style: "vertical-align: middle;"%>
         <% app.errors.full_messages_for(:description).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
     </div>
     <div>
@@ -33,7 +33,7 @@
         <%= form.number_field :price, in: 0..10000, step: 1 %>
         <small> in HKD </small>
         <% app.errors.full_messages_for(:price).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
     </div>
     <div>
@@ -43,7 +43,7 @@
         <%= form.radio_button :create_report, "false" %>
         <%= form.label :create_report_false, "No, thanks." %>
         <% app.errors.full_messages_for(:create_report).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
     </div>
 
@@ -51,21 +51,21 @@
         <%= form.label :analysis_id, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.select :analysis_id, analysis %>
         <% app.errors.full_messages_for(:analysis_id).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
     </div>
     <div>
         <%= form.label :cover_image, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.file_field :cover_image, accept: 'image/jpeg,image/png,image/gif' %>
         <% app.errors.full_messages_for(:cover_image).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
     </div>
     <div>
         <%= form.label :panel, style: "width: 100px; padding-left: 5px; padding-top: 10px;" %>
         <%= form.file_field :panel, accept: 'text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,' %>
         <% app.errors.full_messages_for(:panel).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
     </div>
     <br>
@@ -79,7 +79,7 @@
         <% end %>
         
         <% app.errors.full_messages_for(:status).each do |message| %>
-            <div><%= message %><div>
+            <div><%= message %></div>
         <% end %>
 
         <%= form.submit %>

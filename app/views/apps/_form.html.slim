@@ -1,0 +1,20 @@
+= simple_form_for app do |form|
+  = form.input :user_id, :as => :hidden, :input_html => { :value => "1"}
+  - if app.app_no == nil
+    = form.input :category_id, collection: category
+  - else
+    = form.input :app_no, disabled: true
+  = form.input :name
+  = form.input :description
+  = form.input :price
+  = form.input :create_report
+  = form.input :analysis_id, collection: analysis
+  = form.input :cover_image, :input_html => { :accept => "image/jpeg,image/png,image/gif"}
+  = form.input :panel, :input_html => { :accept => "text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+  - if app.status == 'online'
+    = form.input :status, as: :boolean, checked_value: 'offline', unchecked_value: 'audit', inline_label: 'Off the shelf?'
+  - elsif app.status == 'audit'
+    = form.input :status, as: :boolean, checked_value: 'offline', unchecked_value: 'audit', inline_label: 'Off the shelf?'
+  - else
+    = form.input :status, as: :boolean, checked_value: 'audit', unchecked_value: 'offline', inline_label: 'Publish now?'
+  = form.button :submit
