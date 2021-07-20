@@ -26,6 +26,7 @@ import AlertCenter from 'components/alert-center.vue';
     components: {
       AlertCenter
     },
+    // inject: ['reload'],
     data() {
       return {
         id: window.gon.user_id,
@@ -51,6 +52,7 @@ import AlertCenter from 'components/alert-center.vue';
         },
         ).then((response) => {
           if (response.data.code) {
+            // this.reload()
           } else {
             // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
