@@ -16,10 +16,8 @@ class Admin::UsersController < ApplicationController
     end
 
     def show
-        @roles_attrs = ["id", "name", "app_id"]
-        @roles = Role.where({ id: UserRole.where({ user_id: params[:id] }).select(:role_id) }).select(@roles_attrs)
-        id = params[:id]
-        @user = User.find(id)
+        @user = User.find(params[:id])
+        @user_attrs = User.column_names
     end
 
     def destroy

@@ -46,6 +46,7 @@
             <th> Run By </th>
             <th> Start Time </th>
             <th> Status </th>
+            <th> Actions </th>
           
         </thead>
 
@@ -65,6 +66,16 @@
                 </div>
                 </td> 
               <% end %>
+              <td>
+               <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(res.id), method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
+            
+              <a href="/admin/tasks/<%= res.id %>">
+                <button type="button" title="View"> 
+                    <i class="far fa-eye"></i>
+                </button>
+              </a>
+              </td>
             </tr>
         <% end %>
         

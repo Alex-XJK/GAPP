@@ -1,77 +1,58 @@
+<% content_for :title, "View User " + String(@user["id"]) %>
 
 <% content_for:head do%>
   
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <%= javascript_pack_tag "table_style" %>
+
+    <script>
+
+      $( function() {
+        $( "#accordion" )
+          .accordion({
+            header: "> div > h3"
+          })
+          .sortable({
+            axis: "y",
+            handle: "h3",
+            stop: function( event, ui ) {
+              // IE doesn't register the blur when sorting
+              // so trigger focusout handlers to remove .ui-state-focus
+              ui.item.children( "h3" ).triggerHandler( "focusout" );
+    
+              // Refresh accordion to handle new order
+              $( this ).accordion( "refresh" );
+            }
+          });
+      } );
+
+    </script>
   
-<%end%>
+  <% end %>
 
+<body data-turbolinks="false">
 
-<table border>
+<div id="accordion">
 
-<tbody>
+<% @user_attrs.each do |attr| %>
 
-<tr><td><%= @user.id %></td></tr>
+<div class="group">
 
-<tr><td><%= @user.username %></td></tr>
+<h3><%= attr %></h3>
+<div>
+<%= @user[attr] %>
+</div>
 
-<tr><td><%= @user.created_at %></td></tr>
+</div>
 
-</tbody>
+<% end %>
 
-</table>
-
-<br><hr>
-
-<h2> Role(s): </h2>
-
-<br>
-
-<table id="pj_table" class="display" style="margin: 0;">
-        <thead>
-          
-          <% @roles_attrs.each do |attr| %>
-            
-            <th> <%= attr.capitalize %> </th>
-            
-          <% end %>
-          <th>
-            Action
-          </th>
-          
-        </thead>
-  
-        <tbody>
-          <% @roles.each do |rol| %>
-          
-            <tr>
-              <% @roles_attrs.each do |attr| %>
-                
-                <td> 
-                  <div class="table_cell"> 
-                    <%= rol[attr] %>
-                  </div>
-                </td>
-            
-              <% end %>
-
-              <td>     
-                
-                <button type="button" disabled> 
-                    No Actions Available
-                </button>
-                
-              </td>
-            
-            </tr>
-          
-          <% end %>
-        </tbody>
-  
-      </table>
-
+</div>
 <br>
 <a href="/admin/users">
 <button type="button">     
@@ -79,3 +60,4 @@
 </button>
 </a>
 <br><br>
+
