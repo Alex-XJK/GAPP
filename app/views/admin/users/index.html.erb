@@ -29,8 +29,15 @@
   <% content_for :title, "Users" %>
 
   <body data-turbolinks="false">
+
+  <div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+
   
-  <div class="container">
+  <div class="col-11">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
@@ -110,24 +117,24 @@
 
               <td>
                 <form action="/admin/users/edit" method="POST">  
-                  <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/users/" + String(usr.id), method: :delete,
+                  <%= link_to '<button type="button" data-toggle="tooltip" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/users/" + String(usr.id), method: :delete,
                           data: { confirm: 'Are you sure?' } %>
                   
-                  <button type="button" title="Edit Role" class="edit">
+                  <button type="button" data-toggle="tooltip" title="Edit Role" class="edit">
                       <i class="far fa-edit"></i>
                   </button>
-                  <button type="submit" title="OK" class="submit" style="">
+                  <button data-toggle="tooltip" type="submit" title="OK" class="submit" style="">
                       <i class="fas fa-check"></i>
                   </button>
                   
                   <a href="/admin/users/<%= usr.id %>">
-                  <button type="button" title="View"> 
+                  <button data-toggle="tooltip" type="button" title="View"> 
                       <i class="far fa-eye"></i>
                   </button>
                   </a>
 
                   <a href="/users/<%= usr.id %>" target="_blank">
-                  <button type="button" title="View"> 
+                  <button type="button" data-toggle="tooltip" title="Operate"> 
                       <i class="fas fa-wrench"></i>
                   </button>
                   </a>
@@ -158,5 +165,7 @@
     <hr>
     <br/>
 
+  </div>
+  </div>
   </div>
 

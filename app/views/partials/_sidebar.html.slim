@@ -1,5 +1,5 @@
 .sizebar-container
-  - if current_user.has_role? :developer 
+  - if true
     .sidebar-section
       .sidebar-heading
         span.uncollapsed-only Personal Modules
@@ -7,7 +7,7 @@
           = icon 'fas', 'user-circle', class: 'fa-fw'
       ul
         li.sidebar-item
-          = link_to user_home_path do
+          = link_to "/admin" do
             = icon 'fas', 'list', class: 'fa-fw'
             span.sidebar-text Module List
         / li.sidebar-item
@@ -22,10 +22,10 @@
           = icon 'fas', 'network-wired', class: 'fa-fw'
       ul
         li.sidebar-item
-          = link_to user_pipelines_path do
+          = link_to "/admin" do
             = icon 'fas', 'list', class: 'fa-fw'
             span.sidebar-text Pipeline List
-  - if current_user.has_role? :researcher
+  - if true
     .sidebar-section
       .sidebar-heading
         span.uncollapsed-only Personal Projects
@@ -33,7 +33,7 @@
           = icon 'fas', 'tasks', class: 'fa-fw'
       ul
         li.sidebar-item
-          = link_to user_projects_path do
+          = link_to "/admin" do
             = icon 'fas', 'list', class: 'fa-fw'
             span.sidebar-text Project List
   .sidebar-section
@@ -43,7 +43,7 @@
         = icon 'fas', 'database', class: 'fa-fw'
     ul
       li.sidebar-item
-        = link_to user_data_path do
+        = link_to "/admin" do
           = icon 'fas', 'desktop', class: 'fa-fw'
           span.sidebar-text File Explorer
   .sidebar-section.bottom

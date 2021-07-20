@@ -1,3 +1,7 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
 <% content_for :title, "Apps" %>
 
 <% content_for:head do%>
@@ -54,7 +58,13 @@
 
   <body data-turbolinks="false">
 
-  <div class="container" onload="init()">
+  <div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+
+  <div class="col-11">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
@@ -129,7 +139,7 @@
 
               <td>
               <a href="/apps/details/<%= app.id %>" target="_blank">
-                  <button type="button" title="View"> 
+                  <button data-toggle="tooltip" type="button" title="View"> 
                       <i class="far fa-eye"></i>
                   </button>
               </a>
@@ -150,5 +160,8 @@
       <% end %>
     </div>
     <br>
+
+  </div>
+  </div>
     
     <!-- App.new(app_no: "A5-0030", name: "Another Testing App", price: 17, description: "......", create_report: true, status: "pending", user_id: 60, analysis_id: 1, category_id: 3) -->

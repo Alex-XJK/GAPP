@@ -28,8 +28,16 @@
   <%= javascript_pack_tag 'category_js' %>
   
   <% content_for :title, "Categories" %>
+
+  <body data-turbolinks="false">
   
-  <div class="container" onload="init()">
+  <div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+  
+  <div class="col-11">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
@@ -104,10 +112,10 @@
                 <form action="/admin/categories/edit" method="post">
                     <input type="hidden" name="id" value=<%= cts["id"] %>>
                     <input type="hidden" name="name" class="target" value="">
-                    <button type="button" title="Edit" class="edit" id= <%= cts["name"] %> >
+                    <button data-toggle="tooltip" type="button" title="Edit" class="edit" id= <%= cts["name"] %> >
                         <i class="far fa-edit"></i>
                     </button>
-                    <button type="submit" title="OK" class="submit" style="">
+                    <button data-toggle="tooltip" type="submit" title="OK" class="submit" style="">
                         <i class="fas fa-check"></i>
                     </button>
                     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
@@ -142,7 +150,7 @@
         <label for="nm">Name: </label>
         <input type="text" id="nm">
         <input type="hidden" name="name" value="">
-        <button type="submit" title="OK" id="asub">
+        <button data-toggle="tooltip" type="submit" title="OK" id="asub">
             <i class="fas fa-check"></i>
         </button>
         <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
@@ -156,4 +164,5 @@
     <br/>
 
   </div>
-
+  </div>
+  </div>
