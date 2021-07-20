@@ -19,6 +19,11 @@ Rails.application.routes.draw do
   get '/admin/apps/', to: 'admin/apps#index'
   post '/admin/apps/search', to: 'admin/apps#search'
 
+  get '/admin/tasks/', to: 'admin/tasks#index'
+  post '/admin/tasks/search', to: 'admin/tasks#search'
+  get '/admin/tasks/:id', to: 'admin/tasks#view'
+  delete '/admin/tasks/:id', to: 'admin/tasks#destroy'
+
 
   resources :categories do
     

@@ -1,4 +1,4 @@
-<% content_for :title, "View User " + String(@user["id"]) %>
+<% content_for :title, "View Task " + String(@task["id"]) %>
 
 <% content_for:head do%>
   
@@ -39,13 +39,13 @@
 
 <div id="accordion">
 
-<% @user_attrs.each do |attr| %>
+<% @task_attrs.each do |attr| %>
 
 <div class="group">
 
 <h3><%= attr %></h3>
 <div>
-<%= @user[attr] %>
+<%= @task[attr] %>
 </div>
 
 </div>
@@ -54,7 +54,7 @@
 
 </div>
 <br>
-<a href="/admin/users">
+<a href="/admin/tasks">
 <button type="button">     
   <i class="fas fa-angle-double-left"></i>
 </button>
