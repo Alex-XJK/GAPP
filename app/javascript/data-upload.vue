@@ -17,10 +17,14 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import axios from 'axios';
 import objectToFormData from 'object-to-formdata';
 import AlertCenter from 'components/alert-center.vue';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
+Vue.use(ElementUI)
 
   export default {
     components: {
@@ -53,6 +57,10 @@ import AlertCenter from 'components/alert-center.vue';
         ).then((response) => {
           if (response.data.code) {
             // this.reload()
+            this.$message({
+                type: 'success',
+                message: '上传成功!'
+            })
           } else {
             // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
