@@ -1,5 +1,33 @@
 Rails.application.routes.draw do
 
+  get '/admin/users/', to: 'admin/users#index'
+  get '/admin/users/new', to: 'admin/users#new'
+  get '/admin/users/:id', to: 'admin/users#show'
+  delete '/admin/users/:id', to: 'admin/users#destroy'
+  post '/admin/users/new', to: 'admin/users#create'
+
+
+  post '/admin/users/edit', to: 'admin/users#editRole'
+  delete '/admin/users/dr/:id', to: 'admin/users#destroyRole'
+  get '/admin/users/newrole', to: 'admin/users#newrole'
+  post '/admin/users/newrole', to: 'admin/users#createRole'
+
+  get '/admin/categories/', to: 'admin/categories#index'
+  post '/admin/categories/edit', to: 'admin/categories#update'
+  post '/admin/categories/new', to: 'admin/categories#new'
+
+  get '/admin/apps/', to: 'admin/apps#index'
+  post '/admin/apps/search', to: 'admin/apps#search'
+
+
+  resources :categories do
+    
+  end
+
+  resources :apps do
+    
+  end
+
   resources :projects do
     resources :samples do
       collection do
@@ -36,6 +64,9 @@ Rails.application.routes.draw do
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
   post 'submit_app_task_dummy', to: 'submit#submit_app_task_dummy'
   root 'welcome#index'
+
+  get "welcome", to: 'welcome#index', as: "welcome"
+
   # get 'tutorial', to: 'welcome#tutorial', as: 'tutorial'
   get 'contact', to: 'welcome#contact', as: 'contact'
   get 'docs', to: redirect('docs/index.html')
@@ -87,7 +118,7 @@ Rails.application.routes.draw do
   post 'remove-task', to: 'submit#remove_task', format: 'json'
 
   # admin
-  get '/admin', to: 'admin#index'
+  get '/admin', to: 'admin#index', as: "admin"
   post "admin/modify_sample_metadata" => "admin#modify_sample_metadata", :as => "admin/modify_sample_metadata"
   post "admin/modify_sample_abd" => "admin#modify_sample_abd", :as => "admin/modify_sample_abd"
   post "admin/modify_viz" => "admin#modify_viz", :as => "admin/modify_viz"
@@ -114,5 +145,11 @@ Rails.application.routes.draw do
   match 'data/outputs/*path', to: 'raw_files#outputs', as: 'get_outputs', via: :get
   match 'data/static_viz_data/*path', to: 'raw_files#viz_file', via: :get
   match 'app/data/abd_files/*path', to: 'raw_files#viz_abd_file', via: :get
+
+  # Application 
+  get 'apps/details/:id', to: 'apps#details', as: 'check_detail_app'
+  get 'apps/operate/offshelf/:id', to: 'apps#downgrade', as: 'offshelf_app'
+  get 'apps/operate/onshelf/:id', to: 'apps#upgrade', as: 'onshelf_app'
+  resources :apps
 
 end

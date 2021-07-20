@@ -1,14 +1,17 @@
 class AdminController < ApplicationController
-    http_basic_authenticate_with name: "admin", password: "chelijia"
+    http_basic_authenticate_with name: "admin", password: "gapp"
     $abd_dir = "#{Rails.root}/app/data/abd_files/"
     def index
-        @projects = Project.order(:name)
-        @ana_cate = AnalysisCategory.order(:name)
-        @ac_attrs = AnalysisCategory.column_names
-        @viz = Visualizer.order(:name)
-        @viz_attrs = Visualizer.column_names
+        @projects = App.order(:name)
+        @ana_cate = Analysis.order(:name)
+        @ac_attrs = Analysis.column_names
+        @viz = Task.order(:name)
+        @viz_attrs = Task.column_names
         @ana = Analysis.order(:name)
         @a_attrs = Analysis.column_names
+
+        @users = User.select(:id, :username, :created_at)
+        @usercolumn = ["id", "username", "created_at"] 
     end
 
     def modify_sample_abd

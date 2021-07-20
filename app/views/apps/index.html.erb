@@ -1,0 +1,84 @@
+<% content_for:head do%>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <%= javascript_pack_tag "table_style" %>
+    <script>
+        $( document ).on('turbolinks:load', function() {
+            $('#data-table').DataTable({
+                paging: false,
+                searching: false,
+                order: [0, 'asc'],
+                columnDefs: [
+                    {orderable: false, targets: 2},
+                    {orderable: false, targets: 5}
+                ]
+            });
+        });
+    </script>
+<% end %>
+
+<% content_for :title, "Producer" %>
+
+<h1>Welcome to use GAPP</h1>
+
+<p>
+    Currently you have created <%= @apps.count %> Apps: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .  
+
+    <%= link_to " + CREATE NEW APP", new_app_path %>
+</p> 
+
+<table id="data-table">
+    <thead>
+        <tr>
+            <th>App Number</th>
+            <th>App Name</th>
+            <th>Cover Image</th>
+            <th>Status</th>
+            <th>Last Modified At</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @apps.each do |app| %>
+            <tr style="height: 100px">
+                <td> <%= app.app_no %> </td>
+                <td> <%= app.name %> </td>
+                <td> 
+                    <% if app.cover_image.attached? %>
+                        <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
+                    <%  else %>
+                        No Image
+                    <% end %>
+                </td>
+                <td> 
+                    <% if app.status=="online" %>
+                        <b style="color: forestgreen;">online</b>
+                    <% elsif app.status=="audit" %>
+                        <b style="color: goldenrod;">audit</b>
+                    <% else %>
+                        <b style="color: crimson;">offline</b>
+                    <% end %>
+                </td>
+                <td> <%= app.updated_at.localtime %> </td>
+                <td>
+                    <%= link_to "[ use ]", app_path(app) %>
+
+                    <%= link_to "[ info ]", check_detail_app_path(app) %>
+                     
+                    <%= link_to "[ edit ]", edit_app_path(app) %>
+                     
+                    <%= link_to "[ delete ]", app_path(app), method: :delete, data: { confirm: "Are you sure?" } %>
+                
+                    <% if app.published? %>
+                        <%= link_to "[ hide ]", offshelf_app_path(app), data: { confirm: "Hide this app?" } %>
+                    <% end %>
+                    <% if app.awaiting? %>
+                        <%= link_to "[ pass ]", onshelf_app_path(app), data: { confirm: "Release to the public?" } %>
+                    <% end %>
+                    </td>
+            </tr>
+        <% end %>
+    <tbody>
+</table>

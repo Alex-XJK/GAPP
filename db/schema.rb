@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_090532) do
+ActiveRecord::Schema.define(version: 2021_07_15_022441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2021_07_12_090532) do
   end
 
   create_table "apps", force: :cascade do |t|
-    t.string "app_no", null: false
+    t.string "app_no"
     t.string "name", null: false
     t.integer "price", null: false
     t.text "description", null: false
@@ -50,10 +50,30 @@ ActiveRecord::Schema.define(version: 2021_07_12_090532) do
     t.string "status", default: "offline"
     t.bigint "user_id"
     t.bigint "analysis_id"
+    t.bigint "category_id"
+    t.string "cover_image"
+    t.string "panel"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["analysis_id"], name: "index_apps_on_analysis_id"
+    t.index ["category_id"], name: "index_apps_on_category_id"
     t.index ["user_id"], name: "index_apps_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "initial", null: false
+    t.integer "serial", default: 1
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.bigint "app_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["app_id"], name: "index_roles_on_app_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -71,8 +91,11 @@ ActiveRecord::Schema.define(version: 2021_07_12_090532) do
     t.string "dataFiles", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "role_id"
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "tasks", "users"
+  add_foreign_key "users", "roles"
 end

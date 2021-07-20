@@ -1,0 +1,78 @@
+<h1>Detailed information display for Application [ <%= @app.name %> ] </h1>
+<br>
+<hr>
+<%= link_to "<-- BACK", apps_path %> <br>
+<table cellspacing="5px" cellpadding="10px">
+    <tr>
+        <td>Number</td>
+        <td><%= @app.app_no %></td>
+    </tr>
+    <tr>
+        <td>Category</td>
+        <td><%= @category.name %></td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td style="word-wrap: break-word; word-break: break-all;"><%= @app.description %></td>
+    </tr>
+    <tr>
+        <td>Created By</td>
+        <td>
+            <%= @user.username %>
+        </td>
+    </tr>
+    <tr>
+        <td>Price</td>
+        <td>$ <%= @app.price %> HKD</td>
+    </tr>
+    <tr>
+        <td>Create Report?</td>
+        <td><%= @app.create_report %></td>
+    </tr>
+    <tr>
+        <td>Publish Status</td>
+        <td><%= @app.status %></td>
+    </tr>
+    <tr>
+        <td>Analysis Type</td>
+        <td><%= @analysis.name %> ( DOAP : <%= @analysis.doap_id %> )</td>
+    </tr>
+    <tr>
+        <td>Cover Image</td>
+        <td>
+            <% if @app.cover_image.attached? %>
+                <%= link_to rails_blob_path(@app.cover_image, disposition: "attachment") do %>
+                    <%= image_tag @app.cover_image, alt: "Cover Image", style: "width:200px" %>
+                <% end %>
+            <%  else %>
+                <span style="color: LightSlateGray;"> No Cover Image Found...</span>
+            <% end %>
+        </td>
+    </tr>
+    <tr>
+        <td>Panel File Download</td>
+        <td>
+            <% if @app.panel.attached? %>
+                <% fname = @app.panel.filename %>
+                <%= link_to fname, rails_blob_path(@app.panel, disposition: "attachment") %>
+            <%  else %>
+                <span style="color: LightSlateGray;"> No Panel File Uploaded...</span>
+            <% end %>
+        </td>
+    </tr>
+    <tr>
+        <td>Created at</td>
+        <td><%= @app.created_at.localtime %></td>
+    </tr>
+    <tr>
+        <td>Last Modified at</td>
+        <td><%= @app.updated_at.localtime %></td>
+    </tr>
+</table>
+
+<style>
+    table {
+        cellspacing: "100px";
+        cellpadding: "100px";
+    }
+</style>
