@@ -19,6 +19,11 @@ Rails.application.routes.draw do
   get '/admin/apps/', to: 'admin/apps#index'
   post '/admin/apps/search', to: 'admin/apps#search'
 
+  get '/admin/tasks/', to: 'admin/tasks#index'
+  post '/admin/tasks/search', to: 'admin/tasks#search'
+  get '/admin/tasks/:id', to: 'admin/tasks#view'
+  delete '/admin/tasks/:id', to: 'admin/tasks#destroy'
+
 
   resources :categories do
     
@@ -54,14 +59,11 @@ Rails.application.routes.draw do
   end
 
   resources :users do 
-    resources :datasets do
-      member { post :upload_file }
-      member { get :download_file}
-      member { get :download_ds_abd}
-      member { get :download_ds_metadata}
-      member { post :delect_sample}
-    end
+    resources :data
+    resources :tasks
   end
+  post 'data-file-upload', to: 'users#data_file_upload', format: 'json'
+  
 
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'

@@ -6,8 +6,6 @@ class Admin::UsersController < ApplicationController
         @projects = App.order(:name)
         @ana_cate = Analysis.order(:name)
         @ac_attrs = Analysis.column_names
-        @viz = Task.order(:name)
-        @viz_attrs = Task.column_names
         @ana = Analysis.order(:name)
         @a_attrs = Analysis.column_names
 
@@ -18,10 +16,8 @@ class Admin::UsersController < ApplicationController
     end
 
     def show
-        @roles_attrs = ["id", "name", "app_id"]
-        @roles = Role.where({ id: UserRole.where({ user_id: params[:id] }).select(:role_id) }).select(@roles_attrs)
-        id = params[:id]
-        @user = User.find(id)
+        @user = User.find(params[:id])
+        @user_attrs = User.column_names
     end
 
     def destroy

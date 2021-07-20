@@ -276,3 +276,5 @@ storage
 uploads
 data
 public/data
+
+storage/
