@@ -1,4 +1,27 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
 <% content_for :title, "New User" %>
+
+<div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+
+<div class="col-11">
+<ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%=link_to 'Admin home', '/admin' %>
+      </li> 
+      <li class="breadcrumb-item">
+        <%=link_to 'User', '/admin/users' %>
+      </li>
+      <li class="breadcrumb-item">
+        <%=link_to 'New', '/admin/users/new' %>
+      </li> 
+</ol>
 
 <h1>New User</h1>
 
@@ -20,3 +43,7 @@
 
 </div>
 <br>
+
+</div>
+</div>
+</div>
