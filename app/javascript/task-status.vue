@@ -1,13 +1,19 @@
 <template>
-<el-select v-model="value" filterable clearable placeholder="Please select a category">
+<div>
+  <el-select v-model="value" filterable clearable placeholder="Please select a category">
     <el-option
       v-for="item in options"
       :key="item.value"
       :label="item.label"
       :value="item.value">
-        <span>{{item.label}}</span>
     </el-option>
   </el-select>
+  <span v-if="value=='option1'">o1</span>
+  <span v-if="value=='option2'">o2</span>
+  <span v-if="value=='option3'">o3</span>
+  <span v-if="value=='option4'">o4</span>
+  <span v-if="value=='option5'">o5</span>
+</div>
 </template>
 
 <script>
