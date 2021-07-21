@@ -1,59 +1,59 @@
-h1
-  | Detailed information display for Application [ #{@app.name} ]
-br
-hr
-= link_to "<-- BACK", apps_path
-br
-table cellpadding="10px" cellspacing="5px"
-  tr
-    td Number
-    td= @app.app_no
-  tr
-    td Category
-    td= @category.name
-  tr
-    td Description
-    td style=("word-wrap: break-word; word-break: break-all;") = @app.description
-  tr
-    td Created By
-    td
-      = @user.username
-  tr
-    td Price
-    td
-      | $ #{@app.price} HKD
-  tr
-    td Create Report?
-    td= @app.create_report
-  tr
-    td Publish Status
-    td= @app.status
-  tr
-    td Analysis Type
-    td
-      = @analysis.name
-      | ( DOAP : #{@analysis.doap_id} )
-  tr
-    td Cover Image
-    td
-      - if @app.cover_image.attached?
-        = link_to rails_blob_path(@app.cover_image, disposition: "attachment") do
-          = image_tag @app.cover_image, alt: "Cover Image", style: "width:200px"
-      - else
-        span style=("color: LightSlateGray;")
-          | No Cover Image Found
-  tr
-    td Panel File Download
-    td
-      - if @app.panel.attached?
-        - fname = @app.panel.filename
-        = link_to fname, rails_blob_path(@app.panel, disposition: "attachment")
-      - else
-        span style=("color: LightSlateGray;")
-          | No Panel File Uploaded
-  tr
-    td Created at
-    td= @app.created_at.localtime
-  tr
-    td Last Modified at
-    td= @app.updated_at.localtime
+.card
+  .card-header
+    h1
+      | Detailed information display for Application [ #{@app.name} ]
+    = link_to "<-- BACK", apps_path
+  .card-body
+    table cellpadding="10px" cellspacing="5px"
+      tr
+        td Number
+        td= @app.app_no
+      tr
+        td Category
+        td= @category.name
+      tr
+        td Description
+        td style=("word-wrap: break-word; word-break: break-all;") = @app.description
+      tr
+        td Created By
+        td
+          = @user.username
+      tr
+        td Price
+        td
+          | $ #{@app.price} HKD
+      tr
+        td Create Report?
+        td= @app.create_report
+      tr
+        td Publish Status
+        td= @app.status
+      tr
+        td Analysis Type
+        td
+          = @analysis.name
+          | ( DOAP : #{@analysis.doap_id} )
+      tr
+        td Cover Image
+        td
+          - if @app.cover_image.attached?
+            = link_to rails_blob_path(@app.cover_image, disposition: "attachment") do
+              = image_tag @app.cover_image, alt: "Cover Image", style: "width:200px"
+          - else
+            span style=("color: LightSlateGray;")
+              | No Cover Image Found
+      tr
+        td Panel File Download
+        td
+          - if @app.panel.attached?
+            - fname = @app.panel.filename
+            = link_to fname, rails_blob_path(@app.panel, disposition: "attachment")
+          - else
+            span style=("color: LightSlateGray;")
+              | No Panel File Uploaded
+      tr
+        td Created at
+        td= @app.created_at.localtime
+      tr
+        td Last Modified at
+        td= @app.updated_at.localtime

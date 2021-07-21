@@ -33,8 +33,8 @@ class AppsController < ApplicationController
 
   def new
     @app = App.new
-    @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
-    @category = Category.all.order(:name).collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
+    @analysis = Analysis.all.collect { |item| [item.name, item.id] }
+    @category = Category.all.order(:name).collect { |item| [item.name, item.id] }
     if params[:uid]
       @user = params[:uid]
     else
