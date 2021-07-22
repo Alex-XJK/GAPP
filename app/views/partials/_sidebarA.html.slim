@@ -1,0 +1,55 @@
+css:
+    .collapsed-only {
+      display: none;
+    }
+
+.sizebar-container
+
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Personal Data
+      span.collapsed-only
+        = icon 'fas', 'user-circle', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to apps_path do
+          = icon 'fas', 'list', class: 'fa-fw'
+          span.sidebar-text File Explorer
+
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Applications
+      span.collapsed-only
+        = icon 'fas', 'database', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to apps_path do
+          = icon 'fas', 'desktop', class: 'fa-fw'
+          span.sidebar-text My Apps
+
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Personal Pipelines
+      span.collapsed-only
+        = icon 'fas', 'network-wired', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to apps_path do
+          = icon 'fas', 'list', class: 'fa-fw'
+          span.sidebar-text Pipeline List
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Personal Projects
+      span.collapsed-only
+        = icon 'fas', 'tasks', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to apps_path do
+          = icon 'fas', 'list', class: 'fa-fw'
+          span.sidebar-text Project List
+
+  .sidebar-section.bottom
+      button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
+        = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
+        = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
+        span.sidebar-text Collapse
