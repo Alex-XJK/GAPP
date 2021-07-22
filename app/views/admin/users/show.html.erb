@@ -1,4 +1,8 @@
-<% content_for :title, "View User " + String(@user["id"]) %>
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
+<% content_for :title, "View Task " + String(@user["id"]) %>
 
 <% content_for:head do%>
   
@@ -37,23 +41,46 @@
 
 <body data-turbolinks="false">
 
-<div id="accordion">
+<div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+  
+  <div class="col-11">
 
-<% @user_attrs.each do |attr| %>
+<ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%=link_to 'Admin home', '/admin' %>
+      </li> 
+      <li class="breadcrumb-item">
+        <%=link_to 'User', '/admin/users' %>
+      </li>
+      <li class="breadcrumb-item">
+        <%=link_to "User " + String(@user["id"]), '/admin/users/' + String(@user["id"]) %>
+      </li> 
+</ol>
 
-<div class="group">
-
-<h3><%= attr %></h3>
-<div>
-<%= @user[attr] %>
+  <div class="container-fluid">
+  <h3><%= "View User " + String(@user["id"]) %></h3>
+  <p>Here is the information for <%= "User " + String(@user["id"]) %>.</p>            
+  <table class="table table-hover">
+    <tbody>
+      <% @user_attrs.each do |attr| %>
+      <tr>
+        <th><%= attr %></th>
+        <td><%= @user[attr] %></td>
+      </tr>
+      <% end %>
+      <tr>
+        <th>role</th>
+        <td><%= @role["name"] %></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-</div>
 
-<% end %>
-
-</div>
-<br>
 <a href="/admin/users">
 <button type="button">     
   <i class="fas fa-angle-double-left"></i>
@@ -61,3 +88,6 @@
 </a>
 <br><br>
 
+  </div>
+  </div>
+  </div>

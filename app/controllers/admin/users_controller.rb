@@ -18,6 +18,7 @@ class Admin::UsersController < ApplicationController
     def show
         @user = User.find(params[:id])
         @user_attrs = User.column_names
+        @role = Role.select(:id, :name).find(@user.role_id)
     end
 
     def destroy
