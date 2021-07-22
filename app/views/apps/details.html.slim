@@ -39,17 +39,22 @@
           - if @app.cover_image.attached?
             = link_to rails_blob_path(@app.cover_image, disposition: "attachment") do
               = image_tag @app.cover_image, alt: "Cover Image", style: "width:200px"
+              i.fas.fa-file-image
           - else
             span style=("color: LightSlateGray;")
+              i.fas.fa-eye-slash
               | No Cover Image Found
       tr
         td Panel File Download
         td
           - if @app.panel.attached?
             - fname = @app.panel.filename
-            = link_to fname, rails_blob_path(@app.panel, disposition: "attachment")
+            = link_to rails_blob_path(@app.panel, disposition: "attachment")
+              = fname
+              i.fas.fa-file-download
           - else
             span style=("color: LightSlateGray;")
+              i.fas.fa-eye-slash
               | No Panel File Uploaded
       tr
         td Created at
