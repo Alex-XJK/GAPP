@@ -54,13 +54,13 @@ Rails.application.routes.draw do
   end
 
   resources :users do 
-    resources :data
     resources :tasks
   end
   post 'data-file-upload', to: 'users#data_file_upload', format: 'json'
   post  'data-file-info', to: 'users#data_file_info', format:'json'
   post  'data-file-delete', to: 'users#data_file_delete', format:'json'
   post  'data-file-rename', to: 'users#data_file_rename', format:'json'
+  get 'all-categories', to: 'admin/categories#all_categories', format: 'json'
   
 
   # get 'welcome/index'

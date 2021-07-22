@@ -77,9 +77,9 @@ export default {
       // console.log(this.tableData[index])
       // console.log(this.tableData[index].dataId)
       var dataId = this.tableData[index].dataId
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+      this.$confirm('This action will permanently delete the file, continue or not?', 'Notice', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           axios.post(
@@ -99,7 +99,7 @@ export default {
             if (response.data.code) {
               this.$message({
                 type: 'success',
-                message: '删除成功!'
+                message: 'Deleted successfully!'
               })
               // this.reload()
             } else {
@@ -113,15 +113,15 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: 'Delete cancelled'
           });          
         });
     },
     renameData(index) {
       var dataId = this.tableData[index].dataId
-      this.$prompt('请输入新名称', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消'
+      this.$prompt('Please input a new name', 'Notice', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel'
           // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
           // inputErrorMessage: '邮箱格式不正确'
         }).then(({ value }) => {
@@ -143,7 +143,7 @@ export default {
             if (response.data.code) {
           this.$message({
             type: 'success',
-            message: '新名称: ' + value
+            message: 'New Name is: ' + value
           });
           // this.reload()
           } else {
@@ -157,12 +157,12 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消输入'
+            message: 'Input cancelled'
           });       
         });
     }
   },
-  mounted() {
+  created() {
     this.getDataInfo()
     console.log('done!')
   }

@@ -59,7 +59,7 @@ Vue.use(ElementUI)
             // this.reload()
             this.$message({
                 type: 'success',
-                message: '上传成功!'
+                message: 'Uploaded successfully!'
             })
           } else {
             // alertCenter.add('danger', response.data.msg);
