@@ -15,8 +15,8 @@
       <el-table-column
         label="Actions" align="center">
         <template slot-scope="scope">
-          <el-button type="info" icon="el-icon-edit" circle @click="renameData(scope.$index)"></el-button>
-          <el-button type="info" icon="el-icon-delete" circle @click="deleteData(scope.$index)"></el-button>
+          <el-button type="info" icon="el-icon-edit" circle size="mini" @click="renameData(scope.$index)"></el-button>
+          <el-button type="info" icon="el-icon-delete" circle size="mini" @click="deleteData(scope.$index)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -36,11 +36,7 @@ export default {
   // inject: ['reload'],
   data() {
     return {
-      tableData: [{
-        dataId: 'no-id',
-        name: 'no-info',
-        uploadTime: 'no-info'
-      }],
+      tableData: [],
       id: window.gon.user_id
     }
   },

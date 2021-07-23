@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_070802) do
   end
 
   create_table "apps", force: :cascade do |t|
-    t.string "app_no", null: false
+    t.string "app_no"
     t.string "name", null: false
     t.integer "price", null: false
     t.text "description", null: false
@@ -50,9 +50,13 @@ ActiveRecord::Schema.define(version: 2021_07_22_070802) do
     t.string "status", default: "offline"
     t.bigint "user_id"
     t.bigint "analysis_id"
+    t.bigint "category_id"
+    t.string "cover_image"
+    t.string "panel"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["analysis_id"], name: "index_apps_on_analysis_id"
+    t.index ["category_id"], name: "index_apps_on_category_id"
     t.index ["user_id"], name: "index_apps_on_user_id"
   end
 

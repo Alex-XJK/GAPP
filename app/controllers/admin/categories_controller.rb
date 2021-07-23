@@ -26,7 +26,7 @@ class Admin::CategoriesController < ApplicationController
         }
         @cats.each do |c|
             options.push({
-                value: c.name,
+                value: c.id,
                 label: c.name
             })
         end
