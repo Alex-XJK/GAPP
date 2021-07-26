@@ -44,16 +44,24 @@ class AppsController < ApplicationController
 
   def create
     @app = App.new(app_params)
+
+    if @app.category_id.nil?
+      flash[:alert] = 'Category not found!'
+      redirect_to createnew_app_path(@app.user_id)
+      return
+    end
     cate = Category.find(@app.category_id)
+
     appnostr = "%s-%.6d" % [cate.initial, cate.serial]
     @app.update(app_no: appnostr)
-    newnum = cate.serial + 1
-    cate.update(serial: newnum)
 
     if @app.save
+      newnum = cate.serial + 1
+      cate.update(serial: newnum)
       redirect_to apps_path
     else
-      render :new
+      flash[:alert] = 'Save failed! Please check again!'
+      redirect_to createnew_app_path(@app.user_id)
     end
   end
 
