@@ -37,7 +37,7 @@
   </div>
 
   
-  <div class="col-11">
+  <div class="col-11 pl-4">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
@@ -78,8 +78,17 @@
       <%end%>
       <br>
     </div><br>
+
+      <div>
+      <a href="/admin/users/new">
+        <button class="btn btn-primary" type="button">
+          <i class="fas fa-user-plus"></i>New User
+        </button>
+      </a>
+      </div>
+      <br>
   
-      <table id="pj_table" class="display" style="margin: 0;" data-page-length="-1">
+      <table id="pj_table" class="display table table-hover" style="margin: 0; width:100%" data-page-length="-1">
         <thead>
           
           <% @usercolumnname.each do |attr| %>
@@ -108,7 +117,11 @@
                 <% else %>
                 <td> 
                   <div class="table_cell"> 
+                    <% if attr == 'created_at' %>
+                    <%= String(usr[attr].localtime).split(" ")[0] %>
+                    <% else %>
                     <%= usr[attr] %>
+                    <% end %>
                   </div>
                 </td>
                 <% end %>
@@ -117,24 +130,24 @@
 
               <td>
                 <form action="/admin/users/edit" method="POST">  
-                  <%= link_to '<button type="button" data-toggle="tooltip" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/users/" + String(usr.id), method: :delete,
+                  <%= link_to '<button type="button" data-toggle="tooltip" title="Delete" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/users/" + String(usr.id), method: :delete,
                           data: { confirm: 'Are you sure?' } %>
                   
-                  <button type="button" data-toggle="tooltip" title="Edit Role" class="edit">
+                  <button type="button" data-toggle="tooltip" title="Edit Role" class="edit btn btn-outline-info">
                       <i class="far fa-edit"></i>
                   </button>
-                  <button data-toggle="tooltip" type="submit" title="OK" class="submit" style="">
+                  <button data-toggle="tooltip" type="submit" title="OK" class="submit btn btn-outline-info" style="">
                       <i class="fas fa-check"></i>
                   </button>
                   
                   <a href="/admin/users/<%= usr.id %>">
-                  <button data-toggle="tooltip" type="button" title="View"> 
+                  <button data-toggle="tooltip" type="button" title="View" class="btn btn-outline-success"> 
                       <i class="far fa-eye"></i>
                   </button>
                   </a>
 
                   <a href="/users/<%= usr.id %>" target="_blank">
-                  <button type="button" data-toggle="tooltip" title="Operate"> 
+                  <button type="button" data-toggle="tooltip" title="Operate" class="btn btn-outline-primary"> 
                       <i class="fas fa-wrench"></i>
                   </button>
                   </a>
@@ -151,14 +164,6 @@
         </tbody>
   
       </table>
-
-      <div>
-      <a href="/admin/users/new">
-        <button type="button">
-            <i class="fas fa-user-plus"></i>New User
-        </button>
-      </a>
-      </div>
   
     </section>
 

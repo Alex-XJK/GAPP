@@ -33,12 +33,13 @@
   
   <div class="container-fluid p-0">
   <div class="row no-gutters">
-  <div class="col">
+  <div class="col" id="sidebar">
   <%= yield :sidebar %>
   </div>
   
-  <div class="col-11">
+  <div class="col-11 pl-4">
     <ol class="breadcrumb">
+     <button style="display:none;" type="button" id="trigger" class="btn btn-primary"><i class="fas fa-bars"></i></button>
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
       </li> 
@@ -78,8 +79,26 @@
       <%end%>
       <br>
     </div><br>
+
+      <div>
+      <form action="/admin/categories/new" method="POST">
+        <button type="button" id="intro" style="display: block;" class="btn btn-primary">
+            <i class="fas fa-folder-plus"></i>New Category
+        </button>
+        <div id="fmain">
+        <label for="nm">Name: </label>
+        <input type="text" id="nm">
+        <input type="hidden" name="name" value="">
+        <button data-toggle="tooltip" type="submit" title="OK" id="asub" class="btn btn-primary">
+            <i class="fas fa-check"></i>
+        </button>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        </div>
+      </form>
+      </div>
+      <br>
   
-      <table id="pj_table" class="display" style="margin: 0;" data-page-length="-1">
+      <table id="pj_table" class="display table table-hover" style="margin: 0; width:100%" data-page-length="-1">
         <thead>
                
             <th> Id </th>
@@ -112,10 +131,10 @@
                 <form action="/admin/categories/edit" method="post">
                     <input type="hidden" name="id" value=<%= cts["id"] %>>
                     <input type="hidden" name="name" class="target" value="">
-                    <button data-toggle="tooltip" type="button" title="Edit" class="edit" id= <%= cts["name"] %> >
+                    <button data-toggle="tooltip" type="button" title="Edit" class="edit btn btn-outline-info" id= <%= cts["name"] %> >
                         <i class="far fa-edit"></i>
                     </button>
-                    <button data-toggle="tooltip" type="submit" title="OK" class="submit" style="">
+                    <button data-toggle="tooltip" type="submit" title="OK" class="submit btn btn-outline-info" style="">
                         <i class="fas fa-check"></i>
                     </button>
                     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
@@ -140,23 +159,6 @@
         </tbody>
   
       </table>
-
-      <div>
-      <form action="/admin/categories/new" method="POST">
-        <button type="button" id="intro" style="display: block;">
-            <i class="fas fa-folder-plus"></i>New Category
-        </button>
-        <div id="fmain">
-        <label for="nm">Name: </label>
-        <input type="text" id="nm">
-        <input type="hidden" name="name" value="">
-        <button data-toggle="tooltip" type="submit" title="OK" id="asub">
-            <i class="fas fa-check"></i>
-        </button>
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
-        </div>
-      </form>
-      </div>
   
     </section>
 
@@ -166,3 +168,9 @@
   </div>
   </div>
   </div>
+
+<script>
+$("#trigger").click(function() {
+      $("#sidebar").fadeToggle(500);
+    });
+</script>

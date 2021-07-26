@@ -84,7 +84,7 @@
   <%= yield :sidebar %>
   </div>
 
-  <div class="col-11">
+  <div class="col-11 pl-4">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
@@ -113,7 +113,7 @@
     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
     Search for a task by Id: &nbsp;
     <input type="text" id="text" name="id">
-    <button type="submit" id="search"><i class="fas fa-search"></i></button>
+    <button type="submit" id="search" class="btn btn-primary"><i class="fas fa-search"></i></button>
     </form>
 
     <div id="accordion0">
@@ -205,7 +205,7 @@
         <div class="card-body">
           
 
-          <table id="pj_table" class="display" style="margin: 0;">
+          <table class="table table-hover" style="margin: 0; width:100%">
         <thead>
                
             <th> Task Id </th>
@@ -236,11 +236,11 @@
                 </td> 
               <% end %>
               <td>
-               <%= link_to '<button type="button" data-toggle="tooltip" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(tsk.id), method: :delete,
+               <%= link_to '<button type="button" data-toggle="tooltip" title="Delete" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(tsk.id), method: :delete,
                           data: { confirm: 'Are you sure?' } %>
             
               <a href="/admin/tasks/<%= tsk.id %>">
-                <button data-toggle="tooltip" type="button" title="View"> 
+                <button data-toggle="tooltip" type="button" title="View" class="btn btn-outline-success"> 
                     <i class="far fa-eye"></i>
                 </button>
               </a>
