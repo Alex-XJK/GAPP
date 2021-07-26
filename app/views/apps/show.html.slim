@@ -16,6 +16,19 @@
         td App Name
         td
           = @app.name
+          | &nbsp;
+          - if @app.status=="online"
+            span style=("color: forestgreen;")
+              i.fas.fa-check-circle
+              | online
+          - elsif @app.status=="audit"
+            span  style=("color: goldenrod;")
+              i.fas.fa-exclamation-circle
+              | audit
+          - else
+            span  style=("color: crimson;")
+              i.fas.fa-times-circle
+              | offline
       tr
         td Created By
         td

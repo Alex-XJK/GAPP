@@ -50,26 +50,30 @@
     <tbody>
         <% @apps.each do |app| %>
             <tr style="height: 100px;">
-                <td> <%= app.app_no %> </td>
-                <td> <%= app.name %> </td>
-                <td> 
+                <td style="vertical-align: middle;"> <%= app.app_no %> </td>
+                <td style="vertical-align: middle;"> <%= app.name %> </td>
+                <td style="vertical-align: middle;">
                     <% if app.cover_image.attached? %>
                         <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
                     <%  else %>
                         No Image
                     <% end %>
                 </td>
-                <td> 
+                <td style="vertical-align: middle;">
                     <% if app.status=="online" %>
-                        <b style="color: forestgreen;">online</b>
+                        <b style="color: forestgreen;"><i class="fas fa-check-circle"></i>online</b>
                     <% elsif app.status=="audit" %>
-                        <b style="color: goldenrod;">audit</b>
+                        <b style="color: goldenrod;"><i class="fas fa-exclamation-circle"></i>audit</b>
                     <% else %>
-                        <b style="color: crimson;">offline</b>
+                        <b style="color: crimson;"><i class="fas fa-times-circle"></i>offline</b>
                     <% end %>
                 </td>
-                <td> <%= app.updated_at.localtime %> </td>
-                <td class="container btn-group btn-group-justified">
+                <td style="vertical-align: middle;">
+                  <%= String(app.updated_at.localtime).split(' ')[0] %>
+                  &nbsp;
+                  <%= String(app.updated_at.localtime).split(' ')[1].split(':')[0] %>:<%= String(app.updated_at.localtime).split(' ')[1].split(':')[1] %>
+                </td>
+                <td style="padding-top: 40px;" class="container btn-group btn-group-justified">
                     <%= button_to app_path(app), method: :get, class: 'btn btn-outline-primary btn-sm' do %>
                         <i class="fas fa-edit"></i>use
                     <% end %>
