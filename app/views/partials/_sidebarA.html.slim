@@ -7,49 +7,111 @@ css:
 
   .sidebar-section
     .sidebar-heading
+      span.uncollapsed-only Homepage
+      span.collapsed-only
+        = icon 'fas', 'home', class: 'fa-fw'
+    .sidebar-item
+      = link_to root_path do
+        = icon 'fas', 'h-square', class: 'fa-fw'
+        span.sidebar-text Home
+      br
+      = link_to root_path(anchor: "demo") do
+        = icon 'fas', 'images', class: 'fa-fw'
+        span.sidebar-text Demo
+      br
+      = link_to root_path(anchor: "app_card") do
+        = icon 'fab', 'app-store', class: 'fa-fw'
+        span.sidebar-text Star Apps
+      br
+  br
+
+  .sidebar-section
+    .sidebar-heading
       span.uncollapsed-only Personal Data
       span.collapsed-only
         = icon 'fas', 'user-circle', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to apps_path do
-          = icon 'fas', 'list', class: 'fa-fw'
-          span.sidebar-text File Explorer
+    .sidebar-item
+      = link_to root_path do
+        = icon 'fas', 'id-card', class: 'fa-fw'
+        span.sidebar-text Profile
+        / To-Do: fake URL exception
+      br
+      = link_to root_path do
+        = icon 'fas', 'database', class: 'fa-fw'
+        span.sidebar-text Files
+        / To-Do: fake URL exception
+      br
+  br
 
   .sidebar-section
     .sidebar-heading
       span.uncollapsed-only Applications
       span.collapsed-only
-        = icon 'fas', 'database', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to apps_path do
-          = icon 'fas', 'desktop', class: 'fa-fw'
-          span.sidebar-text My Apps
+        = icon 'fab', 'app-store-ios', class: 'fa-fw'
+    .sidebar-item
+      = link_to apps_path do
+        = icon 'fas', 'desktop', class: 'fa-fw'
+        span.sidebar-text My Apps
+        / To-Do: fake URL exception
+      br
+  br
 
   .sidebar-section
     .sidebar-heading
-      span.uncollapsed-only Personal Pipelines
+      span.uncollapsed-only Producer
       span.collapsed-only
-        = icon 'fas', 'network-wired', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to apps_path do
-          = icon 'fas', 'list', class: 'fa-fw'
-          span.sidebar-text Pipeline List
+        = icon 'fas', 'industry', class: 'fa-fw'
+    .sidebar-item
+      = link_to apps_path do
+        = icon 'fas', 'list', class: 'fa-fw'
+        span.sidebar-text Manage
+      br
+      = link_to createnew_app_path("1") do
+        = icon 'fas', 'plus', class: 'fa-fw'
+        span.sidebar-text New App
+        / To-Do: fake USER_id exception
+      br
+  br
+
   .sidebar-section
     .sidebar-heading
-      span.uncollapsed-only Personal Projects
+      span.uncollapsed-only Admin
       span.collapsed-only
+        = icon 'fas', 'user-shield', class: 'fa-fw'
+    .sidebar-item
+      = link_to admin_users_path do
+        = icon 'fas', 'user-cog', class: 'fa-fw'
+        span.sidebar-text User
+      br
+      = link_to admin_categories_path do
+        = icon 'fas', 'sitemap', class: 'fa-fw'
+        span.sidebar-text Category
+      br
+      = link_to admin_apps_path do
+        = icon 'fas', 'layer-group', class: 'fa-fw'
+        span.sidebar-text Apps
+      br
+      = link_to admin_tasks_path do
         = icon 'fas', 'tasks', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to apps_path do
-          = icon 'fas', 'list', class: 'fa-fw'
-          span.sidebar-text Project List
+        span.sidebar-text Task
+      br
+  br
+
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Logout
+      span.collapsed-only
+        = icon 'fas', 'sign-out-alt', class: 'fa-fw'
+    .sidebar-item
+      = link_to root_path do
+        = icon 'fas', 'door-open', class: 'fa-fw'
+        span.sidebar-text Logout
+        / To-Do: fake Function exception
+      br
+  br
 
   .sidebar-section.bottom
-      button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
-        = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
-        = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
-        span.sidebar-text Collapse
+    button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
+      = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
+      = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
+      span.sidebar-text Collapse
