@@ -73,9 +73,9 @@ class Users::TasksController < ApplicationController
       apps.each do |a|
         app_id = a["Id"]
         @tasks = Task.where(app_id: app_id, user_id: user_id)
-        Rails.logger.debug("here i am! #{@tasks.length}")
+        # Rails.logger.debug("here i am! #{@tasks.length}")
         @tasks.each do |t|
-          Rails.logger.debug("here i am again!")
+          # Rails.logger.debug("here i am again!")
           return_tasks.push({
             name: t.name,
             status: t.status,
