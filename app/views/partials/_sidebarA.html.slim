@@ -7,9 +7,8 @@ css:
 
   .sidebar-section
     .sidebar-heading
+      = icon 'fas', 'home', class: 'fa-fw'
       span.uncollapsed-only Homepage
-      span.collapsed-only
-        = icon 'fas', 'home', class: 'fa-fw'
     .sidebar-item
       = link_to root_path do
         = icon 'fas', 'h-square', class: 'fa-fw'
@@ -27,9 +26,8 @@ css:
 
   .sidebar-section
     .sidebar-heading
+      = icon 'fas', 'user-circle', class: 'fa-fw'
       span.uncollapsed-only Personal Data
-      span.collapsed-only
-        = icon 'fas', 'user-circle', class: 'fa-fw'
     .sidebar-item
       = link_to root_path do
         = icon 'fas', 'id-card', class: 'fa-fw'
@@ -45,9 +43,8 @@ css:
 
   .sidebar-section
     .sidebar-heading
+      = icon 'fab', 'app-store-ios', class: 'fa-fw'
       span.uncollapsed-only Applications
-      span.collapsed-only
-        = icon 'fab', 'app-store-ios', class: 'fa-fw'
     .sidebar-item
       = link_to apps_path do
         = icon 'fas', 'desktop', class: 'fa-fw'
@@ -58,9 +55,8 @@ css:
 
   .sidebar-section
     .sidebar-heading
+      = icon 'fas', 'industry', class: 'fa-fw'
       span.uncollapsed-only Producer
-      span.collapsed-only
-        = icon 'fas', 'industry', class: 'fa-fw'
     .sidebar-item
       = link_to apps_path do
         = icon 'fas', 'list', class: 'fa-fw'
@@ -75,9 +71,8 @@ css:
 
   .sidebar-section
     .sidebar-heading
+      = icon 'fas', 'user-shield', class: 'fa-fw'
       span.uncollapsed-only Admin
-      span.collapsed-only
-        = icon 'fas', 'user-shield', class: 'fa-fw'
     .sidebar-item
       = link_to admin_users_path do
         = icon 'fas', 'user-cog', class: 'fa-fw'
@@ -99,9 +94,8 @@ css:
 
   .sidebar-section
     .sidebar-heading
+      = icon 'fas', 'sign-out-alt', class: 'fa-fw'
       span.uncollapsed-only Logout
-      span.collapsed-only
-        = icon 'fas', 'sign-out-alt', class: 'fa-fw'
     .sidebar-item
       = link_to root_path do
         = icon 'fas', 'door-open', class: 'fa-fw'
@@ -114,4 +108,3 @@ css:
     button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
       = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
       = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
-      span.sidebar-text Collapse
