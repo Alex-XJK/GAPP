@@ -4,20 +4,22 @@
       | Detailed information display for Application [ #{@app.name} ]
     = link_to "<-- BACK", apps_path
   .card-body
-    table cellpadding="10px" cellspacing="5px"
+    table.table.table-striped cellpadding="10px" cellspacing="5px"
+      tr
+        td Category
+        td= @category.name
       tr
         td Number
         td= @app.app_no
       tr
-        td Category
-        td= @category.name
+        td Name
+        td= @app.name
       tr
         td Description
         td style=("word-wrap: break-word; word-break: break-all;") = @app.description
       tr
         td Created By
-        td
-          = @user.username
+        td= @user.username
       tr
         td Price
         td
