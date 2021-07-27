@@ -72,3 +72,5 @@ document.addEventListener('DOMContentLoaded', (event) =>  {
     });
 
 });
+
+require('data-confirm-modal')

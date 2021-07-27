@@ -126,70 +126,17 @@
       <h3><%= cts["name"] %></h3>
       <div class="container">
 
-      <!--<div class="level2">
-      <% @apps.each do |app| %>
-      <% if app["category_id"] == cts["id"] %>
-
-      <div class="group">
-      <h3><%= app["app_no"] %>&nbsp;-&nbsp;<%= app["name"] %></h3>
-      <div>
-
-      <table id="pj_table" class="display" style="margin: 0;">
-        <thead>
-               
-            <th> Task Id </th>
-            <th> Run By </th>
-            <th> Start Time </th>
-            <th> Status </th>
-            <th> Actions </th>
-          
-        </thead>
-  
-        <tbody>
-        <% @tasks.each do |tsk| %>
-
-        <% if tsk["app_id"] == app["id"] %>
-          
-            <tr>
-              <% @task_attrs.each do |attr| %>
-
-                <td> 
-                <div class="table_cell"> 
-                    <% if attr == "user_id" %>
-                    <%= @users.find(tsk[attr])["username"] %>
-                    <% else %>
-                    <%= tsk[attr] %>
-                    <% end %>
-                    &nbsp;
-                </div>
-                </td> 
-              <% end %>
-              <td>
-               <%= link_to '<button type="button" data-toggle="tooltip" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(tsk.id), method: :delete,
-                          data: { confirm: 'Are you sure?' } %>
-            
-              <a href="/admin/tasks/<%= tsk.id %>">
-                <button data-toggle="tooltip" type="button" title="View"> 
-                    <i class="far fa-eye"></i>
-                </button>
-              </a>
-              </td>
-            
-            </tr>
-        
-        
+      <% @count = 0 %>
+        <% @apps.each do |app| %>
+          <% if app["category_id"] == cts["id"] %>
+            <% @count += 1 %>
+          <% end %>
         <% end %>
-
-        <% end %>
-        </tbody>
-      </table>
-
-      </div>
-      </div>
-
-      <% end %>
-      <% end %>
-      </div>-->
+        <% if @count == 0 %>
+          <div class="alert alert-warning">
+            No app for category "<%= cts["name"] %>".
+          </div>
+        <% else %>
 
   <div id="accordion-<%= cts['id'] %>">
     <% @apps.each do |app| %>
@@ -203,7 +150,18 @@
       </div>
       <div id="collapseOne-<%= app['id'] %>" class="collapse" data-parent="#accordion-<%= cts['id'] %>">
         <div class="card-body">
-          
+
+        <% @countx = 0 %>
+        <% @tasks.each do |tsk| %>
+          <% if tsk["app_id"] == app["id"] %>
+            <% @countx += 1 %>
+          <% end %>
+        <% end %>
+        <% if @countx == 0 %>
+          <div class="alert alert-warning">
+            No task for app "<%= app["app_no"] %>".
+          </div>
+        <% else %>
 
           <table class="table table-hover" style="margin: 0; width:100%">
         <thead>
@@ -237,7 +195,9 @@
               <% end %>
               <td>
                <%= link_to '<button type="button" data-toggle="tooltip" title="Delete" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(tsk.id), method: :delete,
-                          data: { confirm: 'Are you sure?' } %>
+                          data: { confirm: 'Are you sure you want to delete task ' + String(tsk.id) + '?<br>You can\'t undo this action.', 
+                                  title: 'Confirm your action', 
+                                  commit: 'Delete' } %>
             
               <a href="/admin/tasks/<%= tsk.id %>">
                 <button data-toggle="tooltip" type="button" title="View" class="btn btn-outline-success"> 
@@ -254,7 +214,7 @@
         <% end %>
         </tbody>
       </table>
-
+        <% end %>
 
         </div>
       </div>
@@ -265,7 +225,7 @@
 
 
         
-
+<% end %>
       </div>
 
       </div>

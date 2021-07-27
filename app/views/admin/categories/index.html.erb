@@ -15,11 +15,16 @@
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-    <%= javascript_pack_tag "table_style" %>
+
     <script>
-    $( document ).on('turbolinks:load', function() {
-      $('#pj_table').DataTable();
-    });
+    $(document).ready(function() {
+        $('#pj_table').DataTable( {
+             dom:
+              "<'row'<'col-sm-6'B><'col-sm-3'f>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-4'i><'col-sm-4 text-center'l><'col-sm-4'p>>",
+        } );
+    } );
 
     </script>
   
@@ -96,7 +101,6 @@
         </div>
       </form>
       </div>
-      <br>
   
       <table id="pj_table" class="display table table-hover" style="margin: 0; width:100%" data-page-length="-1">
         <thead>

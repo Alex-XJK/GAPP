@@ -107,6 +107,18 @@
       <h3><%= cts["name"] %></h3>
       <div>
 
+      <% @count = 0 %>
+        <% @apps.each do |app| %>
+          <% if app["category_id"] == cts["id"] %>
+            <% @count += 1 %>
+          <% end %>
+        <% end %>
+        <% if @count == 0 %>
+          <div class="alert alert-warning">
+            No app for category "<%= cts["name"] %>".
+          </div>
+        <% else %>
+
         <table class="table table-hover" style="margin: 0; width:100%">
         <thead>
                
@@ -154,6 +166,7 @@
         <% end %>
         </tbody>
       </table>
+      <% end %>
 
       </div>
 

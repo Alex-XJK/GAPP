@@ -30,8 +30,11 @@
 <%= simple_form_for @user, url: "/admin/users/new/" do |f| %>
   <%= f.input :username %>
   <%= f.input :password_digest %>
-  <%= f.input :role_id %>
-  <%= f.button :submit %>
+  <%= f.input :role_id, :collection => [['admin',1],['producer',2],['user',3]] %>
+  <%= f.button :button do %>
+    <i class="fas fa-check"></i>Create User
+  <% end %>
+
 <% end %>
 
 </div>
