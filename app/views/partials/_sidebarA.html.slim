@@ -2,8 +2,14 @@ css:
     .collapsed-only {
       display: none;
     }
+    .sidebar-heading {
+        font-size: 1.15em;
+    }
+    .sidebar-item {
+        margin-left: 10%;
+    }
 
-.sizebar-container
+.sizebar-container style=("margin-left: 0.5%; padding-right: 1%;")
 
   .sidebar-section
     .sidebar-heading
@@ -29,10 +35,10 @@ css:
       = icon 'fas', 'user-circle', class: 'fa-fw'
       span.uncollapsed-only Personal Data
     .sidebar-item
-      = link_to root_path do
+      = link_to user_path("1") do
         = icon 'fas', 'id-card', class: 'fa-fw'
         span.sidebar-text Profile
-        / To-Do: fake URL exception
+        / To-Do: fake USER_id exception
       br
       = link_to root_path do
         = icon 'fas', 'database', class: 'fa-fw'
