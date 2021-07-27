@@ -39,8 +39,6 @@ Vue.use(ElementUI)
     },
     methods: {
       uploadFile() {
-        // send selected file to files
-        // const { alertCenter } = this.$refs
         axios.post(
           `/data-file-upload`,
         objectToFormData({
@@ -62,15 +60,11 @@ Vue.use(ElementUI)
                 message: 'Uploaded successfully!'
             })
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
-        }).finally(() => {
-          // setTimeout(() => { alertCenter.add('danger', ''); }, 2000);
-        });
+        }).finally(() => {});
       }
     },
     created() {

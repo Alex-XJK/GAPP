@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_070802) do
     t.string "name"
     t.integer "status"
     t.integer "app_id"
+    t.string "usedData", default: [], array: true
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

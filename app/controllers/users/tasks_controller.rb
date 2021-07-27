@@ -24,16 +24,23 @@ class Users::TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(task_params)
-
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    @task = Task.new
+    result_json = {
+      code: false
+    }
+    @task.name = params[:taskName]
+    @task.app_id = params[:app_id]
+    @task.user_id = params[:user_id]
+    @task.usedData = params[:checkedData]
+    @task.status = 0
+    @task.created_at = Time.now
+    @task.updated_at = Time.now
+    if @task.save
+      result_json[:code] = true
+      render json: result_json
+    else
+      format.html { render :new }
+      format.json { render json: @task.errors, status: :unprocessable_entity }
     end
   end
 

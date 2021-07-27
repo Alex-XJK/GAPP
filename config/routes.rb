@@ -66,7 +66,7 @@ Rails.application.routes.draw do
   post  'data-file-rename', to: 'users#data_file_rename', format:'json'
   get 'all-categories', to: 'admin/categories#all_categories', format: 'json'
   post 'apps-info', to: 'admin/apps#apps_info', format: 'json'
-  
+  post 'create-task', to: 'users/tasks#create', format: 'json'
 
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'

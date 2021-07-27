@@ -59,11 +59,9 @@ export default {
             this.tableData = response.data.data
             console.log(this.tableData)
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
         }).finally(() => {
       });

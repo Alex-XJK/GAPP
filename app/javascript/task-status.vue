@@ -34,7 +34,7 @@
           </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button v-on:click="cancelCreate()" class="cancel">Cancel</el-button>
-            <el-button v-on:click="toCreate()" class="confirm">Confirm</el-button>
+            <el-button v-on:click="toCreate(app.Id)" class="confirm">Confirm</el-button>
           </span>
         </el-dialog>
         
@@ -62,16 +62,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import objectToFormData from 'object-to-formdata'
-// import CreateTask from 'create-task.vue'
-
-// Vue.component("CreateTask", CreateTask);
 
 Vue.use(ElementUI)
 
 export default {
-  // components: {
-  //   CreateTask
-  // },
   data() {
     return {
       dialogVisible: false,
@@ -109,11 +103,9 @@ export default {
             this.options = response.data.data
             console.log(this.options)
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
         }).finally(() => {
       });
@@ -172,9 +164,10 @@ export default {
           console.log(reason)
         }).finally(() => {});
       },
-      toCreate () {
+      toCreate (appId) {
       this.hideDialog()
-      console.log("toCreate emitted")
+      this.CreateTask(appId)
+      console.log("toCreate emitted and appid "+appId)
       this.resetForm()
     },
     cancelCreate () {
@@ -214,14 +207,43 @@ export default {
             this.form.data = response.data.data
             console.log(this.form.data)
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
         }).finally(() => {
       });
+    },
+    CreateTask(appId) {
+      console.log("here is appid for task " + appId)
+      axios.post(
+          `/create-task`,
+        objectToFormData({
+          "taskName": this.form.taskName,
+          "app_id": appId,
+          "user_id": this.id,
+          "usedData": this.form.checkedData
+        }),
+        {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        ).then((response) => {
+          if (response.data.code) {
+            // this.reload()
+            this.$message({
+                type: 'success',
+                message: 'Created successfully!'
+            })
+          } else {
+            console.log(response.data.msg)
+          }
+        }).catch((reason) => {
+          console.log(reason)
+        }).finally(() => {});
     }
   },
     watch: {
