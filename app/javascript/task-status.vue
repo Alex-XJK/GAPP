@@ -41,7 +41,7 @@
       <div class="task-card">
         <el-row :gutter="12">
           <div  v-for="task in tasks" :key="task.id">
-            <div v-if="task.app_id === app.id">
+            <div v-if="task.app_id === app.Id">
               <el-col :span="4">
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
@@ -267,6 +267,9 @@ export default {
     created() {
       this.getCategoies(),
       this.getDataInfo()
+    },
+    computed: {
+
     }
 }
 </script>
