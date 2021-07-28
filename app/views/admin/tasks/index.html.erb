@@ -80,9 +80,13 @@
 
   <div class="container-fluid p-0">
   <div class="row no-gutters">
-  <div class="col">
+  <%
+=begin%>
+ <div class="col">
   <%= yield :sidebar %>
-  </div>
+  </div> 
+<%
+=end%>
 
   <div class="col-11 pl-4">
     <ol class="breadcrumb">
@@ -235,5 +239,6 @@
 
   </div>
   </div>
+</div>
     
     <!-- App.new(app_no: "A5-0030", name: "Another Testing App", price: 17, description: "......", create_report: true, status: "pending", user_id: 60, analysis_id: 1, category_id: 3) -->
