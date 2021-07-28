@@ -1,0 +1,6 @@
+.card
+  .card-header
+    h1 New Application
+    = link_to "<-- BACK", apps_path
+  .card-body
+    = render "form", app: @app, analysis: @analysis, category: @category, userid: @user

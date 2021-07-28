@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_19_060817) do
+ActiveRecord::Schema.define(version: 2021_07_22_070802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_060817) do
   end
 
   create_table "apps", force: :cascade do |t|
-    t.string "app_no", null: false
+    t.string "app_no"
     t.string "name", null: false
     t.integer "price", null: false
     t.text "description", null: false
@@ -50,20 +50,22 @@ ActiveRecord::Schema.define(version: 2021_07_19_060817) do
     t.string "status", default: "offline"
     t.bigint "user_id"
     t.bigint "analysis_id"
+    t.bigint "category_id"
+    t.string "cover_image"
+    t.string "panel"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "category_id"
     t.index ["analysis_id"], name: "index_apps_on_analysis_id"
     t.index ["category_id"], name: "index_apps_on_category_id"
     t.index ["user_id"], name: "index_apps_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
+    t.string "initial", null: false
+    t.integer "serial", default: 1
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "initial"
-    t.integer "serial"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -74,23 +76,15 @@ ActiveRecord::Schema.define(version: 2021_07_19_060817) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "name"
-    t.string "progess"
+    t.integer "status"
+    t.integer "app_id"
+    t.string "usedData", default: [], array: true
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "app_id", null: false
-    t.index ["analysis_id"], name: "index_tasks_on_analysis_id"
     t.index ["app_id"], name: "index_tasks_on_app_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
-  end
-
-  create_table "user_roles", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "role_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["role_id"], name: "index_user_roles_on_role_id"
-    t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -104,8 +98,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_060817) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "tasks", "users"
-  add_foreign_key "apps", "categories"
   add_foreign_key "tasks", "apps"
+  add_foreign_key "tasks", "users"
   add_foreign_key "users", "roles"
 end

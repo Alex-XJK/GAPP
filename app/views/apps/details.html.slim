@@ -1,0 +1,263 @@
+css:
+  @media screen {
+      #printCard {
+          display: none;
+      }
+  }
+    @media print {
+        .sidebar-container {
+            display: none;
+        }
+        #mainCard {
+            display: none;
+        }
+        #printCard {
+            display: block;
+        }
+    }
+
+.card#mainCard
+  .card-header
+    h1
+      | Detailed information display for Application [ #{@app.name} ]
+    .btn-group.btn-group-justified
+      = button_to apps_path, method: :get, class: 'btn btn-outline-dark btn-sm' do
+        i.fas.fa-backward
+        | back
+      = button_to app_path(@app), method: :get, class: 'btn btn-outline-primary btn-sm' do
+        i.fas.fa-edit
+        | use
+      = button_to edit_app_path(@app), method: :get, class: 'btn btn-outline-success btn-sm' do
+        i.fas.fa-wrench
+        | edit
+      = button_to app_path(@app), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-outline-danger btn-sm'  do
+        i.fas.fa-trash-alt
+        | delete
+      - if @app.published?
+        = button_to offshelf_app_path(@app), method: :get, data: { confirm: "Hide this app?" }, class: 'btn btn-outline-secondary btn-sm'  do
+          i.fas.fa-undo-alt
+          | hide
+      - if @app.awaiting?
+        = button_to onshelf_app_path(@app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do
+          i.fas.fa-share
+          | pass
+      button onclick="window.print();" class="btn btn-outline-info btn-sm"
+        i.fas.fa-print
+        | Print
+  .card-body
+    .row
+      .col
+        .card.border.border-success.shadow.bg-white
+          .card-header
+            h2
+              = @app.name
+            = @category.name
+          .card-body
+            .row
+              - if @app.cover_image.attached?
+                .col-9 style=("word-wrap: break-word; word-break: break-all;")
+                  = simple_format(@app.description)
+                .col-3
+                  = image_tag @app.cover_image, alt: "Cover Image", style: "width:97.5%"
+              - else
+                .col style=("word-wrap: break-word; word-break: break-all;")
+                  = simple_format(@app.description)
+          .card-footer
+            .row
+              .col
+                | Price : &nbsp;
+                | $ #{@app.price} HKD
+              .col
+                | Status : &nbsp;
+                - if @app.status== "online"
+                  span style=("color: forestgreen;")
+                    i.fas.fa-check-circle
+                    | online
+                - elsif @app.status== "audit"
+                  span style=("color: goldenrod;")
+                    i.fas.fa-exclamation-circle
+                    | audit
+                - else
+                  span style=("color: crimson;")
+                    i.fas.fa-times-circle
+                    | offline
+
+      .col
+        | System information
+        table.table.table-hover cellpadding="10px" cellspacing="5px"
+          tr
+            td Category
+            td= @category.name
+            td App Number
+            td= @app.app_no
+          tr
+            td Created By
+            td colspan="2"
+              = @user.username
+            td
+              | user_id ( &nbsp;
+              = @user.id
+              | &nbsp; )
+          tr
+            td Created At
+            td colspan="3"
+              = @app.created_at.localtime
+          tr
+            td Last Modified At
+            td colspan="3"
+              = @app.updated_at.localtime
+        br
+        | Analysis information
+        table.table.table-hover cellpadding="10px" cellspacing="5px"
+          tr
+            td Create Report?
+            td= @app.create_report
+          tr
+            td Analysis Type
+            td
+              = @analysis.name
+              | ( DOAP : #{@analysis.doap_id} )
+          tr
+            td Panel File
+            - if @app.panel.attached?
+              td
+                i.fas.fa-check
+                | Ready
+            - else
+              td
+                i.fas.fa-times
+                | Not Found...
+    br
+    .row
+      .col
+        | File download
+        table.table.table-striped cellpadding="10px" cellspacing="5px"
+          thead.thead-light
+            tr
+              th Category
+              th Filename
+              th Type
+              th Size
+              th Upload time
+              th Click to Download
+          tbody
+            /COVER IMAGE ROW
+            - if @app.cover_image.attached?
+              tr
+                td Cover Image
+                td
+                  = @app.cover_image.filename.base
+                td
+                  = @app.cover_image.filename.extension_without_delimiter
+                td
+                  - fsize = @app.cover_image.byte_size / 1024.00
+                  = '%.2f' % fsize
+                  | &nbsp; KB
+                td
+                  = @app.cover_image.created_at.localtime
+                td
+                  = link_to rails_blob_path(@app.cover_image, disposition: "attachment")
+                    i.fas.fa-file-image
+                    | &nbsp; Download
+            - else
+              tr
+                td colspan="6"
+                  span style=("color: LightSlateGray;")
+                    i.fas.fa-eye-slash
+                    | No Cover Image Found
+
+            /PANEL ROW
+            - if @app.panel.attached?
+              tr
+                td Panel File
+                td
+                  = @app.panel.filename.base
+                td
+                  = @app.panel.filename.extension_without_delimiter
+                td
+                  - fsize = @app.panel.byte_size / 1024.00
+                  = '%.2f' % fsize
+                  | &nbsp; KB
+                td
+                  = @app.panel.created_at.localtime
+                td
+                  = link_to rails_blob_path(@app.panel, disposition: "attachment")
+                    i.fas.fa-file-download
+                    | &nbsp; Download
+            - else
+              tr
+                td colspan="6"
+                  span style=("color: LightSlateGray;")
+                    i.fas.fa-eye-slash
+                    | No Panel File Uploaded
+
+
+.card#printCard
+  .card-header
+    h3
+      | Detailed information display for Application
+    h1
+      | [ #{@app.name} ]
+  .card-body
+    table.table.table-striped cellpadding="10px" cellspacing="5px"
+      tr
+        td Category
+        td= @category.name
+        td Number
+        td= @app.app_no
+      tr
+        td Name
+        td colspan="3"
+          = @app.name
+      tr
+        td Description
+        td colspan="3" style=("word-wrap: break-word; word-break: break-all;")
+          = simple_format(@app.description)
+      tr
+        td Created By
+        td= @user.username
+        td User id
+        td= @user.id
+      tr
+        td Price
+        td
+          | $ #{@app.price} HKD
+        td Publish Status
+        td= @app.status
+      tr
+        td Create Report?
+        td= @app.create_report
+        td Analysis Type
+        td
+          = @analysis.name
+          | ( DOAP : #{@analysis.doap_id} )
+      tr
+        td Created at
+        td= @app.created_at.localtime
+        td Last Modified at
+        td= @app.updated_at.localtime
+      - if @app.cover_image.attached?
+        tr
+          td Cover Image
+          td
+            = @app.cover_image.filename
+          td
+            | Size:&nbsp;
+            - fsize = @app.cover_image.byte_size / 1024.00
+            = '%.2f' % fsize
+            | &nbsp; KB
+          td
+            = @app.cover_image.created_at.localtime
+
+      - if @app.panel.attached?
+        tr
+          td Panel File
+          td
+            = @app.panel.filename
+          td
+            | Size:&nbsp;
+            - fsize = @app.panel.byte_size / 1024.00
+            = '%.2f' % fsize
+            | &nbsp; KB
+          td
+            = @app.panel.created_at.localtime

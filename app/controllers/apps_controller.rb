@@ -33,28 +33,42 @@ class AppsController < ApplicationController
 
   def new
     @app = App.new
-    @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
-    @category = Category.all.order(:name).collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
+    @analysis = Analysis.all.collect { |item| [item.name, item.id] }
+    @category = Category.all.order(:name).collect { |item| [item.name, item.id] }
+    if params[:uid]
+      @user = params[:uid]
+    else
+      redirect_to apps_path
+    end
   end
 
   def create
     @app = App.new(app_params)
+
+    if @app.category_id.nil?
+      flash[:alert] = 'Category not found!'
+      redirect_to createnew_app_path(@app.user_id)
+      return
+    end
     cate = Category.find(@app.category_id)
+
     appnostr = "%s-%.6d" % [cate.initial, cate.serial]
     @app.update(app_no: appnostr)
-    newnum = cate.serial + 1
-    cate.update(serial: newnum)
 
     if @app.save
+      newnum = cate.serial + 1
+      cate.update(serial: newnum)
       redirect_to apps_path
     else
-      render :new
+      flash[:alert] = 'Save failed! Please check again!'
+      redirect_to createnew_app_path(@app.user_id)
     end
   end
 
   def edit
     @app = App.find(params[:id])
     @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
+    @user = @app.user_id
   end
 
   def update

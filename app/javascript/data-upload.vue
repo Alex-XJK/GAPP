@@ -17,15 +17,20 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import axios from 'axios';
 import objectToFormData from 'object-to-formdata';
 import AlertCenter from 'components/alert-center.vue';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
+Vue.use(ElementUI)
 
   export default {
     components: {
       AlertCenter
     },
+    // inject: ['reload'],
     data() {
       return {
         id: window.gon.user_id,
@@ -34,8 +39,6 @@ import AlertCenter from 'components/alert-center.vue';
     },
     methods: {
       uploadFile() {
-        // send selected file to files
-        // const { alertCenter } = this.$refs
         axios.post(
           `/data-file-upload`,
         objectToFormData({
@@ -51,16 +54,17 @@ import AlertCenter from 'components/alert-center.vue';
         },
         ).then((response) => {
           if (response.data.code) {
+            // this.reload()
+            this.$message({
+                type: 'success',
+                message: 'Uploaded successfully!'
+            })
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
-        }).finally(() => {
-          // setTimeout(() => { alertCenter.add('danger', ''); }, 2000);
-        });
+        }).finally(() => {});
       }
     },
     created() {
