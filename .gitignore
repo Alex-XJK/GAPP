@@ -278,6 +278,4 @@ data
 public/data
 
 storage/
-yarn.lock
-package.json
-package-lock.json
+
