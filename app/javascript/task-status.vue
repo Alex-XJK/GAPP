@@ -46,6 +46,7 @@
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
                   <el-progress :percentage="task.status"></el-progress>
+                  <el-button type="text">More</el-button>
               </el-card>
             </el-col>
           </div>
