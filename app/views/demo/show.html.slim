@@ -1,3 +1,29 @@
-h1 Demo#index
-p Find me in app/views/demo/index.html.slim
-#canvas
+- content_for :title do
+  = "Demo"
+
+.container-fluid.project
+    .card.analyses-card
+        - @categories.each do |c|
+                .card-body.analysis-category
+                    h6.analysis-category-name
+                    = icon 'fa', 'folder'
+                    = c.name
+                    .analyses
+                    - @apps.each do |a|
+                        - is_dovirus = Rails.configuration.x.features.dovirus && a.dovirus_enabled
+                        - if a.category_id == c.id
+                            .analysis-item
+                                - check_result = "a.able_for_project(@project)"
+                                - block_class = if check_result then 'active analysis-block' else 'analysis-block' end
+                                div
+                                - title = is_dovirus ? check_result[:report] : a.name
+                                - data = is_dovirus ? {toggle: 'tooltip', html: 'true'} : {}
+                                - path = "/apps/" + String(a.id)
+                                = link_to path, title: title, class: block_class, data: data do
+                                    div
+                                    = icon 'fa', 'flask'
+                                    = a.name
+                                    - if is_dovirus
+                                    div
+                                        .progress.mt-1 style="height: 2px"
+                                        .progress-bar style=("width: 4%")
