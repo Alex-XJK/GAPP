@@ -19,6 +19,11 @@ Rails.application.routes.draw do
   get '/admin/apps/', to: 'admin/apps#index'
   post '/admin/apps/search', to: 'admin/apps#search'
 
+  get '/admin/tasks/', to: 'admin/tasks#index'
+  post '/admin/tasks/search', to: 'admin/tasks#search'
+  get '/admin/tasks/:id', to: 'admin/tasks#view'
+  delete '/admin/tasks/:id', to: 'admin/tasks#destroy'
+
 
   resources :categories do
     
@@ -158,6 +163,7 @@ Rails.application.routes.draw do
   get 'apps/details/:id', to: 'apps#details', as: 'check_detail_app'
   get 'apps/operate/offshelf/:id', to: 'apps#downgrade', as: 'offshelf_app'
   get 'apps/operate/onshelf/:id', to: 'apps#upgrade', as: 'onshelf_app'
+  get 'apps/new/:uid', to: 'apps#new', as: 'createnew_app'
   resources :apps
 
 end

@@ -1,0 +1,90 @@
+.card
+  .card-header
+    h1
+      | Application : #{@app.name}
+    = link_to "<-- BACK", apps_path
+  .card-body
+    .card.border.border-success.shadow.bg-white
+      .card-header.bg-success
+        h2
+          | #{@app.name}
+        | [#{@category.name}] #{@app.app_no}
+      .card-body
+        .row
+          .col
+            .card-title
+              | Producer :
+            .card-text
+              = @user.username
+          .col
+            .card-title
+              | Status :
+            .card-text
+              - if @app.status== "online"
+                span style=("color: forestgreen;")
+                  i.fas.fa-check-circle
+                  | online
+              - elsif @app.status== "audit"
+                span style=("color: goldenrod;")
+                  i.fas.fa-exclamation-circle
+                  | audit
+              - else
+                span style=("color: crimson;")
+                  i.fas.fa-times-circle
+                  | offline
+          .col
+            .card-title
+              | Created At :
+            .card-text
+              = String(@app.created_at.localtime).split(' ')[0]
+              | &nbsp;
+              = String(@app.created_at.localtime).split(' ')[1].split(':')[0]
+              | :
+              = String(@app.created_at.localtime).split(' ')[1].split(':')[1]
+          .col
+            .card-title
+              | Last Modified At :
+            .card-text
+              = String(@app.updated_at.localtime).split(' ')[0]
+              | &nbsp;
+              = String(@app.updated_at.localtime).split(' ')[1].split(':')[0]
+              | :
+              = String(@app.updated_at.localtime).split(' ')[1].split(':')[1]
+        .row
+          .col
+            hr
+        .row
+          - if @app.cover_image.attached?
+            .col-8 style=("word-wrap: break-word; word-break: break-all;")
+              .card-title
+                | Description :
+              .card-text
+                = simple_format(@app.description)
+            .col-4
+              = image_tag @app.cover_image, alt: "Cover Image", style: "width:85%"
+          - else
+            .col style=("word-wrap: break-word; word-break: break-all;")
+              .card-title
+                | Description
+              .card-text
+                = simple_format(@app.description)
+
+      - if !@app.panel.attached? || @app.analysis_id==nil
+        .card-footer.bg-warning
+          .row
+            .col
+              span style=("color: red; ")
+                i.fas.fa-times
+                | App not ready !
+            .col
+              button See Demo
+      - else
+        .card-footer.bg-success
+          .row
+            .col
+              i.fas.fa-check
+              | Ready to run !
+            .col
+              button Use This App
+            .col
+              button See Demo

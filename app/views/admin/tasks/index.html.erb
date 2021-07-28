@@ -1,0 +1,193 @@
+<% content_for :title, "Tasks" %>
+
+<% content_for:head do%>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <%= javascript_pack_tag 'apps_js' %>
+    <%= javascript_pack_tag "table_style" %>
+
+    <script>
+    // $( document ).on('turbolinks:load', function() {
+    //   $('#pj_table').DataTable({
+    //       "paging":   false,
+    //       "ordering": false,
+    //       "info":     false
+    //   });
+    // });
+
+    $(document).ready(function() {
+        $('#pj_table').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            "info":     false
+        } );
+    } );
+
+      $( function() {
+        $( "#accordion" )
+          .accordion({
+            header: "> div > h3"
+          })
+          .sortable({
+            axis: "y",
+            handle: "h3",
+            stop: function( event, ui ) {
+              // IE doesn't register the blur when sorting
+              // so trigger focusout handlers to remove .ui-state-focus
+              ui.item.children( "h3" ).triggerHandler( "focusout" );
+    
+              // Refresh accordion to handle new order
+              $( this ).accordion( "refresh" );
+            }
+          });
+      } );
+
+      $( function() {
+        $( ".level2" )
+          .accordion({
+            header: "> div > h3"
+          })
+          .sortable({
+            axis: "y",
+            handle: "h3",
+            stop: function( event, ui ) {
+              // IE doesn't register the blur when sorting
+              // so trigger focusout handlers to remove .ui-state-focus
+              ui.item.children( "h3" ).triggerHandler( "focusout" );
+    
+              // Refresh accordion to handle new order
+              $( this ).accordion( "refresh" );
+            }
+          });
+      } );
+
+    </script>
+  
+  <% end %>
+
+
+  <body data-turbolinks="false">
+
+  <div class="container" onload="init()">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%=link_to 'Admin home', '/admin' %>
+      </li> 
+      <li class="breadcrumb-item">
+        <%=link_to 'Task', '/admin/tasks' %>
+      </li> 
+      
+    </ol>
+
+    <h1>
+    Task
+    </h1>
+  
+    <p>
+        This page is made for admin to : 
+        <ul>
+          <li>Check out all taks in the system</li>
+          <li>Perform certain operations on tasks</li>
+        </ul>
+    </p>
+  
+    <hr>
+
+    <form action="/admin/tasks/search" method="POST">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+    Search for a task by Id: &nbsp;
+    <input type="text" id="text" name="id">
+    <button type="submit" id="search"><i class="fas fa-search"></i></button>
+    </form>
+
+    <div id="accordion">
+      <br>
+
+      <% @cats.each do |cts| %>
+
+      <div class="group">
+
+      <h3><%= cts["name"] %></h3>
+      <div>
+
+      <div class="level2">
+      <% @apps.each do |app| %>
+      <% if app["category_id"] == cts["id"] %>
+
+      <div class="group">
+      <h3><%= app["app_no"] %>&nbsp;-&nbsp;<%= app["name"] %></h3>
+      <div>
+
+      <table id="pj_table" class="display" style="margin: 0;">
+        <thead>
+               
+            <th> Task Id </th>
+            <th> Run By </th>
+            <th> Start Time </th>
+            <th> Status </th>
+            <th> Actions </th>
+          
+        </thead>
+  
+        <tbody>
+        <% @tasks.each do |tsk| %>
+
+        <% if tsk["app_id"] == app["id"] %>
+          
+            <tr>
+              <% @task_attrs.each do |attr| %>
+
+                <td> 
+                <div class="table_cell"> 
+                    <% if attr == "user_id" %>
+                    <%= @users.find(tsk[attr])["username"] %>
+                    <% else %>
+                    <%= tsk[attr] %>
+                    <% end %>
+                    &nbsp;
+                </div>
+                </td> 
+              <% end %>
+              <td>
+               <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(tsk.id), method: :delete,
+                          data: { confirm: 'Are you sure?' } %>
+            
+              <a href="/admin/tasks/<%= tsk.id %>">
+                <button type="button" title="View"> 
+                    <i class="far fa-eye"></i>
+                </button>
+              </a>
+              </td>
+            
+            </tr>
+        
+        
+        <% end %>
+
+        <% end %>
+        </tbody>
+      </table>
+
+      </div>
+      </div>
+
+      <% end %>
+      <% end %>
+      </div>
+
+
+        
+
+      </div>
+
+      </div>
+      <% end %>
+    </div>
+    <br>
+    
+    <!-- App.new(app_no: "A5-0030", name: "Another Testing App", price: 17, description: "......", create_report: true, status: "pending", user_id: 60, analysis_id: 1, category_id: 3) -->
