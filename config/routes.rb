@@ -59,11 +59,19 @@ Rails.application.routes.draw do
   end
 
   resources :users do 
-    resources :data
-    resources :tasks
+    resources :tasks do
+      collection do
+        post 'tasks-info', to: 'users/tasks#tasks_info', format: 'json'
+      end
+    end
   end
   post 'data-file-upload', to: 'users#data_file_upload', format: 'json'
-  
+  post  'data-file-info', to: 'users#data_file_info', format:'json'
+  post  'data-file-delete', to: 'users#data_file_delete', format:'json'
+  post  'data-file-rename', to: 'users#data_file_rename', format:'json'
+  get 'all-categories', to: 'admin/categories#all_categories', format: 'json'
+  post 'apps-info', to: 'admin/apps#apps_info', format: 'json'
+  post 'create-task', to: 'users/tasks#create', format: 'json'
 
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
