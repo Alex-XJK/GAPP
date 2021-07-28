@@ -1,4 +1,29 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
+<%= javascript_pack_tag 'new_user' %>
+
 <% content_for :title, "New User" %>
+
+<div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+
+<div class="col-11 pl-4">
+<ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%=link_to 'Admin home', '/admin' %>
+      </li> 
+      <li class="breadcrumb-item">
+        <%=link_to 'User', '/admin/users' %>
+      </li>
+      <li class="breadcrumb-item">
+        <%=link_to 'New', '/admin/users/new' %>
+      </li> 
+</ol>
 
 <h1>New User</h1>
 
@@ -7,16 +32,16 @@
 <%= simple_form_for @user, url: "/admin/users/new/" do |f| %>
   <%= f.input :username %>
   <%= f.input :password_digest %>
-  <%= f.input :role_id %>
-  <%= f.button :submit %>
-<% end %>
+  <%= f.input :role_id, :collection => [['admin',1],['producer',2],['user',3]] %>
+  <%= f.button :button do %>
+    <i class="fas fa-check"></i>Create User
+  <% end %>
 
-<br>
-<a href="/admin/users">
-<button type="button">     
-  <i class="fas fa-angle-double-left"></i>
-</button>
-</a>
+<% end %>
 
 </div>
 <br>
+
+</div>
+</div>
+</div>

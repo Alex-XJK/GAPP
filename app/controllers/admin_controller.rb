@@ -12,6 +12,14 @@ class AdminController < ApplicationController
 
         @users = User.select(:id, :username, :created_at)
         @usercolumn = ["id", "username", "created_at"] 
+
+        @usercnt = User.count
+        @catcnt = Category.count
+        @appcnt = App.count
+        @taskcnt = Task.count
+        @ruby_ver = RUBY_VERSION
+
+
     end
 
     def modify_sample_abd

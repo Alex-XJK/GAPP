@@ -17,6 +17,7 @@
     "bootstrap-vue": "^2.15.0",
     "caniuse-lite": "^1.0.30001245",
     "crux": "../crux",
+    "data-confirm-modal": "^1.6.2",
     "datatables.net": "^1.10.22",
     "datatables.net-dt": "^1.10.22",
     "element-ui": "^2.15.3",

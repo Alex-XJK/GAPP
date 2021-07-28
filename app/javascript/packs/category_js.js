@@ -44,8 +44,15 @@ function addHelper() {
 }
 
 function toSubAdd() {
-    document.querySelector("#intro").style.display = "block";
-    document.querySelector("#fmain").style.display = "none";
-    document.querySelector("#fmain").querySelector("input[type=hidden]").value = document.querySelector("#nm").value;
-    document.querySelector("#nm").value = "";
+    let nname = document.querySelector("#nm").value;
+    if (String(nname).trim() == "") {
+        document.querySelector("#nm").style.backgroundColor = "pink";
+        return false;
+    }
+    else {
+        document.querySelector("#intro").style.display = "block";
+        document.querySelector("#fmain").style.display = "none";
+        document.querySelector("#fmain").querySelector("input[type=hidden]").value = document.querySelector("#nm").value;
+        document.querySelector("#nm").value = "";
+    }
 }

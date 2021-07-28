@@ -1,3 +1,7 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+   
    <% content_for :title, "Search Results" %>
 
     <% content_for:head do%>
@@ -32,12 +36,28 @@
     <% end %>
 
     <body data-turbolinks="false">
+
+  <div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+
+<div class="col-11 pl-4">
+<ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%=link_to 'Admin home', '/admin' %>
+      </li> 
+      <li class="breadcrumb-item">
+        <%=link_to 'App', '/admin/apps' %>
+      </li>
+      <li class="breadcrumb-item">
+        Search Results
+      </li> 
+</ol>
     
     <div id="result">
-    <a href="/admin/apps" title="Back">
-        <button type="button" id="close"><i class="fas fa-times"></i></button>
-    </a>
-    <h3>Search Results:</h3> <br>
+    <h3>Search Results</h3> <br>
     <div>
     <table id="pj_table" class="display" style="margin: 0;">
         <thead>
@@ -46,6 +66,7 @@
             <th> Name </th>
             <th> Author </th>
             <th> Last Update Time </th>
+            <th> Action </th>
           
         </thead>
 
@@ -65,11 +86,22 @@
                 </div>
                 </td> 
               <% end %>
+
+              <td>
+              <a href="/apps/details/<%= tapp.id %>" target="_blank">
+                  <button data-toggle="tooltip" type="button" title="View"> 
+                      <i class="far fa-eye"></i>
+                  </button>
+              </a>
+              </td>
+
             </tr>
         <% end %>
         
         </tbody>
     </table>
     <br>
-    </div>
-    </div>
+
+</div>
+</div>
+</div>
