@@ -43,11 +43,15 @@
 
 <div class="container-fluid p-0">
   <div class="row no-gutters">
-  <div class="col">
+  <%
+=begin%>
+ <div class="col">
   <%= yield :sidebar %>
-  </div>
+  </div> 
+<%
+=end%>
   
-  <div class="col-11">
+  <div class="col-11 pl-4">
 
 <ol class="breadcrumb">
       <li class="breadcrumb-item">
