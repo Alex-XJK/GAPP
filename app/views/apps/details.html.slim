@@ -1,4 +1,22 @@
-.card
+css:
+  @media screen {
+      #printCard {
+          display: none;
+      }
+  }
+    @media print {
+        .sidebar-container {
+            display: none;
+        }
+        #mainCard {
+            display: none;
+        }
+        #printCard {
+            display: block;
+        }
+    }
+
+.card#mainCard
   .card-header
     h1
       | Detailed information display for Application [ #{@app.name} ]
@@ -23,6 +41,9 @@
         = button_to onshelf_app_path(@app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do
           i.fas.fa-share
           | pass
+      button onclick="window.print();" class="btn btn-outline-info btn-sm"
+        i.fas.fa-print
+        | Print
   .card-body
     .row
       .col
@@ -78,11 +99,11 @@
               = @user.id
               | &nbsp; )
           tr
-            td Created at
+            td Created At
             td colspan="3"
               = @app.created_at.localtime
           tr
-            td Last Modified at
+            td Last Modified At
             td colspan="3"
               = @app.updated_at.localtime
         br
@@ -96,6 +117,16 @@
             td
               = @analysis.name
               | ( DOAP : #{@analysis.doap_id} )
+          tr
+            td Panel File
+            - if @app.panel.attached?
+              td
+                i.fas.fa-check
+                | Ready
+            - else
+              td
+                i.fas.fa-times
+                | Not Found...
     br
     .row
       .col
@@ -107,6 +138,7 @@
               th Filename
               th Type
               th Size
+              th Upload time
               th Click to Download
           tbody
             /COVER IMAGE ROW
@@ -122,12 +154,14 @@
                   = '%.2f' % fsize
                   | &nbsp; KB
                 td
+                  = @app.cover_image.created_at.localtime
+                td
                   = link_to rails_blob_path(@app.cover_image, disposition: "attachment")
                     i.fas.fa-file-image
                     | &nbsp; Download
             - else
               tr
-                td colspan="5"
+                td colspan="6"
                   span style=("color: LightSlateGray;")
                     i.fas.fa-eye-slash
                     | No Cover Image Found
@@ -145,12 +179,85 @@
                   = '%.2f' % fsize
                   | &nbsp; KB
                 td
+                  = @app.panel.created_at.localtime
+                td
                   = link_to rails_blob_path(@app.panel, disposition: "attachment")
                     i.fas.fa-file-download
                     | &nbsp; Download
             - else
               tr
-                td colspan="5"
+                td colspan="6"
                   span style=("color: LightSlateGray;")
                     i.fas.fa-eye-slash
                     | No Panel File Uploaded
+
+
+.card#printCard
+  .card-header
+    h3
+      | Detailed information display for Application
+    h1
+      | [ #{@app.name} ]
+  .card-body
+    table.table.table-striped cellpadding="10px" cellspacing="5px"
+      tr
+        td Category
+        td= @category.name
+        td Number
+        td= @app.app_no
+      tr
+        td Name
+        td colspan="3"
+          = @app.name
+      tr
+        td Description
+        td colspan="3" style=("word-wrap: break-word; word-break: break-all;")
+          = simple_format(@app.description)
+      tr
+        td Created By
+        td= @user.username
+        td User id
+        td= @user.id
+      tr
+        td Price
+        td
+          | $ #{@app.price} HKD
+        td Publish Status
+        td= @app.status
+      tr
+        td Create Report?
+        td= @app.create_report
+        td Analysis Type
+        td
+          = @analysis.name
+          | ( DOAP : #{@analysis.doap_id} )
+      tr
+        td Created at
+        td= @app.created_at.localtime
+        td Last Modified at
+        td= @app.updated_at.localtime
+      - if @app.cover_image.attached?
+        tr
+          td Cover Image
+          td
+            = @app.cover_image.filename
+          td
+            | Size:&nbsp;
+            - fsize = @app.cover_image.byte_size / 1024.00
+            = '%.2f' % fsize
+            | &nbsp; KB
+          td
+            = @app.cover_image.created_at.localtime
+
+      - if @app.panel.attached?
+        tr
+          td Panel File
+          td
+            = @app.panel.filename
+          td
+            | Size:&nbsp;
+            - fsize = @app.panel.byte_size / 1024.00
+            = '%.2f' % fsize
+            | &nbsp; KB
+          td
+            = @app.panel.created_at.localtime
