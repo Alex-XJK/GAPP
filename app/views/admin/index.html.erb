@@ -1,3 +1,7 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
 <% content_for:head do%>
   
   <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
@@ -11,24 +15,17 @@
 
 <body data-turbolinks="false">
 
-<div class="container">
+  <div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+
+<div class="col-11 pl-4">
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <%=link_to 'Admin home', '/admin' %>
-    </li> 
-    <li class="breadcrumb-item">
-      <%=link_to 'Projects', '#project_admin' %>
-    </li> 
-    <li class="breadcrumb-item">
-      <%=link_to 'Samples', '#sample_admin' %>
-    </li> 
-    <li class="breadcrumb-item">
-      <%=link_to 'Analysis Categories', admin_analysis_categories_path %>
-    </li> 
-    <li class="breadcrumb-item">
-      <%=link_to 'Analyses', admin_analyses_path %>
-    </li> 
-    
+      <%=link_to 'Admin Home', '/admin' %>
+    </li>
   </ol>
 
   [&nbsp;
@@ -40,21 +37,67 @@
 
 
   <h1>
-  Admin page
+  Admin Home
   </h1>
 
-  <p>
-      This is made for admin to :
-      <ul>
-        <li>add project metadata</li>
-        <li>add sample metadata</li>
-        <li>add sample abandance data</li>
-        <li>add analysis module</li>
-        <li>add visualization module</li>
-      </ul>
-  </p>
 
-  <hr />
+  <div class="container-fluid">
+  <h3>System information</h3>
+  <p>Here is the information for the server.</p>            
+  <table class="table table-hover">
+    <tbody>
+      <tr>
+        <td>RUBY_VERSION</td>
+        <td><%= @ruby_ver %></td>
+      </tr>
+      <tr>
+        <td>RUBY_PLATFORM</td>
+        <td><%= RUBY_PLATFORM %></td>
+      </tr>
+      <tr>
+        <td>RUBY_RELEASE_DATE</td>
+        <td><%= RUBY_RELEASE_DATE %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <div class="container-fluid">
+  <h3>Database information</h3>
+  <p>Here is the information for main tables in the database.</p>            
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Table</th>
+        <th>Record count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>User</td>
+        <td><%= @usercnt %></td>
+      </tr>
+      <tr>
+        <td>Category</td>
+        <td><%= @catcnt%></td>
+      </tr>
+      <tr>
+        <td>App</td>
+        <td><%= @appcnt%></td>
+      </tr>
+      <tr>
+        <td>Task</td>
+        <td><%= @taskcnt%></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+  <%
+=begin%>
+ <hr />
 
 
   <br />
@@ -165,6 +208,10 @@
     <% end %>
   </section>
   <hr>
-  <br/>
+  <br/> 
+<%
+=end%>
 
 </div>
+  </div>
+  </div>

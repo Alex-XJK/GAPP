@@ -1,3 +1,7 @@
+<% content_for (:sidebar) do %>
+    <%= render :partial => "layouts/sidebar" %>
+<% end %>
+
 <% content_for :title, "Tasks" %>
 
 <% content_for:head do%>
@@ -29,8 +33,9 @@
     } );
 
       $( function() {
-        $( "#accordion" )
+        $( "#accordion0" )
           .accordion({
+            heightStyle: "content",
             header: "> div > h3"
           })
           .sortable({
@@ -47,24 +52,24 @@
           });
       } );
 
-      $( function() {
-        $( ".level2" )
-          .accordion({
-            header: "> div > h3"
-          })
-          .sortable({
-            axis: "y",
-            handle: "h3",
-            stop: function( event, ui ) {
-              // IE doesn't register the blur when sorting
-              // so trigger focusout handlers to remove .ui-state-focus
-              ui.item.children( "h3" ).triggerHandler( "focusout" );
+      // $( function() {
+      //   $( ".level2" )
+      //     .accordion({
+      //       header: "> div > h3"
+      //     })
+      //     .sortable({
+      //       axis: "y",
+      //       handle: "h3",
+      //       stop: function( event, ui ) {
+      //         // IE doesn't register the blur when sorting
+      //         // so trigger focusout handlers to remove .ui-state-focus
+      //         ui.item.children( "h3" ).triggerHandler( "focusout" );
     
-              // Refresh accordion to handle new order
-              $( this ).accordion( "refresh" );
-            }
-          });
-      } );
+      //         // Refresh accordion to handle new order
+      //         $( this ).accordion( "refresh" );
+      //       }
+      //     });
+      // } );
 
     </script>
   
@@ -73,7 +78,13 @@
 
   <body data-turbolinks="false">
 
-  <div class="container" onload="init()">
+  <div class="container-fluid p-0">
+  <div class="row no-gutters">
+  <div class="col">
+  <%= yield :sidebar %>
+  </div>
+
+  <div class="col-11 pl-4">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <%=link_to 'Admin home', '/admin' %>
@@ -102,10 +113,10 @@
     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
     Search for a task by Id: &nbsp;
     <input type="text" id="text" name="id">
-    <button type="submit" id="search"><i class="fas fa-search"></i></button>
+    <button type="submit" id="search" class="btn btn-primary"><i class="fas fa-search"></i></button>
     </form>
 
-    <div id="accordion">
+    <div id="accordion0">
       <br>
 
       <% @cats.each do |cts| %>
@@ -113,17 +124,46 @@
       <div class="group">
 
       <h3><%= cts["name"] %></h3>
-      <div>
+      <div class="container">
 
-      <div class="level2">
-      <% @apps.each do |app| %>
-      <% if app["category_id"] == cts["id"] %>
+      <% @count = 0 %>
+        <% @apps.each do |app| %>
+          <% if app["category_id"] == cts["id"] %>
+            <% @count += 1 %>
+          <% end %>
+        <% end %>
+        <% if @count == 0 %>
+          <div class="alert alert-warning">
+            No app for category "<%= cts["name"] %>".
+          </div>
+        <% else %>
 
-      <div class="group">
-      <h3><%= app["app_no"] %>&nbsp;-&nbsp;<%= app["name"] %></h3>
-      <div>
+  <div id="accordion-<%= cts['id'] %>">
+    <% @apps.each do |app| %>
+    <% if app["category_id"] == cts["id"] %>
+    <div class="card">
+      <div class="card-header">
+        <a class="collapsed card-link text-primary" data-toggle="collapse" href="#collapseOne-<%= app['id'] %>">
+          <i class="fas fa-angle-down"></i>
+          <%= app["app_no"] %>&nbsp;-&nbsp;<%= app["name"] %>
+        </a>
+      </div>
+      <div id="collapseOne-<%= app['id'] %>" class="collapse" data-parent="#accordion-<%= cts['id'] %>">
+        <div class="card-body">
 
-      <table id="pj_table" class="display" style="margin: 0;">
+        <% @countx = 0 %>
+        <% @tasks.each do |tsk| %>
+          <% if tsk["app_id"] == app["id"] %>
+            <% @countx += 1 %>
+          <% end %>
+        <% end %>
+        <% if @countx == 0 %>
+          <div class="alert alert-warning">
+            No task for app "<%= app["app_no"] %>".
+          </div>
+        <% else %>
+
+          <table class="table table-hover" style="margin: 0; width:100%">
         <thead>
                
             <th> Task Id </th>
@@ -154,11 +194,13 @@
                 </td> 
               <% end %>
               <td>
-               <%= link_to '<button type="button" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(tsk.id), method: :delete,
-                          data: { confirm: 'Are you sure?' } %>
+               <%= link_to '<button type="button" data-toggle="tooltip" title="Delete" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(tsk.id), method: :delete,
+                          data: { confirm: 'Are you sure you want to delete task ' + String(tsk.id) + '?<br>You can\'t undo this action.', 
+                                  title: 'Confirm your action', 
+                                  commit: 'Delete' } %>
             
               <a href="/admin/tasks/<%= tsk.id %>">
-                <button type="button" title="View"> 
+                <button data-toggle="tooltip" type="button" title="View" class="btn btn-outline-success"> 
                     <i class="far fa-eye"></i>
                 </button>
               </a>
@@ -172,22 +214,26 @@
         <% end %>
         </tbody>
       </table>
+        <% end %>
 
+        </div>
       </div>
-      </div>
-
-      <% end %>
-      <% end %>
-      </div>
+    </div>
+    <% end %>
+    <% end %>
+  </div>
 
 
         
-
+<% end %>
       </div>
 
       </div>
       <% end %>
     </div>
     <br>
+
+  </div>
+  </div>
     
     <!-- App.new(app_no: "A5-0030", name: "Another Testing App", price: 17, description: "......", create_report: true, status: "pending", user_id: 60, analysis_id: 1, category_id: 3) -->
