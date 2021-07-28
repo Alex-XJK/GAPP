@@ -155,6 +155,7 @@ Rails.application.routes.draw do
   get 'apps/details/:id', to: 'apps#details', as: 'check_detail_app'
   get 'apps/operate/offshelf/:id', to: 'apps#downgrade', as: 'offshelf_app'
   get 'apps/operate/onshelf/:id', to: 'apps#upgrade', as: 'onshelf_app'
+  get 'apps/new/:uid', to: 'apps#new', as: 'createnew_app'
   resources :apps
 
 end
