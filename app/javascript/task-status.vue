@@ -46,7 +46,7 @@
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
                   <el-progress :percentage="task.status"></el-progress>
-                  <el-button type="text">More</el-button>
+                  <el-button type="text" @click="goTo(task.id)">More</el-button>
               </el-card>
             </el-col>
           </div>
@@ -88,6 +88,10 @@ export default {
     methods: {
       hideDialog () {
       this.dialogVisible = false
+      },
+      goTo (taskId) {
+      this.$router.replace(`/users/${this.id}/tasks/${taskId}`)
+      console.log("here router change and task ID IS " + taskId +'user ' +this.id)
       },
       getCategoies() {
          axios.get(

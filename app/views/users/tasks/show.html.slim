@@ -1,0 +1,36 @@
+- content_for :title 
+    |Task
+
+.container-fluid.project
+  div style='width:100%'
+    .card.mb-2
+      .card-body
+        .card-title.m-0
+            h5
+              = icon 'fa', 'flask'
+              | Task Parameters
+        p.project-desc
+            | User Name :  
+            = User.find(@task.user_id).username
+        p.project-desc
+            | Task Name :  
+            = @task.name
+        p.project-desc
+            | App Name 
+            = App.find(@task.app_id).name
+
+      .card.analyses-card
+        .card-body
+          .card-title.m-0
+            h5
+              = icon 'fa', 'flask'
+              | Task Progress
+        /   .text-muted
+        /     | Apps are sorted by categories while tasks belong to apps.
+        /     | 
+  .card.news-card
+    .card-body
+      .card-title.m-0
+        h5
+          = icon 'fa', 'rss'
+          | Task Report
