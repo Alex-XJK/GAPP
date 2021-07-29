@@ -1,4 +1,4 @@
-class Users::TasksController < ApplicationController
+class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
@@ -98,9 +98,8 @@ class Users::TasksController < ApplicationController
   end
 
   def task_page
-    respond_to do |format|
-      format.html { redirect_to :controller => 'tasks',:action=>'show' }
-    end
+    # @task = Task.find(params[:taskId])
+    redirect_to user_task_path(params[:taskId])
   end
 
   private
