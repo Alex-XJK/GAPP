@@ -89,9 +89,19 @@ export default {
       hideDialog () {
       this.dialogVisible = false
       },
-      goTo (taskId) {
-      this.$router.replace(`/users/${this.id}/tasks/${taskId}`)
-      console.log("here router change and task ID IS " + taskId +'user ' +this.id)
+      goTo(taskId) {
+      axios.post(
+          `/task-page`,
+        objectToFormData({
+          "taskId" : taskId
+        }),
+        {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
       },
       getCategoies() {
          axios.get(

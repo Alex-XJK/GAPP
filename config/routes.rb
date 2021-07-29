@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   post 'create-task', to: 'users/tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'users/tasks#tasks_info', format: 'json'
   get '/users/:user_id/tasks/:id', to: 'users/tasks#show'
+  post '/task-page', to: 'users/tasks#task_page'
 
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'

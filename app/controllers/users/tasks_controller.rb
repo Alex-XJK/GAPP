@@ -84,6 +84,7 @@ class Users::TasksController < ApplicationController
         @tasks.each do |t|
           # Rails.logger.debug("here i am again!")
           return_tasks.push({
+            id: t.id,
             name: t.name,
             status: t.status,
             app_id: t.app_id
@@ -94,6 +95,12 @@ class Users::TasksController < ApplicationController
     result_json[:code] = true
     result_json[:data] = return_tasks
     render json: result_json
+  end
+
+  def task_page
+    respond_to do |format|
+      format.html { redirect_to :controller => 'tasks',:action=>'show' }
+    end
   end
 
   private
