@@ -99,8 +99,8 @@ class TasksController < ApplicationController
 
   def task_page
     @task = Task.find(params[:taskId])
-    # redirect_to user_task_path(@task)
     redirect_to action:"show", controller:"tasks", user_id:@task.user_id, id: @task.id
+    # render json: result
   end
 
   private

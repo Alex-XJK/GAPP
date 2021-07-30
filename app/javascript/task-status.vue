@@ -69,6 +69,7 @@ Vue.use(ElementUI)
 export default {
   data() {
     return {
+      url: '',
       dialogVisible: false,
       options: [],
       value: '',
@@ -101,7 +102,12 @@ export default {
             'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
             'Content-Type': 'multipart/form-data',
           },
-        })
+        }).then((response) => {
+          this.url = response.data.toString().split('\"')[1]
+          console.log(this.url)
+        }).finally(() => {
+          Turbolinks.visit(this.url, {"action":"replace"})
+      });
       },
       getCategoies() {
          axios.get(
