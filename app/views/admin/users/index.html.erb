@@ -23,6 +23,18 @@
               "<'row'<'col-sm-6'B><'col-sm-3'f>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-4'i><'col-sm-4 text-center'l><'col-sm-4'p>>",
+
+              columnDefs: [
+                {
+                    targets: -1,
+                    className: 'dt-right'
+                },
+                { 
+                  orderable: false, 
+                  targets: -1
+                }
+              ],
+
         } );
     } );
 
@@ -112,6 +124,7 @@
           <% end %>
           <th>
             Actions
+            &emsp;&emsp;&emsp;&emsp;&nbsp;
           </th>
           
         </thead>
