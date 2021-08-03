@@ -5,6 +5,7 @@
       placeholder="Choose a file..."
       drop-placeholder="Drop file here..."
       :multiple='true'
+      accept=".bam, .fq"
       v-model="files"
     ></b-form-file>
     <br>
