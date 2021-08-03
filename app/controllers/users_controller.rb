@@ -54,10 +54,14 @@ class UsersController < ApplicationController
         result_json = {
             code: false
         }
+        canBeSave = false
         @user = User.find(params[:id])
         Rails.logger.debug "Here is #{@user}"
-        @user.dataFiles = params[:dataFiles]
-        if @user.save
+        if params[:dataFile] != nil
+            canBeSave = true
+            @user.dataFiles = params[:dataFiles]
+        end
+        if @user.save && canBeSave
             result_json[:code] = true
         end
         render json: result_json
