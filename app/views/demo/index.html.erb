@@ -1,45 +1,95 @@
 <% content_for:head do%>
 
 <style>
-#sidebar {
-  position: fixed;
-  top: 3.25rem;
-  bottom: 0;
-  left: 0;
-  width: 240px;
-  padding: 1.5rem 1rem;
-  background: hsl(215, 8%, 29%);
-}
-#charts {
-  padding-top: 3.25rem
-  margin-left: 240px
+/* #charts {
+  padding-top: 3.25rem;
+  margin-left: 240px;
+} */
+
+* {
+    box-sizing: inherit;
+    font-family: "Source Sans Pro", sans-serif;
 }
 
-.container {
-    display: flex
-    flex-wrap: wrap
-    padding: 0.5rem 0
+#sidebar0 {
+
 }
+
+.menu-list {
+    /* line-height: 1.25; */
+}
+
+
+ul {
+    list-style: none;
+}
+
+#charts .container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    margin: 0 auto;
+    position: relative;
+    width: auto;
+}
+
+ #charts .card {
+    margin: 4px;
+    width: 240px;
+    flex: 1 0 auto;
+    padding-bottom: 3rem;
+    /* background-color: green; */
+  }
 
   .card {
-    margin: 4px
-    width: 240px
-    flex: 1 0 auto
-    padding-bottom: 3rem
-  }
-    .card-footer {
-      position: absolute
-      left: 0
-      right: 0
-      bottom: 0
+    background-color: #444950;
+    box-shadow: 0 2px 3px rgb(9 10 11 / 10%), 0 0 0 1px rgb(9 10 11 / 10%);
+    color: #f4f5f6;
+    max-width: 100%;
+    position: relative;
+}
+
+.card-content {
+    background-color: transparent;
+    padding: 1.5rem;
+}
+
+#charts .card .card-footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
     }
-  .dummy {
-    margin: 4px
-    width: 240px
-    flex: 1 0 auto
-    height: 0
-    border: none
-  }
+
+.card-footer {
+    background-color: transparent;
+    border-top: 1px solid #717984;
+    align-items: stretch;
+    display: flex;
+}
+
+.card-footer a {
+    color: #00e6c4;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.menu-list a {
+    border-radius: 2px;
+    display: block;
+}
+
+
+.card-footer-item {
+    align-items: center;
+    display: flex;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 0;
+    justify-content: center;
+    padding: 0.75rem;
+}
+
 </style>
 
 <script>
@@ -57,47 +107,72 @@ $(document).ready(function() {
 
 <%end%>
 
-<div>
+<body data-turbolinks="false">
+<div class="container-fluid p-0">
 
-    <div id="main-content">
-      <div id="sidebar"><sidebar :id="id" /></div>
-      <div id="charts">
+    <div id="main-content" class="row no-gutters">
+
+    <div id="sidebar0" class="col">
+    <aside class="menu pl-4">
+    <p class="menu-label">
+        Charts <%= @id %>
+    </p>
+    <ul class="menu-list">
+        <li>
+        <a href="/demo">
+            <i class="fas fa-sitemap"></i>
+            All
+        </a>
+        </li>
+        <hr>
+        <% @categories.each do |cat| %>
+        <li v-for="c in categories" :key="c.id">
+        <a href=<%= "/demo/" + String(cat["id"]) %>>
+            <%= cat["name"] %>
+        </a>
+        </li>
+        <% end %>
+    </ul>
+    </aside>
+    </div>
+
+      <div id="charts" class="col-11">
         <div class="container">
-          <div class="card" v-for="chart in charts" :key="chart.id">
+
+        <% @apps.each do |app| %>
+        <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
+          <div class="card">
             <header class="card-header">
               <p class="card-header-title">
-                {{chart.name}}
+                <%= app["name"] %>
               </p>
             </header>
             <div class="card-image">
               <div class="img-container">
-                <img :src="chart.preview || placeholderURL" alt="Placeholder image">
+                <% if app.cover_image.attached? %>
+                    <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
+                <%  else %>
+                    [NO IMAGE]
+                <% end %>
               </div>
             </div>
             <div class="card-content">
               <div class="content">
-                {{chart.description || "No Description."}}
+                <%= app["description"] %>
               </div>
             </div>
             <footer class="card-footer">
-              <router-link :to="`/charts/${chart.id}`" class="card-footer-item">
-                <b-icon icon="play" style="margin-right:0.25rem" />
-                Try
-              </router-link>
-              <!-- <a href="#" class="card-footer-item">
-                <b-icon icon="share" style="margin-right:0.25rem" />
-                Share
-              </a> -->
+              <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %> target="_blank">
+                <i class="far fa-eye"></i>
+                View
+              </a>
             </footer>
           </div>
-          <div class="dummy"></div>
-          <div class="dummy"></div>
-          <div class="dummy"></div>
-          <div class="dummy"></div>
-          <div class="dummy"></div>
-          <div class="dummy"></div>
-          <div class="dummy"></div>
+        <% end %>
+        <% end %>
+
         </div>
       </div>
     </div>
   </div>
+</body>
