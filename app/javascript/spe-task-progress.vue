@@ -1,8 +1,7 @@
 <template>
   <div class="block">
     <h5>Progress Bar</h5>
-    <el-progress :percentage="percentage" type="circle" :color="colors"
-    style="align-self: center"></el-progress>
+    <el-progress :percentage="percentage" type="circle" :color="colors"></el-progress>
     <el-divider></el-divider>
     <p>
       Here should be some detailed info related to the current task. 
