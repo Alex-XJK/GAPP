@@ -1,4 +1,6 @@
 class AppsController < ApplicationController
+  http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:upgrade, :update, :destroy]
+
   def index
     @apps = App.all
     @count_online = App.where(status: 'online').count
