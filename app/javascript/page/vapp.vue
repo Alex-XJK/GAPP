@@ -179,7 +179,7 @@
         text-align:center;
         border: none;
     }
-    .tool-bar-el /deep/ .btn-secondary {
+    .tool-bar-el .btn-secondary {
         border-radius: 0;
         padding-top: 0;
         margin-top: 0;

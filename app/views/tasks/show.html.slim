@@ -5,25 +5,40 @@
   div style='width:100%'
     .card.mb-2
       .card-body
-        h2.card-title.project-title
-            | Task Parameters
-        / p.project-desc
-        /     | User ID :  
-        /     = @user.id
-        / p.project-desc
-        /     | User Name :  
-        /     = @user.username
+        .card-title.m-0
+            h5
+              = icon 'fa', 'flask'
+              | Task Parameters
+        p.project-desc
+            | User Name :  
+            = User.find(@task.user_id).username
+        p.project-desc
+            | Task Name :  
+            = @task.name
+        p.project-desc
+            | App Name 
+            = App.find(@task.app_id).name
 
       .card.analyses-card
         .card-body
-            h2.card-title.project-title
-              = icon 'fa', 'flask'
-              | Task Progress
-        /   .text-muted
-        /     | Apps are sorted by categories while tasks belong to apps.
-        /     | 
+          .card-title.m-0
+            h5
+              = icon 'fa', 'rss'
+              | Task Report
+          p
+          | Here should be a pre-view of the report content.
+          | Here should be a pre-view of the report content.
+          | Here should be a pre-view of the report content.
+          br/
+          button Download Report
+          
   .card.news-card
     .card-body
-        h2.card-title.project-title
-          = icon 'fa', 'rss'
-          | Task Report
+      .card-title.m-0
+        h5
+          = icon 'fa', 'flask'
+          | Task Progress
+      br/
+      .task-content
+        #vapp-spe-task-progress
+        /   .text-muteds

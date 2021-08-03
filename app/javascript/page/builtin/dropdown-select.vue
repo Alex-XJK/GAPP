@@ -73,10 +73,10 @@
 .fa {
     margin: 0 0 0 1em;
 }
-.sl-dropdown /deep/ .dropdown-toggle {
+.sl-dropdown .dropdown-toggle {
   max-width: 100%;
 }
-.sl-dropdown /deep/ .dropdown-toggle::after {
+.sl-dropdown .dropdown-toggle::after {
   display: none;
 }
 .sl-label{
