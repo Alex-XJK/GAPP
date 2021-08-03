@@ -109,7 +109,7 @@ Rails.application.routes.draw do
 
   # database pages
   get 'database/overview', to: 'database#overview'
-  get 'demo', to: 'demo#show'
+  get 'demo', to: 'demo#index'
   
   scope '/visualizer' do
     resources :analysis

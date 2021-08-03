@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-    http_basic_authenticate_with name: "admin", password: "gapp"
+    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
     $abd_dir = "#{Rails.root}/app/data/abd_files/"
     def index
         @projects = App.order(:name)
