@@ -150,11 +150,9 @@ export default {
             this.apps = response.data.data
             console.log(this.apps)
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
         }).finally(() => {});
       },
@@ -177,11 +175,9 @@ export default {
             this.tasks = response.data.data
             console.log(this.tasks)
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
         }).finally(() => {});
       },

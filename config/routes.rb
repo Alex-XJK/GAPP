@@ -59,8 +59,7 @@ Rails.application.routes.draw do
   end
 
   resources :users do
-    resources :tasks do
-    end
+    resources :tasks
   end
   post 'data-file-upload', to: 'users#data_file_upload', format: 'json'
   post  'data-file-info', to: 'users#data_file_info', format:'json'
@@ -71,6 +70,7 @@ Rails.application.routes.draw do
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
+  post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
   post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'

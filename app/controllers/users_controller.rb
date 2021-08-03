@@ -74,7 +74,7 @@ class UsersController < ApplicationController
             dataInfo.push({
                 dataId: f.id,
                 name: f.filename.to_s,
-                uploadTime: f.created_at
+                uploadTime: f.created_at.localtime.to_s.split[0]
             })
         end
         result_json[:code] = true
