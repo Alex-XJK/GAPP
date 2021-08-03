@@ -179,11 +179,11 @@
         text-align:center;
         border: none;
     }
-    // .tool-bar-el /deep/ .btn-secondary {
-    //     border-radius: 0;
-    //     padding-top: 0;
-    //     margin-top: 0;
-    // }
+    .tool-bar-el .btn-secondary {
+        border-radius: 0;
+        padding-top: 0;
+        margin-top: 0;
+    }
     #tool-bar div{
         height:2.5em;
         background-color: white;

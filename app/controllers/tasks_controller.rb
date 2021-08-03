@@ -1,4 +1,4 @@
-class Users::TasksController < ApplicationController
+class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
@@ -10,6 +10,7 @@ class Users::TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
+    gon.push(task_id: @task.id)
   end
 
   # GET /tasks/new
@@ -84,6 +85,7 @@ class Users::TasksController < ApplicationController
         @tasks.each do |t|
           # Rails.logger.debug("here i am again!")
           return_tasks.push({
+            id: t.id,
             name: t.name,
             status: t.status,
             app_id: t.app_id
@@ -93,6 +95,24 @@ class Users::TasksController < ApplicationController
     end
     result_json[:code] = true
     result_json[:data] = return_tasks
+    render json: result_json
+  end
+
+  def task_page
+    @task = Task.find(params[:taskId])
+    redirect_to action:"show", controller:"tasks", user_id:@task.user_id, id: @task.id
+    # render json: result
+  end
+
+  def task_status
+    result_json = {
+      code: false,
+      data:[]
+    }
+    @task = Task.find(params[:task_id])
+    return_status = @task.status
+    result_json[:code] = true
+    result_json[:data] = return_status
     render json: result_json
   end
 

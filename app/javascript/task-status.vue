@@ -46,7 +46,7 @@
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
                   <el-progress :percentage="task.status"></el-progress>
-                  <el-button type="text">More</el-button>
+                  <el-button type="text" @click="goTo(task.id)">More</el-button>
               </el-card>
             </el-col>
           </div>
@@ -69,6 +69,7 @@ Vue.use(ElementUI)
 export default {
   data() {
     return {
+      url: '',
       dialogVisible: false,
       options: [],
       value: '',
@@ -88,6 +89,25 @@ export default {
     methods: {
       hideDialog () {
       this.dialogVisible = false
+      },
+      goTo(taskId) {
+      axios.post(
+          `/task-page`,
+        objectToFormData({
+          "taskId" : taskId
+        }),
+        {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then((response) => {
+          this.url = response.data.toString().split('\"')[1]
+          console.log(this.url)
+        }).finally(() => {
+          Turbolinks.visit(this.url, {"action":"replace"})
+      });
       },
       getCategoies() {
          axios.get(
@@ -130,11 +150,9 @@ export default {
             this.apps = response.data.data
             console.log(this.apps)
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
         }).finally(() => {});
       },
@@ -157,11 +175,9 @@ export default {
             this.tasks = response.data.data
             console.log(this.tasks)
           } else {
-            // alertCenter.add('danger', response.data.msg);
             console.log(response.data.msg)
           }
         }).catch((reason) => {
-          // alertCenter.add('danger', `${reason}`);
           console.log(reason)
         }).finally(() => {});
       },

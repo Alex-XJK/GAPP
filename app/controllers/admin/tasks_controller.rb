@@ -1,4 +1,5 @@
 class Admin::TasksController < ApplicationController
+    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
 
     def index
         @cats = Category.select(:id, :name, :created_at) 

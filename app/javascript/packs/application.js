@@ -17,7 +17,8 @@ import JobSubmitPipeline from "../job-submit-pipeline.vue";
 import StarApps from "../star-app-pagination.vue";
 import DataForm from "../data-form.vue";
 import DataUpload from "../data-upload.vue";
-import TaskStatus from "../task-status.vue"
+import TaskStatus from "../task-status.vue";
+import SpeTaskProgress from "../spe-task-progress.vue";
 
 document.addEventListener('DOMContentLoaded', (event) =>  {
     const vueLoadList = [
@@ -27,7 +28,8 @@ document.addEventListener('DOMContentLoaded', (event) =>  {
         ['#vapp-star-app-pagination', StarApps],
         ['#vapp-data-form', DataForm],
         ['#vapp-data-upload', DataUpload],
-        ['#vapp-task-status', TaskStatus]
+        ['#vapp-task-status', TaskStatus],
+        ['#vapp-spe-task-progress', SpeTaskProgress]
     ];
 
     $('[data-toggle="tooltip"]').tooltip();
