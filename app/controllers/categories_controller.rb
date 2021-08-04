@@ -1,21 +1,5 @@
-class Admin::CategoriesController < ApplicationController
-    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
-
-    def index
-        @cats = Category.select(:id, :name, :created_at).order(:id)
-        @cat_attrs = ["id", "name", "created_at"] 
-    end
-
-    def update
-        @cat = Category.find(params[:id])
-        @cat.update(name_params)
-    end
-
-    def new
-        @cat = Category.new(name: new_params["name"])
-        @cat.save()
-        redirect_to action: "index"
-    end
+class CategoriesController < ApplicationController
+    before_action :set_category, only: [:show, :edit, :update, :destroy]
 
     def all_categories
         @cats = Category.all

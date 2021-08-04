@@ -1,0 +1,234 @@
+<% content_for:head do%>
+
+<style>
+ /* #charts {
+  background-color: green;
+} */
+
+* {
+    box-sizing: inherit;
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+body {
+  background-color: #31353a;
+  overflow: scroll;
+}
+
+#sidebar0 {
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    padding: 1.5rem 1rem;
+    background: #444950;
+    overflow: scroll;
+}
+
+.menu-list {
+    /* line-height: 1.25; */
+}
+
+#sidebar0 .nav-item {
+  width: 180px;
+}
+
+
+ul {
+    list-style: none;
+}
+
+#charts .container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    margin: 0 auto;
+    position: relative;
+    width: auto;
+}
+
+ #charts .card {
+    margin: 4px;
+    width: 240px;
+    flex: 1 0 auto;
+    padding-bottom: 3rem;
+    /* background-color: green; */
+  }
+
+  .card {
+    background-color: #444950;
+    box-shadow: 0 2px 3px rgb(9 10 11 / 10%), 0 0 0 1px rgb(9 10 11 / 10%);
+    color: #f4f5f6;
+    max-width: 100%;
+    position: relative;
+}
+
+.card-content {
+    background-color: transparent;
+    padding: 1.5rem;
+}
+
+#charts .card .card-footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+.card-footer {
+    background-color: transparent;
+    border-top: 1px solid #717984;
+    align-items: stretch;
+    display: flex;
+}
+
+.card-footer a {
+    color: #00e6c4;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.menu-list a {
+    border-radius: 3px;
+    display: block;
+    color: #f4f5f6;
+    padding: 0.5em 0.75em;
+}
+
+.menu-list a:hover {
+  background-color: #31353a;
+}
+
+
+.card-footer-item {
+    align-items: center;
+    display: flex;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 0;
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+.card-footer-item:hover {
+  color: #ffffff;
+}
+
+.iactive {
+    background-color: #00e6c4;
+    color: #fff;
+}
+
+.img-container {
+    text-align: center;
+    display: block;
+    height: 180px;
+}
+
+.img-container img {
+    min-width: 85%;
+    min-height: 100%;
+}
+
+</style>
+
+<script>
+
+$(document).ready(function() {
+    console.log('Loaded.');
+    let ss = document.querySelector(".sidebar-container").querySelector("button");
+    var evt = document.createEvent("MouseEvents"); 
+    evt.initEvent("click", false, false);
+    ss.dispatchEvent(evt);
+});
+
+</script>
+
+<%end%>
+
+<% content_for :title, "App List" %>
+
+<body data-turbolinks="false">
+<div class="container-fluid p-0">
+
+    <div id="main-content" class="row no-gutters">
+
+    <div id="sidebar0" class="col">
+    <nav class="menu pl-4 navbar navbar-dark p-0">
+    <ul class="menu-list navbar-nav">
+        <li class="nav-item">
+          <% if String(@id) == "" %>
+          <a href="/applist" class="nav-link iactive active">
+              &nbsp;
+              <i class="fas fa-sitemap"></i>
+              All
+          </a>
+          <% else %>
+          <a href="/applist" class="nav-link">
+              &nbsp;
+              <i class="fas fa-sitemap"></i>
+              All
+          </a>
+          <% end %>
+        </li>
+        <div class="dropdown-divider"></div>
+        <% @categories.each do |cat| %>
+        <li class="nav-item">
+          <% if String(cat["id"]) == String(@id) %>
+          <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link iactive active">
+              &nbsp;
+              <i class="far fa-folder-open"></i>
+              <%= cat["name"] %>
+          </a>
+          <% else %>
+          <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link">
+              &nbsp;
+              <i class="far fa-folder"></i>
+              <%= cat["name"] %>
+          </a>
+          <% end %>
+        </li>
+        <% end %>
+    </ul>
+    </nav>
+    </div>
+
+      <div id="charts" class="col-10">
+        <div class="container">
+
+        <% @apps.each do |app| %>
+        <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                <%= app["name"] %>
+              </p>
+            </header>
+            <div class="card-image">
+              <div class="img-container">
+                <% if app.cover_image.attached? %>
+                    <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
+                <%  else %>
+                    [NO IMAGE]
+                <% end %>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="content">
+                <%= app["description"] %>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %> target="_blank">
+                <i class="far fa-eye"></i>
+                View
+              </a>
+            </footer>
+          </div>
+        <% end %>
+        <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
