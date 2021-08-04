@@ -3,6 +3,7 @@
     <h5>Progress Bar</h5>
     <el-progress :percentage="percentage" type="circle" :color="colors"></el-progress>
     <el-divider></el-divider>
+    <h5>Progress Details</h5>
     <p>
       Here should be some detailed info related to the current task. 
       Here should be some detailed info related to the current task.
