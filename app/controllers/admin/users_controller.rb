@@ -22,6 +22,11 @@ class Admin::UsersController < ApplicationController
     end
 
     def destroy
+        @tapps = App.where({ user_id: params[:id] })
+        for uapp in @tapps
+            uapp.user_id = 1
+            uapp.save(:validate => false)
+        end
         @user = User.find(params[:id])
         @user.destroy
     
