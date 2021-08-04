@@ -5,6 +5,7 @@
       placeholder="Choose a file..."
       drop-placeholder="Drop file here..."
       :multiple='true'
+      accept=".bam, .fq"
       v-model="files"
     ></b-form-file>
     <br>
@@ -60,7 +61,10 @@ Vue.use(ElementUI)
                 message: 'Uploaded successfully!'
             })
           } else {
-            console.log(response.data.msg)
+            this.$message({
+              type: 'error',
+              message: 'Uploaded failed!'
+            })
           }
         }).catch((reason) => {
           console.log(reason)

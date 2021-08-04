@@ -90,6 +90,25 @@ class AppsController < ApplicationController
     redirect_to apps_path
   end
 
+  def apps_info
+    @apps = App.where(category_id: params[:cate])
+    result_json = {
+        code: false,
+        data:[]
+    }
+    return_apps = []
+    @apps.each do |a|
+        return_apps.push({
+            Id: a.id,
+            name: a.name,
+            cate: a.category_id
+        })
+    end
+    result_json[:code] = true
+    result_json[:data] = return_apps
+    render json: result_json
+end
+
   private
     def app_params
       params.require(:app).permit(:app_no, :name, :price, :description, :create_report, :status, :user_id, :analysis_id, :category_id, :cover_image, :panel)

@@ -65,8 +65,8 @@ Rails.application.routes.draw do
   post  'data-file-info', to: 'users#data_file_info', format:'json'
   post  'data-file-delete', to: 'users#data_file_delete', format:'json'
   post  'data-file-rename', to: 'users#data_file_rename', format:'json'
-  get 'all-categories', to: 'admin/categories#all_categories', format: 'json'
-  post 'apps-info', to: 'admin/apps#apps_info', format: 'json'
+  get 'all-categories', to: 'categories#all_categories', format: 'json'
+  post 'apps-info', to: 'apps#apps_info', format: 'json'
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
@@ -109,6 +109,9 @@ Rails.application.routes.draw do
   # database pages
   get 'database/overview', to: 'database#overview'
   get 'demo', to: 'demo#index'
+  get 'demo/:id', to: 'demo#index'
+  get 'applist', to: 'applist#index'
+  get 'applist/:id', to: 'applist#index'
   
   scope '/visualizer' do
     resources :analysis
