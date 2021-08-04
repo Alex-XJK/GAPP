@@ -33,6 +33,10 @@ css:
         = icon 'fab', 'app-store', class: 'fa-fw'
         span.sidebar-text Star Apps
       br
+      = link_to "/applist" do
+        = icon 'fas', 'clipboard-list', class: 'fa-fw'
+        span.sidebar-text App List
+      br
   br
 
   .sidebar-section
@@ -85,8 +89,12 @@ css:
       = icon 'fas', 'user-shield', class: 'fa-fw'
       span.uncollapsed-only Admin
     .sidebar-item
+      = link_to admin_path do
+        = icon 'fas', 'cog', class: 'fa-fw'
+        span.sidebar-text Home
+      br
       = link_to admin_users_path do
-        = icon 'fas', 'user-cog', class: 'fa-fw'
+        = icon 'fas', 'users', class: 'fa-fw'
         span.sidebar-text User
       br
       = link_to admin_categories_path do

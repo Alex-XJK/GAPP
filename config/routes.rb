@@ -111,6 +111,8 @@ Rails.application.routes.draw do
   get 'database/overview', to: 'database#overview'
   get 'demo', to: 'demo#index'
   get 'demo/:id', to: 'demo#index'
+  get 'applist', to: 'applist#index'
+  get 'applist/:id', to: 'applist#index'
   
   scope '/visualizer' do
     resources :analysis
