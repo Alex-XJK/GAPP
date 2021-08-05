@@ -21,7 +21,7 @@ css:
     h1
       | Detailed information display for Application [ #{@app.name} ]
     .btn-group.btn-group-justified
-      = button_to apps_path, method: :get, class: 'btn btn-outline-dark btn-sm' do
+      button onclick="window.history.go(-1);" class="btn btn-outline-dark btn-sm"
         i.fas.fa-backward
         | back
       = button_to app_path(@app), method: :get, class: 'btn btn-outline-primary btn-sm' do
@@ -43,7 +43,7 @@ css:
           | pass
       button onclick="window.print();" class="btn btn-outline-info btn-sm"
         i.fas.fa-print
-        | Print
+        | print
   .card-body
     .row
       .col
