@@ -29,7 +29,9 @@ html
             div class="progress-bar progress-bar-striped bg-#{bootstrap_class_for_flash(type)}" role="progressbar" style="width:0%;"
     = render 'partials/nav'
     .d-flex
-      = render 'partials/sidebarA'
+      - if !current_page?(controller: 'welcome', action: 'index')
+        #sidebarA
+          = render 'partials/sidebarA'
       .flex-grow-1
         #wrapper
           #main

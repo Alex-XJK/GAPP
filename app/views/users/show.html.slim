@@ -14,42 +14,18 @@
             | User Name :  
             = @user.username
 
-      .card.analyses-card
-        .card-body
-          .card-title.m-0
-            h5
-              = icon 'fa', 'flask'
-              | Task Status
-          .text-muted
-            | Apps are sorted by categories while tasks belong to apps.
-            | 
-          .task-content
-            #vapp-task-status
-            
-        / - @app_categories.each do |c|
-        /   .card-body.analysis-category
-        /     h6.analysis-category-name
-        /       = icon 'fa', 'folder'
-        /       = c.name
-        /     .analyses
-        /       - c.tasks.each do |a|
-        /         - is_dovirus = Rails.configuration.x.features.dovirus && a.dovirus_enabled
-        /         - if visible_analysis(a)
-        /           .analysis-item
-        /             - check_result = a.able_for_project(@project)
-        /             - block_class = if check_result then 'active analysis-block' else 'analysis-block' end
-        /             div
-        /               - title = is_dovirus ? check_result[:report] : a.name
-        /               - data = is_dovirus ? {toggle: 'tooltip', html: 'true'} : {}
-        /               - path = @is_demo_project ? demo_project_analysis_path(a.url_name) : project_analysis_path(@project, a.url_name)
-        /               = link_to path, title: title, class: block_class, data: data do
-        /                 div
-        /                   = icon 'fa', 'flask'
-        /                   = a.name
-        /                 - if is_dovirus
-        /                   div
-        /                     .progress.mt-1 style="height: 2px"
-        /                       .progress-bar style=("width: #{check_result[:percentage]}%")
+    .card.analyses-card
+      .card-body
+        .card-title.m-0
+          h5
+            = icon 'fa', 'flask'
+            | Task Status
+        .text-muted
+          | Apps are sorted by categories while tasks belong to apps.
+          | 
+        .task-content
+          #vapp-task-status 
+
   .card.news-card
     .card-body
       .card-title
