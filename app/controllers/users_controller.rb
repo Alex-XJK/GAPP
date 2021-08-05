@@ -54,10 +54,14 @@ class UsersController < ApplicationController
         result_json = {
             code: false
         }
+        canBeSave = false
         @user = User.find(params[:id])
         Rails.logger.debug "Here is #{@user}"
-        @user.dataFiles = params[:dataFiles]
-        if @user.save
+        if params[:dataFile] != nil
+            canBeSave = true
+            @user.dataFiles = params[:dataFiles]
+        end
+        if @user.save && canBeSave
             result_json[:code] = true
         end
         render json: result_json
@@ -74,7 +78,7 @@ class UsersController < ApplicationController
             dataInfo.push({
                 dataId: f.id,
                 name: f.filename.to_s,
-                uploadTime: f.created_at
+                uploadTime: f.created_at.localtime.to_s.split[0]
             })
         end
         result_json[:code] = true

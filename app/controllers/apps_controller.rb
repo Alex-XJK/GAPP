@@ -1,4 +1,6 @@
 class AppsController < ApplicationController
+  http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:upgrade, :update, :destroy]
+
   def index
     @apps = App.all
     @count_online = App.where(status: 'online').count
@@ -87,6 +89,25 @@ class AppsController < ApplicationController
 
     redirect_to apps_path
   end
+
+  def apps_info
+    @apps = App.where(category_id: params[:cate])
+    result_json = {
+        code: false,
+        data:[]
+    }
+    return_apps = []
+    @apps.each do |a|
+        return_apps.push({
+            Id: a.id,
+            name: a.name,
+            cate: a.category_id
+        })
+    end
+    result_json[:code] = true
+    result_json[:data] = return_apps
+    render json: result_json
+end
 
   private
     def app_params
