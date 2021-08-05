@@ -130,6 +130,7 @@
             <th> Name </th>
             <th> Author </th>
             <th> Last Update Time </th>
+            <th> Status </th>
             <th> Action </th>
           
         </thead>
@@ -155,7 +156,17 @@
               <% end %>
 
               <td>
-              <a href="/apps/details/<%= app.id %>" target="_blank">
+                    <% if app.status=="online" %>
+                        <b style="color: forestgreen;"><i class="fas fa-check-circle"></i>online</b>
+                    <% elsif app.status=="audit" %>
+                        <b style="color: goldenrod;"><i class="fas fa-exclamation-circle"></i>audit</b>
+                    <% else %>
+                        <b style="color: crimson;"><i class="fas fa-times-circle"></i>offline</b>
+                    <% end %>
+              </td>
+
+              <td>
+              <a href="/apps/details/<%= app.id %>">
                   <button data-toggle="tooltip" type="button" title="View" class="btn btn-outline-success"> 
                       <i class="far fa-eye"></i>
                   </button>
