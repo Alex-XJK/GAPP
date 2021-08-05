@@ -10,7 +10,7 @@
       </el-table-column>
       <el-table-column
         prop="uploadTime"
-        label="Upload Time">
+        label="Uploaded Time">
       </el-table-column>
       <el-table-column
         label="Actions" align="center">
