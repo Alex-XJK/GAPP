@@ -1,6 +1,8 @@
 .card
   .card-header
     h1 New Application
-    = link_to "<-- BACK", apps_path
+    button onclick="window.history.go(-1);" class="btn btn-outline-dark btn-sm"
+      i.fas.fa-backward
+      | back
   .card-body
     = render "form", app: @app, analysis: @analysis, category: @category, userid: @user
