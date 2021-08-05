@@ -140,6 +140,11 @@
           = link_to root_path(anchor: "app_card") do
             = icon 'fab', 'app-store', class: 'fa-fw'
             span.sidebar-text Star Apps
+        li.sidebar-item
+          = link_to "/applist" do
+            = icon 'fas', 'clipboard-list', class: 'fa-fw'
+            span.sidebar-text App List
+
     
     .sidebar-section
       .sidebar-heading
@@ -184,6 +189,10 @@
         span.collapsed-only
           = icon 'fas', 'user-shield', class: 'fa-fw'
       ul
+        li.sidebar-item
+          = link_to admin_path do
+            = icon 'fas', 'cog', class: 'fa-fw'
+            span.sidebar-text Home
         li.sidebar-item
           = link_to admin_users_path do
             = icon 'fas', 'user-cog', class: 'fa-fw'
