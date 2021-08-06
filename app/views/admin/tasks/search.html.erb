@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <%= javascript_pack_tag "table_style" %> 
 
         <script>
     // $( document ).on('turbolinks:load', function() {
@@ -63,7 +62,7 @@
     <div id="result">
     <h3>Search Results</h3> <br>
     <div>
-    <table id="pj_table" class="display" style="margin: 0;">
+    <table id="pj_table" class="display table" style="margin: 0; width:100%">
         <thead>
                
             <th> Task Id </th>
@@ -92,11 +91,13 @@
               <% end %>
 
               <td>
-              <%= link_to '<button type="button" data-toggle="tooltip" title="Delete"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(res.id), method: :delete,
-                          data: { confirm: 'Are you sure?' } %>
+               <%= link_to '<button type="button" data-toggle="tooltip" title="Delete" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/tasks/" + String(res.id), method: :delete,
+                          data: { confirm: 'Are you sure you want to delete task ' + String(res.id) + '?<br>You can\'t undo this action.', 
+                                  title: 'Confirm your action', 
+                                  commit: 'Delete' } %>
             
-              <a href="/admin/tasks/<%= res.id %>">
-                <button data-toggle="tooltip" type="button" title="View"> 
+              <a href="/admin/tasks/<%= res.id %>" target="_blank">
+                <button data-toggle="tooltip" type="button" title="View" class="btn btn-outline-success"> 
                     <i class="far fa-eye"></i>
                 </button>
               </a>
