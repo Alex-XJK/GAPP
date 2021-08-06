@@ -203,7 +203,7 @@
             span.sidebar-text Home
         li.sidebar-item
           = link_to admin_users_path do
-            = icon 'fas', 'user-cog', class: 'fa-fw'
+            = icon 'fas', 'users', class: 'fa-fw'
             span.sidebar-text User
         li.sidebar-item
           = link_to admin_categories_path do
@@ -231,7 +231,7 @@
   
     .sidebar-section
       ul
-        li.sidebar-item
+        li.sidebar-item#sidebar-button
           button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
             = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
             = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'

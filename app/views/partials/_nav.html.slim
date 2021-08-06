@@ -24,10 +24,12 @@
             |  Role
             = icon 'fas', caret_icon
           .dropdown-menu
-            = link_to apps_path, class: 'dropdown-item' do
-              | Producer
             = link_to user_path(1), class: 'dropdown-item' do
               | User
+            = link_to apps_path, class: 'dropdown-item' do
+              | Producer
+            = link_to admin_path, class: 'dropdown-item' do
+              | Admin
         li.nav-item
           = link_to '/docs', class: 'nav-link' do
             = icon 'fa', 'file-alt'
