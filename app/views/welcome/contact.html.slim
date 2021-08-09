@@ -1,20 +1,124 @@
-.index-banner
+/ .index-banner
+/   .container
+/     h1.display-4.font-weight-bold.text-center Contact us
+/ .container
+/   card.text-center
+/     h3 Authors
+/     li HUANG Yuqin, yqhuang23-c@my.cityu.edu.hk
+/     li XU Jiakai, jiakai.xu@my.cityu.edu.hk
+/     li ZHANG Xun, xzhang2487-c@my.cityu.edu.hk
+/     li WANG Yanfei, mintywangtvt@gmail.com
+/     li LI Shiying, shiyingli7-c@my.cityu.edu.hk
+/     li CHE Lijia, lijiache2-c@my.cityu.edu.hk
+/     li LI Shuai Cheng, shuaicli@cityu.edu.hk
+
+/     p If you have any questions or suggestions, you can contact us by sending an email to shiyingli7-c@my.cityu.edu.hk or shuaicli@cityu.edu.hk.
+
+/     p All rights are reserved to Prof. LI Shuai Cheng.
+
+/   div 
+/     script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=536ucelbrcc&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"
+
+- content_for :title
+  | Contact Us
+
+section.sec-team
   .container
-    h1.display-4.font-weight-bold.text-center Contact us
-.container
-  card.text-center
-    h3 Authors
-    li HUANG Yuqin, yqhuang23-c@my.cityu.edu.hk
-    li XU Jiakai, jiakai.xu@my.cityu.edu.hk
-    li ZHANG Xun, xzhang2487-c@my.cityu.edu.hk
-    li WANG Yanfei, mintywangtvt@gmail.com
-    li LI Shiying, shiyingli7-c@my.cityu.edu.hk
-    li CHE Lijia, lijiache2-c@my.cityu.edu.hk
-    li LI Shuai Cheng, shuaicli@cityu.edu.hk
+    h1 Team
+    p.desc
+      | Based in City University of Hong Kong, led by Dr. Shuaicheng LI, we are a multidisciplinary group of
+        top-ranking and aspiring undergraduates, research assistants and Ph.D. students working tirelessly to
+        bring you a brand-new experience in bioinformatics research that frees you from all the chores and empowers your journey of discovery.
+    .team-container
+      .team-member-container
+        .team-member-links
+          a.link href="http://www.cs.cityu.edu.hk/profile/shuaicli.html"
+            i.fas.fa-home
+          a.link.link-m data-link="c2h1YWljbGlAY2l0eXUuZWR1Lmhr" href=""
+            i.fas.fa-envelope
+        .team-member
+          = image_tag 'avatar.gif', alt: 'Dr. LI Shuaicheng', class: 'avatar'
+          .intro
+            h4 Dr. LI Shuaicheng
+            h5 Supervisor
+            p Supervisor
 
-    p If you have any questions or suggestions, you can contact us by sending an email to shiyingli7-c@my.cityu.edu.hk or shuaicli@cityu.edu.hk.
+      .team-member-container
+        .team-member-links
+          / a.link href=""
+          /   i.fab.fa-github
+          a.link.link-m data-link="eXFodWFuZzIzLWNAbXkuY2l0eXUuZWR1Lmhr" href=""
+            i.fas.fa-envelope
+        .team-member
+          = image_tag 'avatar.gif', alt: 'Ms. HUANG Yuqin', class: 'avatar'
+          .intro
+            h4 Ms. HUANG Yuqin
+            h5 Research Assistant
+            p Developed this platform and the framework.
 
-    p All rights are reserved to Prof. LI Shuai Cheng.
+      .team-member-container
+        .team-member-links
+          / a.link href=""
+          /   i.fab.fa-github
+          a.link.link-m data-link="amlha2FpLnh1QG15LmNpdHl1LmVkdS5oaw==" href=""
+            i.fas.fa-envelope
+        .team-member
+          = image_tag 'avatar.gif', alt: 'Mr. XU Jiakai', class: 'avatar'
+          .intro
+            h4 Mr. XU Jiakai
+            h5 Research Assistant
+            p Developed this platform and the framework.
+      
+      .team-member-container
+        .team-member-links
+          / a.link href=""
+          /   i.fab.fa-github
+          a.link.link-m data-link="eHpoYW5nMjQ4Ny1jQG15LmNpdHl1LmVkdS5oaw==" href=""
+            i.fas.fa-envelope
+        .team-member
+          = image_tag 'avatar.gif', alt: 'Mr. ZHANG Xun', class: 'avatar'
+          .intro
+            h4 Mr. ZHANG Xun
+            h5 Research Assistant
+            p Developed this platform and the framework.
+        
+      .team-member-container
+        .team-member-links
+          a.link.link-m data-link="bWludHl3YW5ndHZ0QGdtYWlsLmNvbQ==" href=""
+            i.fas.fa-envelope
+        .team-member
+          = image_tag 'avatar.gif', alt: 'Ms. WANG Yanfei', class: 'avatar'
+          .intro
+            h4 Ms. WANG Yanfei
+            h5 Research Assistant
+            p  Provided technical support.
+     
+      .team-member-container
+        .team-member-links
+          a.link.link-m data-link="c2hpeWluZ2xpNy1jQG15LmNpdHl1LmVkdS5oaw==" href=""
+            i.fas.fa-envelope
+        .team-member
+          = image_tag 'avatar.gif', alt: 'Ms. LI Shiying', class: 'avatar'
+          .intro
+            h4 Ms. LI Shiying
+            h5 Final Year Student
+            p Supervisor.
+     
+      .team-member-container
+        .team-member-links
+          a.link.link-m data-link="bGlqaWFjaGUyLWNAbXkuY2l0eXUuZWR1Lmhr" href=""
+            i.fas.fa-envelope
+        .team-member
+          = image_tag 'avatar.gif', alt: 'Ms. CHE Lijia', class: 'avatar'
+          .intro
+            h4 Ms. CHE Lijia
+            h5 Ph.D. Student
+            p Supervisor.
+    
 
-  div 
-    script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=536ucelbrcc&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"
+- content_for :page_script do
+  javascript:
+    var e = document.getElementsByClassName("link-m");
+    Array.prototype.forEach.call(e, el => {
+      el.href = "mailto:" + atob(el.dataset.link);
+    });
