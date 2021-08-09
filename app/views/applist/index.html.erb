@@ -11,8 +11,10 @@
 }
 
 body {
-  background-color: #31353a;
+  /* background-color: #31353a; */
   /* overflow: scroll; */
+
+  background-color: lightgrey;
 }
 
 #wrapper, #main, .container-fluid, #main-content {
@@ -25,8 +27,9 @@ body {
     left: 0;
     width: 240px;
     padding: 1.5rem 1rem;
-    background: #444950;
+    /* background: #444950; */
     /* overflow: scroll; */
+    background: #fff;
 }
 
 .menu-list {
@@ -60,11 +63,13 @@ ul {
   }
 
   .card {
-    background-color: #444950;
+    /* background-color: #444950; */
     box-shadow: 0 2px 3px rgb(9 10 11 / 10%), 0 0 0 1px rgb(9 10 11 / 10%);
-    color: #f4f5f6;
+    /* color: #f4f5f6; */
     max-width: 21%;
     position: relative;
+
+    background-color: #fff;
 }
 
 .card-content {
@@ -100,7 +105,8 @@ ul {
 }
 
 .menu-list a:hover {
-  background-color: #31353a;
+  /* background-color: #31353a; */
+  background-color: pink;
 }
 
 
@@ -115,7 +121,8 @@ ul {
 }
 
 .card-footer-item:hover {
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: pink;
 }
 
 .iactive {
@@ -158,7 +165,7 @@ $(document).ready(function() {
     <div id="main-content" class="row no-gutters">
 
     <div id="sidebar0" class="col">
-    <nav class="menu pl-4 navbar navbar-dark p-0">
+    <nav class="menu pl-4 navbar navbar-light p-0">
     <ul class="menu-list navbar-nav">
         <li class="nav-item">
           <% if String(@id) == "" %>

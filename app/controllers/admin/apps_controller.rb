@@ -9,8 +9,8 @@ class Admin::AppsController < ApplicationController
     end
 
     def search
-        @input_str = params[:name].downcase()
-        @results = App.where('lower(name) LIKE ?', '%' + @input_str + '%').all
+        @input_str = params[:name]
+        @results = App.where('lower(name) LIKE ?', '%' + @input_str.downcase() + '%').all
         
         @cats = Category.select(:id, :name, :created_at) 
         @apps = App.select(:id, :app_no, :name, :user_id, :updated_at, :category_id)
