@@ -12,7 +12,12 @@
 
 body {
   background-color: #31353a;
-  overflow: scroll;
+  /* overflow: scroll; */
+}
+
+#wrapper, #main, .container-fluid, #main-content {
+  /* border: 2px solid red; */
+  height: 100%;
 }
 
 #sidebar0 {
@@ -21,7 +26,7 @@ body {
     width: 240px;
     padding: 1.5rem 1rem;
     background: #444950;
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 
 .menu-list {
@@ -58,7 +63,7 @@ ul {
     background-color: #444950;
     box-shadow: 0 2px 3px rgb(9 10 11 / 10%), 0 0 0 1px rgb(9 10 11 / 10%);
     color: #f4f5f6;
-    max-width: 100%;
+    max-width: 21%;
     position: relative;
 }
 
@@ -135,7 +140,7 @@ ul {
 
 $(document).ready(function() {
     console.log('Loaded.');
-    let ss = document.querySelector(".sidebar-container").querySelector("button");
+    let ss = document.querySelector("#sidebar-button").querySelector("button");
     var evt = document.createEvent("MouseEvents"); 
     evt.initEvent("click", false, false);
     ss.dispatchEvent(evt);
@@ -174,17 +179,31 @@ $(document).ready(function() {
         <% @categories.each do |cat| %>
         <li class="nav-item">
           <% if String(cat["id"]) == String(@id) %>
-          <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link iactive active">
-              &nbsp;
-              <i class="far fa-folder-open"></i>
-              <%= cat["name"] %>
-          </a>
+            <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link iactive active">
+                &nbsp;
+                <i class="far fa-folder-open"></i>
+                <%= cat["name"] %>
+            </a>
           <% else %>
-          <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link">
-              &nbsp;
-              <i class="far fa-folder"></i>
-              <%= cat["name"] %>
-          </a>
+            <% @count = 0 %>
+            <% @apps.each do |app| %>
+              <% if String(app["category_id"]) == String(cat["id"]) %>
+                <% @count += 1 %>
+              <% end %>
+            <% end %>
+            <% if @count == 0 %>
+              <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link disabled">
+                  &nbsp;
+                  <i class="far fa-folder"></i>
+                  <%= cat["name"] %>
+              </a>
+            <% else %>
+              <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link">
+                  &nbsp;
+                  <i class="far fa-folder"></i>
+                  <%= cat["name"] %>
+              </a>
+            <% end %>
           <% end %>
         </li>
         <% end %>
@@ -197,7 +216,7 @@ $(document).ready(function() {
 
         <% @apps.each do |app| %>
         <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
-          <div class="card">
+          <div class="card col-3">
             <header class="card-header">
               <p class="card-header-title">
                 <%= app["name"] %>
@@ -214,11 +233,12 @@ $(document).ready(function() {
             </div>
             <div class="card-content">
               <div class="content">
-                <%= app["description"] %>
+                <% @des = String(app["description"]) %>
+                <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
               </div>
             </div>
             <footer class="card-footer">
-              <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %> target="_blank">
+              <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %>>
                 <i class="far fa-eye"></i>
                 View
               </a>
