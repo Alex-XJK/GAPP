@@ -233,3 +233,76 @@ body.welcome
             min-height: 500px
             p 
                 margin-top: 200px
+
+    .sec-team
+        .container
+            margin-top: 4rem
+        .desc
+            margin: 4rem 0 2rem 0
+            font-size: 1.1rem
+        .team-container
+            margin: 2rem -2rem 8rem -2rem
+            display: flex
+            flex-wrap: wrap
+            justify-content: center
+            align-items: stretch
+            @media(min-width: 992px)
+                &:after
+                    content: ""
+                    flex: auto
+            .team-member-container
+                position: relative
+                flex-basis: 50%
+                min-width: 430px
+                padding: 1.75rem 2rem
+                &:hover
+                    .team-member
+                        transform: translateY(-15px)
+                    .team-member-links
+                        transform: translateY(15px)
+                .team-member
+                    position: relative
+                    transition: all 0.2s ease-in
+                    border-radius: 4px
+                    border: 1px solid #2a2a2a
+                    padding: 2.5rem
+                    height: 100%
+                    background: #f2f2f2
+                    box-shadow: 0 0 16px #2a2a2a
+                    display: flex
+                    align-items: center
+                    .avatar
+                        width: 112px
+                        flex-basis: 112px
+                        flex-shrink: 0
+                        height: 112px
+                        border: 1px solid #333
+                        border-radius: 57px
+                        margin: 0 15px
+                        box-shadow: 0 0 4px #000
+                    .intro
+                        text-align: left
+                        padding-left: 1em
+                        h4
+                            color: #333333
+                        h5
+                            font-size: 1rem
+                            text-transform: uppercase
+                            color: #333333
+                        p
+                            color: #333333
+                .team-member-links
+                    position: absolute
+                    transition: all 0.2s ease-in
+                    height: 36px
+                    bottom: 1.25rem
+                    left: 2rem
+                    right: 2rem
+                    padding-top: 6px
+                    background: linear-gradient(120deg, darken($theme, 10%) 0%, darken($theme, 25%) 85%)
+                    border-radius: 0 0 4px 4px
+                    text-align: center
+                    .link
+                        margin: 0 5px
+                        &, &:hover, &:active, &:focus
+                            color: #fff
