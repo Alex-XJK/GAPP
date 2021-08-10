@@ -129,110 +129,110 @@
   /     = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
 
 
-.sizebar-container
-    .sidebar-section
-      .sidebar-heading
-        span.uncollapsed-only Homepage
-        span.collapsed-only
-          = icon 'fas', 'home', class: 'fa-fw'
-      ul
-        li.sidebar-item
-          = link_to root_path do
-            = icon 'fas', 'h-square', class: 'fa-fw'
-            span.sidebar-text Home
-        li.sidebar-item
-         = link_to root_path(anchor: "demo") do
-          = icon 'fas', 'images', class: 'fa-fw'
-          span.sidebar-text Demo
-        li.sidebar-item
-          = link_to root_path(anchor: "app_card") do
-            = icon 'fab', 'app-store', class: 'fa-fw'
-            span.sidebar-text Star Apps
-        li.sidebar-item
-          = link_to "/applist" do
-            = icon 'fas', 'clipboard-list', class: 'fa-fw'
-            span.sidebar-text App List
+.sidebar-container
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Homepage
+      span.collapsed-only
+        = icon 'fas', 'home', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to root_path do
+          = icon 'fas', 'h-square', class: 'fa-fw'
+          span.sidebar-text Home
+      li.sidebar-item
+        = link_to root_path(anchor: "demo") do
+        = icon 'fas', 'images', class: 'fa-fw'
+        span.sidebar-text Demo
+      li.sidebar-item
+        = link_to root_path(anchor: "app_card") do
+          = icon 'fab', 'app-store', class: 'fa-fw'
+          span.sidebar-text Star Apps
+      li.sidebar-item
+        = link_to "/applist" do
+          = icon 'fas', 'clipboard-list', class: 'fa-fw'
+          span.sidebar-text App List
 
-    
-    .sidebar-section
-      .sidebar-heading
-        span.uncollapsed-only Personal Data
-        span.collapsed-only
-          = icon 'fas', 'user-circle', class: 'fa-fw'
-      ul
-        li.sidebar-item
-          = link_to user_path("1") do
-            = icon 'fas', 'id-card', class: 'fa-fw'
-            span.sidebar-text Profile
-            
-    .sidebar-section
-      .sidebar-heading
-        span.uncollapsed-only Applications
-        span.collapsed-only
-          = icon 'fab', 'app-store-ios', class: 'fa-fw'
-      ul
-        li.sidebar-item
-          = link_to apps_path do
-            = icon 'fas', 'desktop', class: 'fa-fw'
-            span.sidebar-text My Apps
 
-    .sidebar-section
-      .sidebar-heading
-        span.uncollapsed-only Producer
-        span.collapsed-only
-          = icon 'fas', 'industry', class: 'fa-fw'
-      ul
-        li.sidebar-item
-          = link_to apps_path do
-            = icon 'fas', 'list', class: 'fa-fw'
-            span.sidebar-text Manage
-        li.sidebar-item
-          = link_to createnew_app_path("1") do
-            = icon 'fas', 'plus', class: 'fa-fw'
-            span.sidebar-text New App
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Personal Data
+      span.collapsed-only
+        = icon 'fas', 'user-circle', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to user_path("1") do
+          = icon 'fas', 'id-card', class: 'fa-fw'
+          span.sidebar-text Profile
 
-    .sidebar-section
-      .sidebar-heading
-        span.uncollapsed-only Admin
-        span.collapsed-only
-          = icon 'fas', 'user-shield', class: 'fa-fw'
-      ul
-        li.sidebar-item
-          = link_to admin_path do
-            = icon 'fas', 'cog', class: 'fa-fw'
-            span.sidebar-text Home
-        li.sidebar-item
-          = link_to admin_users_path do
-            = icon 'fas', 'users', class: 'fa-fw'
-            span.sidebar-text User
-        li.sidebar-item
-          = link_to admin_categories_path do
-            = icon 'fas', 'sitemap', class: 'fa-fw'
-            span.sidebar-text Category
-        li.sidebar-item
-          = link_to admin_apps_path do
-            = icon 'fas', 'layer-group', class: 'fa-fw'
-            span.sidebar-text App
-        li.sidebar-item
-          = link_to admin_tasks_path do
-            = icon 'fas', 'tasks', class: 'fa-fw'
-            span.sidebar-text Task
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Applications
+      span.collapsed-only
+        = icon 'fab', 'app-store-ios', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to apps_path do
+          = icon 'fas', 'desktop', class: 'fa-fw'
+          span.sidebar-text My Apps
 
-    .sidebar-section
-      .sidebar-heading
-        span.uncollapsed-only Logout
-        span.collapsed-only
-          = icon 'fas', 'sign-out-alt', class: 'fa-fw'
-      ul
-        li.sidebar-item
-          = link_to root_path do
-            = icon 'fas', 'door-open', class: 'fa-fw'
-            span.sidebar-text Logout
-  
-    .sidebar-section
-      ul
-        li.sidebar-item#sidebar-button
-          button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
-            = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
-            = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
-            span.sidebar-text Collapse
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Producer
+      span.collapsed-only
+        = icon 'fas', 'industry', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to apps_path do
+          = icon 'fas', 'list', class: 'fa-fw'
+          span.sidebar-text Manage
+      li.sidebar-item
+        = link_to createnew_app_path("1") do
+          = icon 'fas', 'plus', class: 'fa-fw'
+          span.sidebar-text New App
+
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Admin
+      span.collapsed-only
+        = icon 'fas', 'user-shield', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to admin_path do
+          = icon 'fas', 'cog', class: 'fa-fw'
+          span.sidebar-text Home
+      li.sidebar-item
+        = link_to admin_users_path do
+          = icon 'fas', 'users', class: 'fa-fw'
+          span.sidebar-text User
+      li.sidebar-item
+        = link_to admin_categories_path do
+          = icon 'fas', 'sitemap', class: 'fa-fw'
+          span.sidebar-text Category
+      li.sidebar-item
+        = link_to admin_apps_path do
+          = icon 'fas', 'layer-group', class: 'fa-fw'
+          span.sidebar-text App
+      li.sidebar-item
+        = link_to admin_tasks_path do
+          = icon 'fas', 'tasks', class: 'fa-fw'
+          span.sidebar-text Task
+
+  .sidebar-section
+    .sidebar-heading
+      span.uncollapsed-only Logout
+      span.collapsed-only
+        = icon 'fas', 'sign-out-alt', class: 'fa-fw'
+    ul
+      li.sidebar-item
+        = link_to root_path do
+          = icon 'fas', 'door-open', class: 'fa-fw'
+          span.sidebar-text Logout
+
+  .sidebar-section
+    ul
+      li.sidebar-item#sidebar-button
+        button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
+          = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
+          = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
+          span.sidebar-text Collapse

@@ -69,7 +69,7 @@ class AppsController < ApplicationController
 
   def edit
     @app = App.find(params[:id])
-    @analysis = Analysis.all.collect{ |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
+    @analysis = Analysis.all.collect { |item| [item.name, item.id]}.insert(0, ['Please select...', nil])
     @user = @app.user_id
   end
 
@@ -77,7 +77,7 @@ class AppsController < ApplicationController
     @app = App.find(params[:id])
 
     if @app.update(app_params)
-      redirect_to check_detail_app_path
+      redirect_to apps_path
     else
       render :edit
     end
