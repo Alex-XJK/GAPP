@@ -52,17 +52,25 @@ class UsersController < ApplicationController
 
     def data_file_upload
         result_json = {
-            code: false
+            code: false,
+            msg: ''
         }
         canBeSave = false
         @user = User.find(params[:id])
         Rails.logger.debug "Here is #{@user}"
-        if params[:dataFile] != nil
+        Rails.logger.debug "size #{@user.dataFiles.length}"
+        if params[:dataFiles] == nil
+            result_json[:msg] = 'Empty file cannot be saved!'
+        elsif @user.dataFiles.length >= 2
+            result_json[:msg] = 'You have exceeded the maximum number of files!'
+        else
             canBeSave = true
             @user.dataFiles = params[:dataFiles]
         end
+        # Rails.logger.debug "canbesave is #{canBeSave}"
         if @user.save && canBeSave
             result_json[:code] = true
+            result_json[:msg] = 'Done!'
         end
         render json: result_json
     end
