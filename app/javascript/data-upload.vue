@@ -63,7 +63,7 @@ Vue.use(ElementUI)
           } else {
             this.$message({
               type: 'error',
-              message: 'Uploaded failed!'
+              message: response.data.msg
             })
           }
         }).catch((reason) => {
