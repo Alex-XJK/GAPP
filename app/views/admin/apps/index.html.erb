@@ -94,11 +94,14 @@
   
     <hr>
 
-    <form action="/admin/apps/search" method="POST">
+    <form action="/admin/apps/search" method="POST" id="searchapp">
     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
     Search for an app by Name: &nbsp;
     <input type="text" id="text" name="name">
-    <button type="submit" id="search" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    <button type="submit" id="search" class="btn btn-primary">
+      <i class="fas fa-search"></i>
+    </button> &nbsp;
+    <span class="badge badge-pill badge-danger" id="warning">Please input a keyword.</span>
     </form>
 
     <div id="accordion">
