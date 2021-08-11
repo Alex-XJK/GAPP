@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
+    # http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
     $user_stor_dir = "#{Rails.root}/data/user"
 
     def index

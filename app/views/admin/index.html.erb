@@ -44,6 +44,31 @@
   Admin Home
   </h1>
 
+  <div class="container-fluid">
+  <h3>Account information</h3>
+  <p>Here is the information for your account.</p>            
+  <table class="table table-hover">
+    <tbody>
+      <tr>
+        <td>account_signed_in?</td>
+        <td><%= account_signed_in? %></td>
+      </tr>
+      <tr>
+        <td>current_account</td>
+        <td><%= current_account %></td>
+      </tr>
+      <tr>
+        <td>account_session</td>
+        <td><%= account_session %></td>
+      </tr>
+      <tr>
+        <td>admin permission</td>
+        <td><%= Ability.new(current_account).can? :manage, :all %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
   <div class="container-fluid">
   <h3>System information</h3>
