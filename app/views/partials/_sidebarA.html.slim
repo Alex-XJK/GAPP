@@ -176,58 +176,72 @@
           = icon 'fas', 'desktop', class: 'fa-fw'
           span.sidebar-text My Apps
 
-  .sidebar-section
-    .sidebar-heading
-      span.uncollapsed-only Producer
-      span.collapsed-only
-        = icon 'fas', 'industry', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to apps_path do
-          = icon 'fas', 'list', class: 'fa-fw'
-          span.sidebar-text Manage
-      li.sidebar-item
-        = link_to createnew_app_path("1") do
-          = icon 'fas', 'plus', class: 'fa-fw'
-          span.sidebar-text New App
+  - if account_signed_in? and (current_account.has_role? :admin or current_account.has_role? :producer)
+    .sidebar-section
+      .sidebar-heading
+        span.uncollapsed-only Producer
+        span.collapsed-only
+          = icon 'fas', 'industry', class: 'fa-fw'
+      ul
+        li.sidebar-item
+          = link_to apps_path do
+            = icon 'fas', 'list', class: 'fa-fw'
+            span.sidebar-text Manage
+        li.sidebar-item
+          = link_to createnew_app_path("1") do
+            = icon 'fas', 'plus', class: 'fa-fw'
+            span.sidebar-text New App
 
-  .sidebar-section
-    .sidebar-heading
-      span.uncollapsed-only Admin
-      span.collapsed-only
-        = icon 'fas', 'user-shield', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to admin_path do
-          = icon 'fas', 'cog', class: 'fa-fw'
-          span.sidebar-text Home
-      li.sidebar-item
-        = link_to admin_users_path do
-          = icon 'fas', 'users', class: 'fa-fw'
-          span.sidebar-text User
-      li.sidebar-item
-        = link_to admin_categories_path do
-          = icon 'fas', 'sitemap', class: 'fa-fw'
-          span.sidebar-text Category
-      li.sidebar-item
-        = link_to admin_apps_path do
-          = icon 'fas', 'layer-group', class: 'fa-fw'
-          span.sidebar-text App
-      li.sidebar-item
-        = link_to admin_tasks_path do
-          = icon 'fas', 'tasks', class: 'fa-fw'
-          span.sidebar-text Task
+  - if account_signed_in? and current_account.has_role? :admin
+    .sidebar-section
+      .sidebar-heading
+        span.uncollapsed-only Admin
+        span.collapsed-only
+          = icon 'fas', 'user-shield', class: 'fa-fw'
+      ul
+        li.sidebar-item
+          = link_to admin_path do
+            = icon 'fas', 'cog', class: 'fa-fw'
+            span.sidebar-text Home
+        li.sidebar-item
+          = link_to admin_users_path do
+            = icon 'fas', 'users', class: 'fa-fw'
+            span.sidebar-text User
+        li.sidebar-item
+          = link_to admin_categories_path do
+            = icon 'fas', 'sitemap', class: 'fa-fw'
+            span.sidebar-text Category
+        li.sidebar-item
+          = link_to admin_apps_path do
+            = icon 'fas', 'layer-group', class: 'fa-fw'
+            span.sidebar-text App
+        li.sidebar-item
+          = link_to admin_tasks_path do
+            = icon 'fas', 'tasks', class: 'fa-fw'
+            span.sidebar-text Task
 
-  .sidebar-section
-    .sidebar-heading
-      span.uncollapsed-only Logout
-      span.collapsed-only
-        = icon 'fas', 'sign-out-alt', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to root_path do
-          = icon 'fas', 'door-open', class: 'fa-fw'
-          span.sidebar-text Logout
+  - if account_signed_in?
+    .sidebar-section
+      .sidebar-heading
+        span.uncollapsed-only Logout
+        span.collapsed-only
+          = icon 'fas', 'sign-out-alt', class: 'fa-fw'
+      ul
+        li.sidebar-item
+          = link_to destroy_account_session_path, method: :delete do
+            = icon 'fas', 'door-open', class: 'fa-fw'
+            span.sidebar-text Logout
+  - else
+    .sidebar-section
+      .sidebar-heading
+        span.uncollapsed-only Login
+        span.collapsed-only
+          = icon 'fas', 'sign-in-alt', class: 'fa-fw'
+      ul
+        li.sidebar-item
+          = link_to new_account_session_path do
+            = icon 'fas', 'key', class: 'fa-fw'
+            span.sidebar-text Login
 
   .sidebar-section
     ul

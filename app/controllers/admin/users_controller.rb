@@ -1,6 +1,16 @@
 class Admin::UsersController < ApplicationController
+    before_action :authenticate_account!
+    before_action :require_admin
+    
     # http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
     $user_stor_dir = "#{Rails.root}/data/user"
+
+    def require_admin
+        unless account_signed_in? and current_account.has_role? :admin
+          flash[:error] = "You must be an admin to access this page. (Current role: " + current_account.roles.first.name + ")"
+          redirect_to "/" # halts request cycle
+        end
+    end
 
     def index
         @projects = App.order(:name)

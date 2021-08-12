@@ -62,8 +62,8 @@
         <td><%= account_session %></td>
       </tr>
       <tr>
-        <td>admin permission</td>
-        <td><%= Ability.new(current_account).can? :manage, :all %></td>
+        <td>account_role</td>
+        <td><%= current_account.roles.first.name %></td>
       </tr>
     </tbody>
   </table>
