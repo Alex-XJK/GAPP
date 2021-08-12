@@ -34,21 +34,23 @@ class SubmitController < ApplicationController
   end
 
   def index
+    # id = params[:id]
+    # gon.push id: id
+    # uid = session[:user_id]
+    # @user = User.find(uid)
+    # # user_dir = File.join($user_stor_dir, uid.to_s)
+    # @datasets = @user.datasets
+    # data = {}
+    # @datasets.each do |ds|
+    #   ds_name = ds.name
+    #   # ds_dir = File.join(user_dir, ds_name)
+    #   # file_list = Dir.entries(ds_dir)[2..-1]
+    #   data[ds_name] = ds_name
+    # end
+    # gon.push select_box_option: data
     id = params[:id]
     gon.push id: id
-    uid = session[:user_id]
-    @user = User.find(uid)
-    # user_dir = File.join($user_stor_dir, uid.to_s)
-    @datasets = @user.datasets
-    data = {}
-    @datasets.each do |ds|
-      ds_name = ds.name
-      # ds_dir = File.join(user_dir, ds_name)
-      # file_list = Dir.entries(ds_dir)[2..-1]
-      data[ds_name] = ds_name
-    end
-    gon.push select_box_option: data
-
+    puts gon.id
   end
 
   def query
@@ -181,7 +183,8 @@ class SubmitController < ApplicationController
   end
 
   def submit_app_task_dummy
-    uid = session[:user_id]
+    # uid = session[:user_id]
+    uid = 1
     @user = User.find(uid)
     user_dir = File.join($user_stor_dir, uid.to_s)
 
@@ -192,15 +195,15 @@ class SubmitController < ApplicationController
     begin
       app_id = params[:app_id]
       app_inputs = params[:inputs]
-      app_params = params[:params]
-      app_selected = params[:selected]
-      is_analysis = true
-      if !params[:mid].blank?
-        @analysis = Analysis.find_by mid:params[:mid]
-      else
-        is_analysis = false
-        @pipeline = AnalysisPipeline.find_by pid:params[:pid]
-      end
+      # app_params = params[:params]
+      # app_selected = params[:selected]
+      # is_analysis = true
+      # if !params[:mid].blank?
+      #   @analysis = Analysis.find_by mid:params[:mid]
+      # else
+      #   is_analysis = false
+      #   @pipeline = AnalysisPipeline.find_by pid:params[:pid]
+      # end
 
       # submit task
 
@@ -248,110 +251,74 @@ class SubmitController < ApplicationController
   end
 
   def submit_app_task
-    uid = session[:user_id]
-    @user = User.find(uid)
-    # user_dir = File.join($user_stor_dir, uid.to_s)
     result_json = {
       code: false,
       data: ''
     }
     begin
-      app_id = params[:app_id]
-      app_inputs = params[:inputs]
-      app_params = params[:params]
-      app_selected = params[:selected]
-      is_pipeline = params[:is_pipeline]
-      @analysis = Analysis.find_by mid:params[:mid]
+      # app_inputs = params[:inputs]
+      # app_inputs = Array.new
+      # app_inputs.push(User.find(1).dataFiles[1].download)
+      # app_inputs.push(App.find(1).panel.download)
+
+      # app_params = params[:params]
+
+      app_p = App.find(params[:pid])
+      user_p = User.find(params[:uid])
+      analy_p = Analysis.find(app_p.analysis_id)
+
+      user_file = user_p.dataFiles[1]
+      panel_file = app_p.panel
+      doap_num = analy_p.doap_id
 
       inputs = Array.new
       params = Array.new
 
-      
-      # store selected file to user's data folder
-      app_selected&.each do |k, v|
-        next unless !v.blank?
-        ds_name = v
-        @dataset = @user.datasets.find_by(name: v)
-        data = @dataset.abd_file()
-        # file_path = File.join(user_dir, ds_name, file_name)
-        # fix the source of file
-        # file = File.open file_path
-        
-        time = Time.now
-        time_str = time.strftime("%Y_%m_%d")       
-        time_str += ("_" + time.strftime("%k_%M")) 
-        time_str = time_str.gsub(' ','')
-        file_name = "#{ds_name}_abd.tsv"
-        file = File.new(file_name, 'w')
-        file.write(data)
-        uploader = JobInputUploader.new
-        uploader.store!(file)
-        
-        
-        Rails.logger.info("=======>#{uploader}")
-        inputs.push({
-          k => '/data/' + file_name
-        })
-        file.close
-        
-      end
-
       # store input file to user's data folder
-      app_inputs&.each do |k, v|
-        uploader = JobInputUploader.new
-        uploader.store!(v)
-        unless v.nil? || v == ""
-                inputs.push({
-                  k => '/data/' + v.original_filename,
-                })
-        end
-      end
-      
-      app_params&.each do |p|
-        p.each do |k, v|
-          params.push({
-            k => v,
-          })
-        end
-      end
-      
-      
+      uploaderU = JobInputUploader.new
+      uploaderU.store!(user_file.download)
+      inputs.push({
+                    0 => '/data/' + user_file.filename.to_s,
+                  })
+      uploaderP = JobInputUploader.new
+      uploaderP.store!(panel_file.download)
+      inputs.push({
+                    1 => '/data/' + panel_file.filename.to_s,
+                  })
+      # app_inputs&.each do |k, v|
+      #   uploader = JobInputUploader.new
+      #   uploader.store!(v)
+      #   inputs.push({
+      #                 k => '/data/' + v.original_filename,
+      #               })
+      # end
+
+      params.push({
+                    0 => 1,
+                  })
+      # app_params&.each do |p|
+      #   p.each do |k, v|
+      #     params.push({
+      #                   k => v,
+      #                 })
+      #   end
+      # end
+
       # submit task
-      client = LocalApi::Client.new
-      if is_pipeline 
-        result = client.run_pipeline(UID, PROJECT_ID, app_id.to_i, inputs, params)
-      else
-        result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
-      end
-      # Rails.logger.info(result['message'])
-      Rails.logger.debug "===========>"
+      client = DeepomicsApi::DeepomicsClient.new
+      result = client.run_module(UID, PROJECT_ID, doap_num.to_i, inputs, params)
       Rails.logger.info(result)
-      if is_pipeline
-        render json: {
-          code: false,
-          data: result
-        }
-        return
-      end
       if result['message']['code']
         result_json[:code] = true
-        @task  = @user.tasks.new
-        @task.analysis = @analysis
-        @task.status = 'submitted'
-        @task.tid = result['message']['data']['task_id']
-        @task.save!
-        @user.updated_at = Time.now
-        @user.save!
         result_json[:data] = {
           'msg': result['message']['data']['msg'],
-          'task_id': @task.id
-        }  
+          'task_id': encode(result['message']['data']['task_id'])
+        }
       else
         result_json[:code] = false
         result_json[:data] = {
           'msg': result['message']
         }
-        
       end
     rescue StandardError => e
       result_json[:code] = false
@@ -359,6 +326,7 @@ class SubmitController < ApplicationController
     end
     render json: result_json
   end
+
 
   def query_app_task
     result_json = {

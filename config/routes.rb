@@ -128,6 +128,9 @@ Rails.application.routes.draw do
   # post 'submit-app-task', to: 'submit#submit_app_task', format: 'json'
   post 'query-app-task', to: 'submit#query_app_task', format: 'json'
   # post 'query-app-task-dummy', to: 'submit#query_app_task_dummy', format: 'json'
+  # # --> Alex
+  get 'submit-app-task/:pid/:uid', to: 'submit#submit_app_task', format: 'json'
+  # # <-- Alex
   post 'submit-app-task', to: 'submit#submit_app_task', format: 'json'
   post 'query-all-tasks', to: 'submit#query_all', format: 'json'
   post 'remove-task', to: 'submit#remove_task', format: 'json'
