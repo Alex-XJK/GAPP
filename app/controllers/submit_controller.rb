@@ -292,7 +292,7 @@ class SubmitController < ApplicationController
       logger.debug "In SAT :: pre-submit!"
 
       # submit task
-      client = DeepomicsApi::DeepomicsClient.new
+      client = LocalApi::Client.new
       result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
 
       logger.debug "In SAT :: after submit get result #{result} !"
@@ -313,6 +313,9 @@ class SubmitController < ApplicationController
       result_json[:code] = false
       result_json[:data] = e.message
     end
+
+    logger.debug "In SAT :: now every thing done #{result_json[:data]} !"
+
     render json: result_json
   end
 

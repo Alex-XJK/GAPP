@@ -56,13 +56,17 @@ class UsersController < ApplicationController
             msg: ''
         }
         canBeSave = false
+        maxSize = 1024*1024
         @user = User.find(params[:id])
-        Rails.logger.debug "Here is #{@user}"
-        Rails.logger.debug "size #{@user.dataFiles.length}"
+        # Rails.logger.debug "file size #{params[:dataFiles][0].size}"
+        # Rails.logger.debug "Here is #{@user}"
+        # Rails.logger.debug "size #{@user.dataFiles.length}"
         if params[:dataFiles] == nil
             result_json[:msg] = 'Empty file cannot be saved!'
         elsif @user.dataFiles.length >= 2
             result_json[:msg] = 'You have exceeded the maximum number of files!'
+        elsif params[:dataFiles][0].size > maxSize
+            result_json[:msg] = `You have exceeded the maximum size of the file(#{maxSize})!`
         else
             canBeSave = true
             @user.dataFiles = params[:dataFiles]
