@@ -313,6 +313,9 @@ class SubmitController < ApplicationController
       result_json[:code] = false
       result_json[:data] = e.message
     end
+
+    logger.debug "In SAT :: now every thing done #{result_json[:data]} !"
+
     render json: result_json
   end
 
