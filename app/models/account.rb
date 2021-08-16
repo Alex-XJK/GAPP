@@ -7,6 +7,8 @@ class Account < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :trackable, :lockable
+
+  include DeviseInvitable::Inviter
   
   def assign_default_role
       add_role("user")
