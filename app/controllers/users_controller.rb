@@ -103,9 +103,8 @@ class UsersController < ApplicationController
         result_json = {
             code: false
         }
-        if @user.dataFiles.find(params[:dataId]).purge
-            result_json[:code] = true
-        end
+        @user.dataFiles.find(params[:dataId]).purge
+         result_json[:code] = true
         render json: result_json
     end
 
