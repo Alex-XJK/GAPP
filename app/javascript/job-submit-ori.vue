@@ -6,13 +6,38 @@
                 <alert-center ref="alertCenter" />
 
                 <!-- Inputs -->
-                <div>
+                <div v-if="!submitted">
+                    <h3 class="text-center">{{ app.name }}
+                        <i class="fa  fa-question-circle" b-tooltip.hover
+                                       :title="app.description"></i>
+                    </h3>
                     <div class="set-input-section" ref="inputSection">
                         <h4>Set Input Data</h4>
                         <template v-if="displayedInputs.length > 0">
                             <div class="row">
                                 <div class="col-md-6" v-for="input in displayedInputs" :key="input.id">
+                                    <label :for="`i-${input.id}`">{{ input.name }}
+                                        <span v-if="input.required" class="required">*</span>
+                                        <i class="fa  fa-question-circle" b-tooltip.hover
+                                        :title="input.description"></i>
+                                    </label>
+
+                                    <select class="form-control custom-select"
+                                        v-if="input.name=='second_i'"
+                                        :id="`i-${input.id}`"
+                                        :name="`i-${input.id}`"
+                                        :required="input.required"
+                                        v-model="selected[`i-${input.id}`]"
+                                        :state="inputValid[`i-${input.id}`]"
+                                    >
+                                        <option value="">--Please choose a file--</option>
+                                        <option v-for="(option, index) in select_box_option" :key="index" :value="option.value" :disabled="option.disabled">
+                                            {{option.lable}}
+                                        </option>
+                                    </select>
+
                                     <b-form-file
+                                        v-else
                                         :id="`i-${input.id}`"
                                         v-model="files[`i-${input.id}`]"
                                         :state="inputValid[`i-${input.id}`]"
@@ -21,12 +46,70 @@
                                         :name="`i-${input.id}`"
                                         :required="input.required"
                                     ></b-form-file>
+
+
+
                                 </div>
                             </div>
                         </template>
                     </div>
 
+                    <!-- Params -->
+                    <div class="set-param-section mt-4">
+                        <h4>Set Parameters</h4>
+                        <template v-if="displayedParams.length > 0">
+                            <div class="row">
+                                <div class="col-md-6" v-for="param in displayedParams" :key="param.id">
+                                    <label :for="`p-${param.id}`">{{ param.name }}
+                                        <span v-if="param.required" class="required">*</span>
+                                        <i class="fa  fa-question-circle" b-tooltip.hover
+                                        :title="param.description"></i>
+                                    </label>
+                                    <div v-if="param.param_type === 'string'">
+                                        <b-form-input :id="`p-${param.id}`" :value="param.default" :required="param.required"
+                                                    :name="`p-${param.id}`" :state="inputValid[`p-${param.id}`]" />
+                                    </div>
+                                    <div v-else-if="param.param_type === 'int'">
+                                        <b-form-input :id="`p-${param.id}`" :value="param.default" type="number" step="1"
+                                                    :required="param.required" :name="`p-${param.id}`"
+                                                    :state="inputValid[`p-${param.id}`]"/>
+                                    </div>
+                                    <div v-else-if="param.param_type === 'float'">
+                                        <b-form-input :id="`p-${param.id}`" :value="param.default" type="number"
+                                                    step="0.01" :required="param.required"
+                                                    :name="`p-${param.id}`" :state="inputValid[`p-${param.id}`]"/>
+                                    </div>
+                                    <div v-else-if="param.param_type === 'boolean'">
+                                        <b-form-select :id="`p-${param.id}`" :options="boolSelectOpt" :required="param.required"
+                                                    :name="`p-${param.id}`" :state="inputValid[`p-${param.id}`]"/>
+                                    </div>
+                                    <div v-else-if="param.param_type === 'enum'">
+                                        <select :id="`p-${param.id}`" class="form-control custom-select"
+                                                :required="param.required" :name="`p-${param.id}`"
+                                                :state="inputValid[`p-${param.id}`]">
+                                            <option v-for="option in param.options" :value="option" :key="option"
+                                                    :selected="param.default == option ? 'selected' : ''">
+                                                {{ option }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div v-else-if="param.param_type === 'splitchr'">
+                                        <b-form-select :id="`p-${param.id}`" :options="boolSelectOpt"
+                                                    :required="param.required" :name="`p-${param.id}`"
+                                                    :state="inputValid[`p-${param.id}`]" />
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <p v-if="displayedParams.length == 0">No Parameters.</p>
+                    </div>
+
                     <b-btn @click="submitTask" class="float-right mt-2"><i class="fa fa-location-arrow"></i> Submit</b-btn>
+                </div>
+                <div v-else>
+                    <b-card class="text-center job-info">
+                        <p>Job submitted successfully. The job ID is <span class="text-danger">{{jobID}}</span>. You can check your job status via this job ID in job query page. Please write down the job ID in your note book.</p>
+                    </b-card>
                 </div>
             </div>
         </div>
@@ -79,13 +162,13 @@
             }
             this.select_box_option = oplist
 
-          axios.get(`https://deepomics.org/api/apps/${this.id}/`).then((response) => {
-            this.app = response.data.app;
-            for (var k in this.app.inputs){
-              // alert(k);
-              this.files['i-' + this.app.inputs[k].id]  = null;
-            }
-          });
+            axios.get(`https://deepomics.org/api/apps/${this.id}/`).then((response) => {
+                this.app = response.data.app;
+                for (var k in this.app.inputs){
+                    // alert(k);
+                    this.files['i-' + this.app.inputs[k].id]  = null;
+                }
+            });
         },
         computed: {
             displayedInputs() {
@@ -116,6 +199,11 @@
                         return 'danger';
                 }
             },
+            // formatInputs() {
+            //     return Array.from(document.querySelectorAll("input[name^='i-']"))
+            //                 .filter(x => x.value)
+            //                 .map(({ name, value }) => ({ [name]: value}));
+            // },
             formatParams() {
                 return Array.from(document.querySelectorAll("input[name^='p-'], select[name^='p-']"))
                             .filter(x => x.value)
