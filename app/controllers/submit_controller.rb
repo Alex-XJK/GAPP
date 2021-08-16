@@ -34,8 +34,8 @@ class SubmitController < ApplicationController
   end
 
   def index
-    # id = params[:id]
-    # gon.push id: id
+    id = params[:id]
+    gon.push id: id
     # uid = session[:user_id]
     # @user = User.find(uid)
     # # user_dir = File.join($user_stor_dir, uid.to_s)
@@ -48,9 +48,7 @@ class SubmitController < ApplicationController
     #   data[ds_name] = ds_name
     # end
     # gon.push select_box_option: data
-    id = params[:id]
-    gon.push id: id
-    puts gon.id
+
   end
 
   def query
@@ -186,7 +184,7 @@ class SubmitController < ApplicationController
     # uid = session[:user_id]
     uid = 1
     @user = User.find(uid)
-    user_dir = File.join($user_stor_dir, uid.to_s)
+    # user_dir = File.join($user_stor_dir, uid.to_s)
 
     result_json = {
       code: false,
@@ -251,63 +249,54 @@ class SubmitController < ApplicationController
   end
 
   def submit_app_task
+
+    logger.debug "In SAT :: receive request!"
+
     result_json = {
       code: false,
       data: ''
     }
     begin
-      # app_inputs = params[:inputs]
-      # app_inputs = Array.new
-      # app_inputs.push(User.find(1).dataFiles[1].download)
-      # app_inputs.push(App.find(1).panel.download)
+      app_id = params[:app_id]
+      app_inputs = params[:inputs]
+      app_params = params[:params]
 
-      # app_params = params[:params]
-
-      app_p = App.find(params[:pid])
-      user_p = User.find(params[:uid])
-      analy_p = Analysis.find(app_p.analysis_id)
-
-      user_file = user_p.dataFiles[1]
-      panel_file = app_p.panel
-      doap_num = analy_p.doap_id
+      logger.debug "In SAT :: param get!"
 
       inputs = Array.new
       params = Array.new
 
-      # store input file to user's data folder
-      uploaderU = JobInputUploader.new
-      uploaderU.store!(user_file.download)
-      inputs.push({
-                    0 => '/data/' + user_file.filename.to_s,
-                  })
-      uploaderP = JobInputUploader.new
-      uploaderP.store!(panel_file.download)
-      inputs.push({
-                    1 => '/data/' + panel_file.filename.to_s,
-                  })
-      # app_inputs&.each do |k, v|
-      #   uploader = JobInputUploader.new
-      #   uploader.store!(v)
-      #   inputs.push({
-      #                 k => '/data/' + v.original_filename,
-      #               })
-      # end
+      logger.debug "In SAT :: created var!"
 
-      params.push({
-                    0 => 1,
-                  })
-      # app_params&.each do |p|
-      #   p.each do |k, v|
-      #     params.push({
-      #                   k => v,
-      #                 })
-      #   end
-      # end
+      # store input file to user's data folder
+      app_inputs&.each do |k, v|
+        uploader = JobInputUploader.new
+        uploader.store!(v)
+        inputs.push({
+                      k => '/data/' + v.original_filename,
+                    })
+        logger.debug "In SAT :: app_inputs :: file #{k} ==> #{v.original_filename} done !"
+      end
+
+      logger.debug "In SAT :: files finished processing!"
+
+      app_params&.each do |p|
+        p.each do |k, v|
+          params.push({
+                        k => v,
+                      })
+        end
+      end
+
+      logger.debug "In SAT :: app_params finished processing!"
+      logger.debug "In SAT :: pre-submit!"
 
       # submit task
       client = DeepomicsApi::DeepomicsClient.new
-      result = client.run_module(UID, PROJECT_ID, doap_num.to_i, inputs, params)
-      Rails.logger.info(result)
+      result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
+
+      logger.debug "In SAT :: after submit get result #{result} !"
+
       if result['message']['code']
         result_json[:code] = true
         result_json[:data] = {
@@ -326,7 +315,6 @@ class SubmitController < ApplicationController
     end
     render json: result_json
   end
-
 
   def query_app_task
     result_json = {
