@@ -220,7 +220,7 @@ body.welcome
         overflow: hidden
     .row.form-container
         padding: 0 100px
-        form.contact-form, form.thanks-form
+        .contact-form, form.thanks-form
             width: 100%
             padding: 30px 40px
             box-shadow: 0 3px 40px rgba(8, 48, 80, 0.1)
@@ -299,10 +299,23 @@ body.welcome
                     left: 2rem
                     right: 2rem
                     padding-top: 6px
-                    background: linear-gradient(120deg, darken($theme, 10%) 0%, darken($theme, 25%) 85%)
+                    background: #0066ff
                     border-radius: 0 0 4px 4px
                     text-align: center
                     .link
                         margin: 0 5px
                         &, &:hover, &:active, &:focus
                             color: #fff
+
+
+    .index-banner
+        color: $gray-100
+        background: image-url("texture-1.jpg")
+        background-size: cover
+        padding: 8rem 0
+        &.sm
+            padding: 3rem 0
+        .lead
+            width: 75%
+    #app-list, #pipeline-list
+        padding: 4rem 0
