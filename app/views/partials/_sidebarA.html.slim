@@ -220,28 +220,27 @@
             = icon 'fas', 'tasks', class: 'fa-fw'
             span.sidebar-text Task
 
-  - if account_signed_in?
-    .sidebar-section
+  .sidebar-section
       .sidebar-heading
-        span.uncollapsed-only Logout
+        span.uncollapsed-only Account
         span.collapsed-only
-          = icon 'fas', 'sign-out-alt', class: 'fa-fw'
+          = icon 'fas', 'user-alt', class: 'fa-fw'
       ul
-        li.sidebar-item
-          = link_to destroy_account_session_path, method: :delete do
-            = icon 'fas', 'door-open', class: 'fa-fw'
-            span.sidebar-text Logout
-  - else
-    .sidebar-section
-      .sidebar-heading
-        span.uncollapsed-only Login
-        span.collapsed-only
-          = icon 'fas', 'sign-in-alt', class: 'fa-fw'
-      ul
-        li.sidebar-item
-          = link_to new_account_session_path do
-            = icon 'fas', 'key', class: 'fa-fw'
-            span.sidebar-text Login
+        - if account_signed_in? and current_account.has_role? :admin
+          li.sidebar-item
+            = link_to new_account_invitation_path do
+              = icon 'fas', 'envelope-open-text', class: 'fa-fw'
+              span.sidebar-text Invite User
+        - if account_signed_in?
+          li.sidebar-item
+            = link_to destroy_account_session_path, method: :delete, data: { confirm: 'Are you sure to log out of your ' + current_account.roles.first.name + ' account?', title: 'Confirm your action', commit: 'Log Out' } do
+              = icon 'fas', 'door-open', class: 'fa-fw'
+              span.sidebar-text Log Out
+        - else
+          li.sidebar-item
+            = link_to new_account_session_path do
+              = icon 'fas', 'key', class: 'fa-fw'
+              span.sidebar-text Log In
 
   .sidebar-section
     ul
