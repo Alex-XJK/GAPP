@@ -9,7 +9,10 @@
             $('#data-table').DataTable({
                 paging: false,
                 searching: false,
-                order: [0, 'asc'],
+                order: [
+                    [0, 'asc'],
+                    [1, 'asc']
+                ],
                 columnDefs: [
                     {orderable: false, targets: 2},
                     {orderable: false, targets: 5}
@@ -39,7 +42,7 @@
 <table id="data-table" class="table table-hover">
     <thead>
         <tr>
-            <th>App Number</th>
+            <th>Category</th>
             <th>App Name</th>
             <th>Cover Image</th>
             <th>Status</th>
@@ -50,7 +53,7 @@
     <tbody>
         <% @apps.each do |app| %>
             <tr style="height: 100px;">
-                <td style="vertical-align: middle;"> <%= app.app_no %> </td>
+                <td style="vertical-align: middle;"> <%= Category.find(app.category_id).name %> </td>
                 <td style="vertical-align: middle;"> <%= app.name %> </td>
                 <td style="vertical-align: middle;">
                     <% if app.cover_image.attached? %>
