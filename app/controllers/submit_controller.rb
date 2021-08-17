@@ -287,11 +287,10 @@ class SubmitController < ApplicationController
 
       logger.debug 'In SAT :: app_params finished processing!'
       logger.debug 'In SAT :: ready to submit!'
-      Rails.logger.debug "=======>#{app_id.to_i}"
+
       # submit task
       client = LocalApi::Client.new
-      # result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
-      result = client.run_module(UID, PROJECT_ID, 621, inputs, params)
+      result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
 
       logger.debug "In SAT :: after submit get result #{result} !"
 
