@@ -250,7 +250,7 @@ class SubmitController < ApplicationController
 
   def submit_app_task
 
-    logger.debug "In SAT :: receive request!"
+    logger.debug 'In SAT :: receive submit request!'
 
     result_json = {
       code: false,
@@ -261,12 +261,8 @@ class SubmitController < ApplicationController
       app_inputs = params[:inputs]
       app_params = params[:params]
 
-      logger.debug "In SAT :: param get!"
-
       inputs = Array.new
       params = Array.new
-
-      logger.debug "In SAT :: created var!"
 
       # store input file to user's data folder
       app_inputs&.each do |k, v|
@@ -278,18 +274,19 @@ class SubmitController < ApplicationController
         logger.debug "In SAT :: app_inputs :: file #{k} ==> #{v.original_filename} done !"
       end
 
-      logger.debug "In SAT :: files finished processing!"
+      logger.debug 'In SAT :: files finished processing!'
 
       app_params&.each do |p|
         p.each do |k, v|
           params.push({
                         k => v,
                       })
+          logger.debug "In SAT :: app_params :: param #{k} ==> #{v} done !"
         end
       end
 
-      logger.debug "In SAT :: app_params finished processing!"
-      logger.debug "In SAT :: pre-submit!"
+      logger.debug 'In SAT :: app_params finished processing!'
+      logger.debug 'In SAT :: ready to submit!'
 
       # submit task
       client = LocalApi::Client.new
@@ -314,7 +311,7 @@ class SubmitController < ApplicationController
       result_json[:data] = e.message
     end
 
-    logger.debug "In SAT :: now every thing done #{result_json[:data]} !"
+    logger.debug "In SAT :: now every thing done with JSON: #{result_json} !"
 
     render json: result_json
   end
