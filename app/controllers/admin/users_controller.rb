@@ -19,28 +19,32 @@ class Admin::UsersController < ApplicationController
         @ana = Analysis.order(:name)
         @a_attrs = Analysis.column_names
 
-        @users = User.select(:id, :username, :created_at, :role_id) 
-        @usercolumn = ["id", "username", "role_id", "created_at"]
-        @usercolumnname = ["id", "username", "role", "register time"]
+        @users = Account.all
+        @usercolumn = ["id", "email", "role", "created_at"]
+        @usercolumnname = ["id", "email", "role", "register time"]
         @roles = Role.select(:id, :name)
     end
 
     def show
-        @user = User.find(params[:id])
-        @user_attrs = User.column_names
-        @role = Role.select(:id, :name).find(@user.role_id)
+        @user = Account.find(params[:id])
+        @user_attrs = Account.column_names
     end
 
     def destroy
-        @tapps = App.where({ user_id: params[:id] })
-        for uapp in @tapps
-            uapp.user_id = 1
-            uapp.save(:validate => false)
+        # @tapps = App.where({ user_id: params[:id] })
+        # for uapp in @tapps
+        #     uapp.user_id = 1
+        #     uapp.save(:validate => false)
+        # end
+        # @user = User.find(params[:id])
+        # @user.destroy
+        if String(params[:id]) == String(current_account.id)
+            flash[:error] = "Please don't delete your own account!" 
+            redirect_to action: "index"
+        else
+            Account.find(params[:id]).destroy
+            redirect_to action: "index"
         end
-        @user = User.find(params[:id])
-        @user.destroy
-    
-        redirect_to action: "index"
     end
 
     def destroyRole
@@ -51,8 +55,22 @@ class Admin::UsersController < ApplicationController
     end
 
     def editRole
-        @user = User.find(params[:id])
-        @user.update(edit_params)
+        if String(params[:id]) == String(current_account.id)
+            flash[:error] = "Please don't edit your own role!" 
+            redirect_to action: "index"
+        else
+            @user = Account.find(params[:id])
+            @user.roles = []
+            if params[:role_id] == "1"
+                @user.add_role(:admin)
+            else
+                if params[:role_id] == "2"
+                    @user.add_role(:producer)
+                else
+                    @user.add_role(:user)
+                end
+            end
+        end
     end
 
     def new

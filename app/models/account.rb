@@ -11,6 +11,8 @@ class Account < ApplicationRecord
   include DeviseInvitable::Inviter
   
   def assign_default_role
-      add_role("user")
+      if not has_any_role?(:admin, :producer, :user)
+        add_role("user")
+      end
   end
 end

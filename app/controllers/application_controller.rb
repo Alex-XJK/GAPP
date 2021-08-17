@@ -1,5 +1,9 @@
 class ApplicationController < ActionController::Base
 
+    def after_invite_path_for(resource)
+        "/admin/users"
+    end
+
     def after_sign_in_path_for(acc)
         if acc.roles.first.name == "user"
             "/users/1"
