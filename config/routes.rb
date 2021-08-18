@@ -118,6 +118,9 @@ Rails.application.routes.draw do
   end
 
   # submit pages
+  # # Added by Alex to test the file location -->
+  get 'submit/location/:uid/:index/:app', to: 'submit#location'
+  # # <-- Test end
   get "submit/analyses", to: "submit#analyses"
   get "submit/pipelines", to: "submit#pipelines"
   get 'submit/job-query', to: 'submit#query', as: 'query'
