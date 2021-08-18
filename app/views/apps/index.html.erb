@@ -7,7 +7,9 @@
     <script>
         $( document ).on('turbolinks:load', function() {
             $('#data-table').DataTable({
-                paging: false,
+                paging: true,
+                lengthChange: false,
+                pageLength: 5,
                 searching: false,
                 order: [
                     [0, 'asc'],
