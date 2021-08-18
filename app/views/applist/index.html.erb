@@ -148,7 +148,7 @@ ul {
 
 $(document).ready(function() {
     console.log('Loaded.');
-    let ss = document.querySelector("#sidebar-button").querySelector("button");
+    let ss = document.querySelector("#sidebar-button").querySelector("a");
     var evt = document.createEvent("MouseEvents"); 
     evt.initEvent("click", false, false);
     ss.dispatchEvent(evt);

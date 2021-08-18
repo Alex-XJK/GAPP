@@ -1,0 +1,18 @@
+- content_for :title
+  | Sign up (disabled)
+
+.login-page
+  .login-notice
+    .container.w-75.mx-auto
+      .alert.alert-warning.p-4
+        button.close type="button" data-dismiss="alert" aria-label="Close"
+          span &times
+        h4.alert-heading
+          i.fa.fa-exclamation-triangle
+          | Account registration is disabled
+        p.text-warning
+          = link_to new_account_session_path do
+            .fa.fa-arrow-left
+            span Back to Log in page
+        p This platform currently does not accept registration.
+        p Accounts are created only through invitation.

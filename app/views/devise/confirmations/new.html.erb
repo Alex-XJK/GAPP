@@ -1,4 +1,12 @@
+<% content_for :title, "Confirmation instructions" %>
+<div class="login-page">
+<div class="container login-section text-body m-4">
+<div class="card login-card w-50 mx-auto">
+<div class="card-body">
+
+<div class="card-title text-center">
 <h2>Resend confirmation instructions</h2>
+</div>
 
 <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.error_notification %>
@@ -16,5 +24,10 @@
     <%= f.button :submit, "Resend confirmation instructions" %>
   </div>
 <% end %>
-
+<p>&nbsp;</p>
 <%= render "devise/shared/links" %>
+
+</div>
+</div>
+</div>
+</div>

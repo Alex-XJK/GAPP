@@ -1,0 +1,19 @@
+- content_for :title
+  | Invite User
+
+.invitation-page
+  .container.login-section.text-body.m-4
+    .card.login-card.w-50.mx-auto
+      .card-body
+        .card-title.text-center
+            h2 Invite User
+        p.text-warning
+            = link_to "/admin/users" do
+                .fa.fa-arrow-left
+                span Back to user management
+        = simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post } do |f|
+            = f.error_notification
+            .form-inputs
+                = f.input :email, hint: "An email with activation link will be sent to this address."
+            .form-actions
+                = f.button :submit, "Send Invitation"

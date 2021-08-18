@@ -233,6 +233,10 @@
               span.sidebar-text Invite User
         - if account_signed_in?
           li.sidebar-item
+            = link_to edit_account_registration_path do
+              = icon 'fas', 'user-cog', class: 'fa-fw'
+              span.sidebar-text Settings
+          li.sidebar-item
             = link_to destroy_account_session_path, method: :delete, data: { confirm: 'Are you sure to log out of your ' + current_account.roles.first.name + ' account?', title: 'Confirm your action', commit: 'Log Out' } do
               = icon 'fas', 'door-open', class: 'fa-fw'
               span.sidebar-text Log Out
@@ -242,10 +246,11 @@
               = icon 'fas', 'key', class: 'fa-fw'
               span.sidebar-text Log In
 
+  .dropdown-divider
   .sidebar-section
     ul
       li.sidebar-item#sidebar-button
-        button onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();"
+        a onclick="$('.uncollapsed-only').toggle(); $('.collapsed-only').toggle(); $('.sidebar-text').toggle();" href="javascript:void(0)"
           = icon 'fas', 'angle-double-left', class: 'fa-fw uncollapsed-only'
           = icon 'fas', 'angle-double-right', class: 'fa-fw collapsed-only'
           span.sidebar-text Collapse

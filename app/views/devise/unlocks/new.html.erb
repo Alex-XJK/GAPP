@@ -1,4 +1,12 @@
+<% content_for :title, "Unlock instructions" %>
+<div class="login-page">
+<div class="container login-section text-body m-4">
+<div class="card login-card w-50 mx-auto">
+<div class="card-body">
+
+<div class="card-title text-center">
 <h2>Resend unlock instructions</h2>
+</div>
 
 <%= simple_form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.error_notification %>
@@ -15,5 +23,10 @@
     <%= f.button :submit, "Resend unlock instructions" %>
   </div>
 <% end %>
-
+<p>&nbsp;</p>
 <%= render "devise/shared/links" %>
+
+</div>
+</div>
+</div>
+</div>

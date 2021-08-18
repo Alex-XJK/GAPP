@@ -1,4 +1,12 @@
+<% content_for :title, "Forgot password" %>
+<div class="login-page">
+<div class="container login-section text-body m-4">
+<div class="card login-card w-50 mx-auto">
+<div class="card-body">
+
+<div class="card-title text-center">
 <h2>Forgot your password?</h2>
+</div>
 
 <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.error_notification %>
@@ -14,5 +22,10 @@
     <%= f.button :submit, "Send me reset password instructions" %>
   </div>
 <% end %>
-
+<p>&nbsp;</p>
 <%= render "devise/shared/links" %>
+
+</div>
+</div>
+</div>
+</div>

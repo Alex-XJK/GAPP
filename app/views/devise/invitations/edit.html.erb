@@ -1,4 +1,17 @@
-<h2><%= t "devise.invitations.edit.header" %></h2>
+<% content_for :title, "Account Activation" %>
+<div class="login-page">
+<div class="container login-section text-body m-4">
+<div class="card login-card w-75 mx-auto">
+<div class="card-body">
+
+<div class="card-title text-center">
+  <h2>Activate your account</h2>
+</div>
+<div class="alert alert-info alert-dismissible fade show">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <i class='fa fa-exclamation-triangle'></i>
+  <%= t "devise.invitations.edit.header" %> to activate account!
+</div>
 
 <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }) do |f| %>
   <%= f.error_notification %>
@@ -13,3 +26,8 @@
     <%= f.button :submit, t("devise.invitations.edit.submit_button") %>
   </div>
 <% end %>
+
+</div>
+</div>
+</div>
+</div>
