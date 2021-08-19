@@ -203,7 +203,7 @@ class SubmitController < ApplicationController
 
       # Receive and find the User Data File
       id = params[:uid]
-      idx = params[:index]
+      idx = params[:fid]
       user = User.find(id)
       file = user.dataFiles[idx.to_i]
       @floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
