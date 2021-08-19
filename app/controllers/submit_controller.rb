@@ -345,7 +345,7 @@ class SubmitController < ApplicationController
 
       # Query task
       client = LocalApi::Client.new
-      @result = client.task_info(UID, @task_id, 'pipeline')
+      @result = client.task_info(UID, @task_id, 'app')
 
       logger.debug "In QTD :: after query get result #{@result} !"
 
