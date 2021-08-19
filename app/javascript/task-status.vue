@@ -11,8 +11,11 @@
   <br>
   <div v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
-      <h5><i>{{app.name}}</i></h5>
-      <el-button type="info" plain size="small" @click="dialogVisible = true">Create</el-button>
+      <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
+      <b-btn class="mt-2" @click="dialogVisible = true">
+        <i class="far fa-edit"></i>
+        Create
+      </b-btn>
         <el-dialog
           style="text-align: center"
           :title="'Create New Task for '+ app.name"
@@ -261,6 +264,9 @@ export default {
         }).catch((reason) => {
           console.log(reason)
         }).finally(() => {});
+    },
+    gotoApp(appId) {
+      Turbolinks.visit(`/apps/${appId}`, {'action':'replace'})
     }
   },
     watch: {
@@ -295,5 +301,14 @@ export default {
 .el-col {
   padding-top : 6px !important;
   padding-bottom : 6px !important;
+}
+#appTitle {
+  text-decoration:underline;
+  color: #0066ff;
+  cursor: pointer;
+}
+#appTitle :hover{
+  color: #ccd7ff;
+  cursor: pointer;
 }
 </style>
