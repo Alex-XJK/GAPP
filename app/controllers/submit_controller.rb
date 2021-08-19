@@ -139,8 +139,8 @@ class SubmitController < ApplicationController
       pnam = panl.filename.to_s
 
       # The hard code area, used to set the location path
-      datafn = 'i-004'
-      panefn = 'i-005'
+      datafn = 'i-1004'
+      panefn = 'i-1005'
       tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
 
       # Create the string of filename
