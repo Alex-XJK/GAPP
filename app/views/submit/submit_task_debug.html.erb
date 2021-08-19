@@ -1,4 +1,4 @@
-<h2>Location Find Test</h2>
+<h2>Direct Submit Test</h2>
 
 <br>
 
@@ -20,7 +20,7 @@
 <%= @floc %>
 <br>
 
-<span>~~ Moved to ~~> </span>
+<span>| ~~ Moved to ~~> </span>
 <%= @file_new_location %>
 <br>
 
@@ -36,7 +36,7 @@
 <%= @ploc %>
 <br>
 
-<span>~~ Moved to ~~> </span>
+<span>| ~~ Moved to ~~> </span>
 <%= @panel_new_location %>
 <br>
 
@@ -54,7 +54,27 @@ inputs <br>
 
 <h4>Returned result:</h4>
 
-<%= @result_json %> <br>
+<b style="color: #B00100">
+  <%= @result_json %>
+</b>
+
+<br>
+
+<br>
+
+<hr>
+
+<h3>API test</h3>
+
+<%= form_with url: "/submit/api", method: :post do |form| %>
+  <%= form.label :uid, "User id:" %>
+  <%= form.text_field :uid %>
+  <%= form.label :fid, "Data File id:" %>
+  <%= form.text_field :fid %>
+  <%= form.label :app, "App id:" %>
+  <%= form.text_field :app %>
+  <%= form.submit "Test" %>
+<% end %>
 
 <br>
 

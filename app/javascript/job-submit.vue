@@ -211,7 +211,7 @@ export default {
       })
       if (allRight) {
         axios.post(
-            `/submit-app-task/`,
+            `/submit/manual/`,
             objectToFormData({
               "app_id": this.app.id,
               "inputs": this.files,
