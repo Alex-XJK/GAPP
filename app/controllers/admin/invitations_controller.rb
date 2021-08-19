@@ -1,9 +1,9 @@
 class Admin::InvitationsController < Devise::InvitationsController
     private
 
-    # def invite_resource
-    #     resource_class.invite!(invite_params, current_inviter) do |invitable|
-    #         invitable.add_role(:admin)
-    #     end
-    # end
+        def invite_resource
+            user = resource_class.invite!(invite_params, current_inviter)
+            puts(user.raw_invitation_token)
+            return user
+        end
 end

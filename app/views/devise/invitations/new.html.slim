@@ -1,9 +1,14 @@
 - content_for :title
   | Invite User
 
+css:
+  body {
+    background-color: #343a40;
+  }
+
 .invitation-page
   .container.login-section.text-body.m-4
-    .card.login-card.w-50.mx-auto
+    .card.login-card.w-75.mx-auto
       .card-body
         .card-title.text-center
             h2 Invite User
@@ -17,3 +22,29 @@
                 = f.input :email, hint: "An email with activation link will be sent to this address."
             .form-actions
                 = f.button :submit, "Send Invitation"
+    
+    p &nbsp;
+    br
+    .card.login-card.w-75.mx-auto
+      .card-body
+        .card-title.text-center
+            h4 List of Invited User
+        .card-title.text-center
+            h6 Invitation Accepted
+        table.table.table-hover.table-success
+          - Account.invitation_accepted.each do |ac1|
+            tr
+              td
+                = ac1.email
+        .card-title.text-center
+            h6 Invitation Not Accepted
+        table.table.table-hover.table-warning
+          - Account.invitation_not_accepted.each do |ac2|
+            tr
+              td
+                = ac2.email
+              td
+                form novalidate="novalidate" action="/accounts/invitation" accept-charset="UTF-8" method="post"
+                  = hidden_field_tag :authenticity_token, form_authenticity_token
+                  input type="hidden" value=ac2.email name="account[email]"
+                  button.btn.btn-outline-info type="submit" Resend Invitation

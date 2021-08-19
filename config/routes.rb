@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
 
-  devise_for :accounts
+  # devise_for :accounts
+  devise_for :accounts, controllers: { invitations: 'admin/invitations' }
   get '/admin/users/', to: 'admin/users#index'
   get '/admin/users/new', to: 'admin/users#new'
   get '/admin/users/:id', to: 'admin/users#show'
   delete '/admin/users/:id', to: 'admin/users#destroy'
   post '/admin/users/new', to: 'admin/users#create'
+  get '/admin/users/invite/:token', to: 'admin/users#showcode'
 
 
   post '/admin/users/edit', to: 'admin/users#editRole'

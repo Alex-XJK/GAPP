@@ -30,6 +30,10 @@ class Admin::UsersController < ApplicationController
         @user_attrs = Account.column_names
     end
 
+    def showcode
+        @tk = params[:token]
+    end
+
     def destroy
         # @tapps = App.where({ user_id: params[:id] })
         # for uapp in @tapps

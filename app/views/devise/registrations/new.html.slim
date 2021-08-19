@@ -1,5 +1,13 @@
 - content_for :title
-  | Sign up (disabled)
+  | Sign up
+
+javascript:
+  $(document).ready(function(){
+      $('#btn').click(function(e) {  
+          var inputvalue = $("#code").val();
+          window.location.replace("http://localhost:3000/accounts/invitation/accept?invitation_token=" + inputvalue);
+      });
+  });
 
 .login-page
   .login-notice
@@ -16,3 +24,16 @@
             span Back to Log in page
         p This platform currently does not accept registration.
         p Accounts are created only through invitation.
+  
+  .container.login-section.text-body.m-4
+    .card.login-card.w-50.mx-auto
+      .card-body
+        .card-title.text-center
+          h2 Activate your account
+        p.lead If you have an activation code, you can activate your accout here:
+        input#code.form-control type="text"
+        br
+        button#btn.btn.btn-primary type="button" Activate
+        p &nbsp;
+        = render "devise/shared/links"
+

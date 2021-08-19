@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 
-    def after_invite_path_for(resource)
-        "/admin/users"
+    def after_invite_path_for(param1, param2)
+        "/admin/users/invite/" + String(param2.raw_invitation_token)
     end
 
     def after_sign_in_path_for(acc)
