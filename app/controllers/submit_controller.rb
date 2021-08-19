@@ -248,9 +248,88 @@ class SubmitController < ApplicationController
     render json: result_json
   end
 
+  def location
+    # init
+    @result_json = {
+      code: false,
+      data: ''
+    }
+    begin
+
+      # Display the Rails root for debug
+      @rrot = Rails.root.to_s
+
+      # Receive and find the User Data File
+      id = params[:uid]
+      idx = params[:index]
+      user = User.find(id)
+      file = user.dataFiles[idx.to_i]
+      @floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
+      @fnam = file.filename.to_s
+      ftype = file.filename.extension_with_delimiter.to_s
+
+      # Receive and find the App Panel File
+      aid = params[:app]
+      app = App.find(aid)
+      panl = app.panel
+      @ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
+      @pnam = panl.filename.to_s
+      ptype = panl.filename.extension_with_delimiter.to_s
+
+      # The hard code area, used to set the location path
+      datafn = 'i-004'
+      panefn = 'i-005'
+      # tarloc = '/Users/jiakaixu2/Desktop/RA-GAPP/gapp_rails/tmp/'
+      tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
+
+      # Create the string of filename
+      @file_new_location = tarloc + @fnam
+      @panel_new_location = tarloc + @pnam
+
+      # Copy the files to the target place and rename them to the system accepted one
+      system "cp #{@floc} #{@file_new_location}"
+      system "cp #{@ploc} #{@panel_new_location}"
+
+      # Prepare the API parameters (redirect to stdout for debug now)
+      @anaid = Analysis.find(app.analysis_id).doap_id.to_i
+      logger.debug "In SLT :: #{@anaid} >>"
+      @inputs = Array.new
+      @inputs.push({ datafn => '/data/' + @fnam, })
+      # @inputs.push({ panefn => '/data/' + @pnam, })
+      logger.debug "In SLT :: #{@inputs} >>"
+      params = Array.new
+      logger.debug "In SLT :: #{params} >>"
+
+      # Already existing code
+      # submit task
+      client = LocalApi::Client.new
+      result = client.run_module(UID, PROJECT_ID, @anaid, @inputs, params)
+
+      logger.debug "In SLT :: after submit get result #{result} !"
+
+      if result['message']['code']
+        @result_json[:code] = true
+        @result_json[:data] = {
+          'msg': result['message']['data']['msg'],
+          'task_id': encode(result['message']['data']['task_id'])
+        }
+      else
+        @result_json[:code] = false
+        @result_json[:data] = {
+          'msg': result['message']
+        }
+      end
+    rescue StandardError => e
+      @result_json[:code] = false
+      @result_json[:data] = e.message
+    end
+
+    logger.debug "In SLT :: now every thing done with JSON: #{@result_json} !"
+  end
+
   def submit_app_task
 
-    logger.debug "In SAT :: receive request!"
+    logger.debug 'In SAT :: receive submit request!'
 
     result_json = {
       code: false,
@@ -261,12 +340,8 @@ class SubmitController < ApplicationController
       app_inputs = params[:inputs]
       app_params = params[:params]
 
-      logger.debug "In SAT :: param get!"
-
       inputs = Array.new
       params = Array.new
-
-      logger.debug "In SAT :: created var!"
 
       # store input file to user's data folder
       app_inputs&.each do |k, v|
@@ -278,21 +353,22 @@ class SubmitController < ApplicationController
         logger.debug "In SAT :: app_inputs :: file #{k} ==> #{v.original_filename} done !"
       end
 
-      logger.debug "In SAT :: files finished processing!"
+      logger.debug 'In SAT :: files finished processing!'
 
       app_params&.each do |p|
         p.each do |k, v|
           params.push({
                         k => v,
                       })
+          logger.debug "In SAT :: app_params :: param #{k} ==> #{v} done !"
         end
       end
 
-      logger.debug "In SAT :: app_params finished processing!"
-      logger.debug "In SAT :: pre-submit!"
+      logger.debug 'In SAT :: app_params finished processing!'
+      logger.debug 'In SAT :: ready to submit!'
 
       # submit task
-      client = DeepomicsApi::DeepomicsClient.new
+      client = LocalApi::Client.new
       result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
 
       logger.debug "In SAT :: after submit get result #{result} !"
@@ -313,6 +389,9 @@ class SubmitController < ApplicationController
       result_json[:code] = false
       result_json[:data] = e.message
     end
+
+    logger.debug "In SAT :: now every thing done with JSON: #{result_json} !"
+
     render json: result_json
   end
 
