@@ -11,11 +11,15 @@
   <br>
   <div v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
+    <!-- <el-col :span=21> -->
       <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
-      <b-btn class="mt-2" @click="dialogVisible = true">
+    <!-- </el-col> -->
+    <!-- <el-col :span=3> -->
+      <b-btn class="mt-2" @click="dialogVisible = true" align="right">
         <i class="far fa-edit"></i>
         Create
       </b-btn>
+    <!-- </el-col> -->
         <el-dialog
           style="text-align: center"
           :title="'Create New Task for '+ app.name"
@@ -23,16 +27,16 @@
           :show-close=false
           :close-on-click-modal="false"
           width="50%">
-          <el-form :model="form"  label-width="100px">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
             <el-form-item label="Select Data" :label-width="formLabelWidth">
-              <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.checkAll" @change="handleCheckAllChange">All</el-checkbox>
+              <el-checkbox :indeterminate="ruleForm.isIndeterminate" v-model="ruleForm.checkAll" @change="handleCheckAllChange">All</el-checkbox>
               <div style="margin: 15px 0;"></div>
-              <el-checkbox-group v-model="form.checkedData" @change="handleCheckedDataChange">
-                <el-checkbox v-for="datum in form.data" :label="datum" :key="datum.id">{{datum.name}}</el-checkbox>
+              <el-checkbox-group v-model="ruleForm.checkedData" @change="handleCheckedDataChange">
+                <el-checkbox v-for="datum in ruleForm.data" :label="datum" :key="datum.id">{{datum.name}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="Task Name" :label-width="formLabelWidth">
-              <el-input v-model="form.taskName" placeholder="Please input your task name"></el-input>
+            <el-form-item label="Task Name" :label-width="formLabelWidth" prop="taskName">
+              <el-input v-model="ruleForm.taskName" placeholder="Please input your task name"></el-input>
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
@@ -80,12 +84,18 @@ export default {
       apps: [],
       tasks: [],
       formLabelWidth: '120px',
-      form: {
+      ruleForm: {
           checkAll: false,
           checkedData: [],
           data: [],
           isIndeterminate: true,
           taskName: ''
+      },
+      rules: {
+        taskName: [
+          { required: true, message: 'Task name cannot be empty!' },
+          { min: 3, max: 5, message: 'Length should be between 3 and 5 characters.', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -185,29 +195,33 @@ export default {
         }).finally(() => {});
       },
       toCreate (appId) {
-      this.hideDialog()
-      this.CreateTask(appId)
-      console.log("toCreate emitted and appid "+appId)
-      this.resetForm()
+        this.$refs.ruleForm[0].validate((valid) => {
+          if (valid) {
+            this.hideDialog()
+            this.CreateTask(appId)
+            this.resetForm()
+            console.log("toCreate emitted and appid "+appId)
+          } else {
+            this.resetForm()
+            return false
+          }
+        });
     },
     cancelCreate () {
       this.resetForm()
       this.hideDialog()
     },
     resetForm () {
-      this.form.checkAll = false
-      this.form.checkedData = []
-      this.form.isIndeterminate = true
-      this.form.taskName = ''
+      this.$refs.ruleForm[0].resetFields()
     },
     handleCheckAllChange(val) {
-      this.form.checkedData = val ? this.form.data : []
-      this.form.isIndeterminate = false;
+      this.ruleForm.checkedData = val ? this.ruleForm.data : []
+      this.ruleForm.isIndeterminate = false;
     },
     handleCheckedDataChange(value) {
       let checkedCount = value.length
-      this.form.checkAll = checkedCount === this.form.data.length
-      this.form.isIndeterminate = checkedCount > 0 && checkedCount < this.form.data.length
+      this.ruleForm.checkAll = checkedCount === this.ruleForm.data.length
+      this.ruleForm.isIndeterminate = checkedCount > 0 && checkedCount < this.ruleForm.data.length
     },
     getDataInfo() {
       axios.post(
@@ -224,8 +238,8 @@ export default {
         },
         ).then((response) => {
           if (response.data.code) {
-            this.form.data = response.data.data
-            console.log(this.form.data)
+            this.ruleForm.data = response.data.data
+            console.log(this.ruleForm.data)
           } else {
             console.log(response.data.msg)
           }
@@ -239,10 +253,10 @@ export default {
       axios.post(
           `/create-task`,
         objectToFormData({
-          "taskName": this.form.taskName,
+          "taskName": this.ruleForm.taskName,
           "app_id": appId,
           "user_id": this.id,
-          "usedData": this.form.checkedData
+          "usedData": this.ruleForm.checkedData
         }),
         {
           headers: {
