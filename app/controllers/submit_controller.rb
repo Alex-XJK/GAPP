@@ -217,8 +217,8 @@ class SubmitController < ApplicationController
       @pnam = panl.filename.to_s
 
       # The hard code area, used to set the location path
-      datafn = 'i-004'
-      panefn = 'i-005'
+      datafn = 'i-1004'
+      panefn = 'i-1005'
       # tarloc = '/Users/jiakaixu2/Desktop/RA-GAPP/gapp_rails/tmp/'
       tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
 
