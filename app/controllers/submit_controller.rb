@@ -139,8 +139,8 @@ class SubmitController < ApplicationController
       pnam = panl.filename.to_s
 
       # The hard code area, used to set the location path
-      datafn = 'i-004'
-      panefn = 'i-005'
+      datafn = 'i-1004'
+      panefn = 'i-1005'
       tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
 
       # Create the string of filename
@@ -203,7 +203,7 @@ class SubmitController < ApplicationController
 
       # Receive and find the User Data File
       id = params[:uid]
-      idx = params[:index]
+      idx = params[:fid]
       user = User.find(id)
       file = user.dataFiles[idx.to_i]
       @floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
@@ -217,8 +217,8 @@ class SubmitController < ApplicationController
       @pnam = panl.filename.to_s
 
       # The hard code area, used to set the location path
-      datafn = 'i-004'
-      panefn = 'i-005'
+      datafn = 'i-1004'
+      panefn = 'i-1005'
       # tarloc = '/Users/jiakaixu2/Desktop/RA-GAPP/gapp_rails/tmp/'
       tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
 
@@ -345,7 +345,7 @@ class SubmitController < ApplicationController
 
       # Query task
       client = LocalApi::Client.new
-      @result = client.task_info(UID, @task_id, 'pipeline')
+      @result = client.task_info(UID, @task_id, 'app')
 
       logger.debug "In QTD :: after query get result #{@result} !"
 
