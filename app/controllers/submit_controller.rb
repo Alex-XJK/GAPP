@@ -1,4 +1,6 @@
 class SubmitController < ApplicationController
+  http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:index, :submit_task_debug, :submit_task_traditional, :query_task_debug]
+
   UID = 45
   PROJECT_ID = 289
   # $user_stor_dir = "#{Rails.root}/data/user"
@@ -112,143 +114,83 @@ class SubmitController < ApplicationController
     render json:parsed_jobs
   end
 
-  def query_app_task_dummy
-    return_json_hash = {
-      "status":"success",
-      "message":{
-         "status":"finished",
-         "nodes":[
-            {
-               "id":671,
-               "name":"meta_module_double_input_test",
-               "outputs":[
-                  {
-                     "id":911,
-                     "name":"output",
-                     "desc":"output of double testing",
-                     "files":[
-                        {
-                           "name":"test_double_output.txt",
-                           "path":"/project/platform_task_test/gutmeta_pipeline_test1/task_20210517132818/DOAP_meta_module_double_input_test/3P4dmDkcKjCAJANvPLmiwj/output"
-                        }
-                     ]
-                  }
-               ]
-            }
-         ]
-      }
-   }
-   
-    # @task = Task.find_by! id:params[:job_id], user_id:session[:user_id]
-    @task = Task.find_by! id:params[:job_id], user_id:session[:user_id]
-
-    # Rails.logger.debug @task
-    result = JSON.parse(return_json_hash.to_json)
-
-    if @task.status === 'submitted'
-      @task.status = @result['message']['status']
-      @task.save!
-    end
-
-    response_body = []
-
-    if TaskOutput.where(task_id:@task.id).exists? 
-      task_outputs = TaskOutput.where(task_id:@task.id)
-      task_outputs.each do |otp|
-        @task_output = otp
-        @analysis = otp.analysis
-        parsed_output = processTaskOutput()
-        response_body << parsed_output
-      end
-    elsif !@task.analysis.blank? # module task
-      @analysis = @task.analysis
-      @task_output = create_task_output(result['message'])
-      parsed_output = processTaskOutput()
-      response_body << parsed_output
-    else
-      @response_body = []
-      # pipeline = AnalysisPipeline.find @task.analysis_pipeline_id
-      result['message']['nodes'].each do |mrs|
-        Rails.logger.debug "=====>"
-        @analysis = Analysis.find_by(mid:mrs['id'])
-        @task_output = create_task_output(mrs)
-        parsed_output = processTaskOutput()
-        response_body << parsed_output
-      end
-    end
-
-    render json: response_body
-  end
-
-  def submit_app_task_dummy
-    # uid = session[:user_id]
-    uid = 1
-    @user = User.find(uid)
-    # user_dir = File.join($user_stor_dir, uid.to_s)
-
+  def submit_task
+    # init
     result_json = {
       code: false,
       data: ''
     }
     begin
-      app_id = params[:app_id]
-      app_inputs = params[:inputs]
-      # app_params = params[:params]
-      # app_selected = params[:selected]
-      # is_analysis = true
-      # if !params[:mid].blank?
-      #   @analysis = Analysis.find_by mid:params[:mid]
-      # else
-      #   is_analysis = false
-      #   @pipeline = AnalysisPipeline.find_by pid:params[:pid]
-      # end
 
-      # submit task
+      # Receive and find the User Data File
+      id = params[:uid]
+      idx = params[:fid]
+      user = User.find(id)
+      # file = user.dataFiles.find(idx)
+      file = user.dataFiles[idx.to_i]
+      floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
+      fnam = file.filename.to_s
 
-      result_hash = {
-        message: {
-          code: 0,
-          data: {
-            task_id: 10,
-            msg: 'success'
-          }
-        }
-      }
-      result = JSON.parse(result_hash.to_json)
+      # Receive and find the App Panel File
+      aid = params[:app]
+      app = App.find(aid)
+      panl = app.panel
+      ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
+      pnam = panl.filename.to_s
+
+      # The hard code area, used to set the location path
+      datafn = 'i-1004'
+      panefn = 'i-1005'
+      tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
+
+      # Create the string of filename
+      file_new_location = tarloc + fnam
+      panel_new_location = tarloc + pnam
+
+      # Copy the files to the target place and rename them to the system accepted one
+      system "cp #{floc} #{file_new_location}"
+      system "cp #{ploc} #{panel_new_location}"
+
+      # Prepare the API parameters
+      anaid = Analysis.find(app.analysis_id).doap_id.to_i
+      logger.debug "In SuT :: #{anaid} >>"
+
+      inputs = Array.new
+      inputs.push({ datafn => '/data/' + fnam, })
+      # inputs.push({ panefn => '/data/' + pnam, })
+      logger.debug "In SuT :: #{inputs} >>"
+
+      params = Array.new
+      logger.debug "In SuT :: #{params} >>"
+
+      # Submit task
+      client = LocalApi::Client.new
+      result = client.run_module(UID, PROJECT_ID, anaid, inputs, params)
+
+      logger.debug "In SuT :: after submit get result #{result} !"
+
+      # Interpret and encode the result
       if result['message']['code']
         result_json[:code] = true
-        @task  = @user.tasks.new
-        @task.status = 'submitted'
-        @task.tid = result['message']['data']['task_id']
-        if is_analysis
-          @task.analysis = @analysis
-          @task.analysis_pipeline = nil
-        else
-          @task.analysis_pipeline = @pipeline
-          @task.analysis = nil
-        end
-        @task.save!
-        @user.updated_at = Time.now
-        @user.save!
         result_json[:data] = {
           'msg': result['message']['data']['msg'],
-          'task_id': @task.id
-        }  
+          'task_id': encode(result['message']['data']['task_id'])
+        }
       else
         result_json[:code] = false
         result_json[:data] = {
           'msg': result['message']
         }
-        
       end
     rescue StandardError => e
       result_json[:code] = false
       result_json[:data] = e.message
     end
+    logger.debug "In SuT :: now every thing done with JSON: #{result_json} !"
     render json: result_json
   end
 
-  def location
+  def submit_task_debug
     # init
     @result_json = {
       code: false,
@@ -261,12 +203,11 @@ class SubmitController < ApplicationController
 
       # Receive and find the User Data File
       id = params[:uid]
-      idx = params[:index]
+      idx = params[:fid]
       user = User.find(id)
       file = user.dataFiles[idx.to_i]
       @floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
       @fnam = file.filename.to_s
-      ftype = file.filename.extension_with_delimiter.to_s
 
       # Receive and find the App Panel File
       aid = params[:app]
@@ -274,11 +215,10 @@ class SubmitController < ApplicationController
       panl = app.panel
       @ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
       @pnam = panl.filename.to_s
-      ptype = panl.filename.extension_with_delimiter.to_s
 
       # The hard code area, used to set the location path
-      datafn = 'i-004'
-      panefn = 'i-005'
+      datafn = 'i-1004'
+      panefn = 'i-1005'
       # tarloc = '/Users/jiakaixu2/Desktop/RA-GAPP/gapp_rails/tmp/'
       tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
 
@@ -292,20 +232,20 @@ class SubmitController < ApplicationController
 
       # Prepare the API parameters (redirect to stdout for debug now)
       @anaid = Analysis.find(app.analysis_id).doap_id.to_i
-      logger.debug "In SLT :: #{@anaid} >>"
+      logger.debug "In STD :: #{@anaid} >>"
       @inputs = Array.new
       @inputs.push({ datafn => '/data/' + @fnam, })
       # @inputs.push({ panefn => '/data/' + @pnam, })
-      logger.debug "In SLT :: #{@inputs} >>"
+      logger.debug "In STD :: #{@inputs} >>"
       params = Array.new
-      logger.debug "In SLT :: #{params} >>"
+      logger.debug "In STD :: #{params} >>"
 
       # Already existing code
       # submit task
       client = LocalApi::Client.new
       result = client.run_module(UID, PROJECT_ID, @anaid, @inputs, params)
 
-      logger.debug "In SLT :: after submit get result #{result} !"
+      logger.debug "In STD :: after submit get result #{result} !"
 
       if result['message']['code']
         @result_json[:code] = true
@@ -324,12 +264,10 @@ class SubmitController < ApplicationController
       @result_json[:data] = e.message
     end
 
-    logger.debug "In SLT :: now every thing done with JSON: #{@result_json} !"
+    logger.debug "In STD :: now every thing done with JSON: #{@result_json} !"
   end
 
-  def submit_app_task
-
-    logger.debug 'In SAT :: receive submit request!'
+  def submit_task_traditional
 
     result_json = {
       code: false,
@@ -350,28 +288,25 @@ class SubmitController < ApplicationController
         inputs.push({
                       k => '/data/' + v.original_filename,
                     })
-        logger.debug "In SAT :: app_inputs :: file #{k} ==> #{v.original_filename} done !"
+        logger.debug "In STT :: app_inputs :: file #{k} ==> #{v.original_filename} done !"
       end
-
-      logger.debug 'In SAT :: files finished processing!'
 
       app_params&.each do |p|
         p.each do |k, v|
           params.push({
                         k => v,
                       })
-          logger.debug "In SAT :: app_params :: param #{k} ==> #{v} done !"
+          logger.debug "In STT :: app_params :: param #{k} ==> #{v} done !"
         end
       end
 
-      logger.debug 'In SAT :: app_params finished processing!'
-      logger.debug 'In SAT :: ready to submit!'
+      logger.debug 'In STT :: ready to submit!'
 
       # submit task
       client = LocalApi::Client.new
       result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
 
-      logger.debug "In SAT :: after submit get result #{result} !"
+      logger.debug "In STT :: after submit get result #{result} !"
 
       if result['message']['code']
         result_json[:code] = true
@@ -390,9 +325,38 @@ class SubmitController < ApplicationController
       result_json[:data] = e.message
     end
 
-    logger.debug "In SAT :: now every thing done with JSON: #{result_json} !"
+    logger.debug "In STT :: now every thing done with JSON: #{result_json} !"
 
     render json: result_json
+  end
+
+  def query_task_debug
+    @result_json = {
+      code: false,
+      data: ''
+    }
+    begin
+      # Display the Rails root for debug
+      @rrot = Rails.root.to_s
+
+      # Receive and decode task id
+      @task_param = params[:tid]
+      @task_id = decode(@task_param)
+
+      # Query task
+      client = LocalApi::Client.new
+      @result = client.task_info(UID, @task_id, 'app')
+
+      logger.debug "In QTD :: after query get result #{@result} !"
+
+      # Interpret result
+      @result_json[:data] = @result['message']
+    rescue StandardError => e
+      @result_json[:code] = false
+      @result_json[:data] = e.message
+    end
+    # render json: result_json
+    logger.debug "In QTD :: now every thing done with JSON: #{@result_json} !"
   end
 
   def query_app_task
@@ -435,7 +399,7 @@ class SubmitController < ApplicationController
         response_body = []
 
         @task_output = {}
-        
+
         if result['message']['status'] == 'finished'
           if !@task.analysis.blank? # module task
             @analysis = @task.analysis
