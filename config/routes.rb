@@ -118,7 +118,7 @@ Rails.application.routes.draw do
   # submit pages
   # # Added by Alex
   get 'submit/traditional/:id', to: 'submit#index', as: 'submit_manual'
-  get 'submit/debug/:uid/:index/:app', to: 'submit#submit_task_debug', as: 'submit_print'
+  get 'submit/debug/:uid/:fid/:app', to: 'submit#submit_task_debug', as: 'submit_print'
   post 'submit/api', to: 'submit#submit_task', as: 'submit_api', format: 'json'
   post 'submit/manual', to: 'submit#submit_task_traditional', format: 'json'
   # # End of useful things
