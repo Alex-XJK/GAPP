@@ -47,7 +47,7 @@
         <el-row :gutter="12">
           <div  v-for="task in tasks" :key="task.id">
             <div v-if="task.app_id === app.Id">
-              <el-col :span="4">
+              <el-col :span="5">
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
                   <el-progress :percentage="task.status"></el-progress>
