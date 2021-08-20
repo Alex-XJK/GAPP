@@ -66,6 +66,27 @@ inputs <br>
 
 <h3>API test</h3>
 
+<h4>API 1 :</h4>
+
+<pre>
+  @url      ~/submit/api
+  @alias    submit_api
+  @method   POST
+  @param    uid   User_ID
+  @param    fid   File_ID/Index
+  @param    app   App_ID
+  @return   JSON
+  @example  {
+                :code=>true,
+                :data=>{
+                    :msg=>"Task submitted.",
+                    :task_id=>"xxx...16_digits...xxx"
+                }
+            }
+  @author   Alex
+  @since    Aug. 19, 2021
+</pre>
+
 <%= form_with url: "/submit/api", method: :post do |form| %>
   <%= form.label :uid, "User id:" %>
   <%= form.text_field :uid %>

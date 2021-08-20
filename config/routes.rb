@@ -131,6 +131,9 @@ Rails.application.routes.draw do
   # post 'submit-app-task', to: 'submit#submit_app_task', format: 'json'
   # # Added by Alex
   get 'query/debug/:tid', to: 'submit#query_task_debug', as: 'query_print'
+  post 'query/api', to: 'submit#query_task', as: 'query_api', format: 'json'
+  post 'query/status/api', to: 'submit#query_task_status', as: 'query_status_api', format: 'json'
+
   # # End of useful things
   post 'query-app-task', to: 'submit#query_app_task', format: 'json'
   post 'query-all-tasks', to: 'submit#query_all', format: 'json'

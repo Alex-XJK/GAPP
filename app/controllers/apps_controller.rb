@@ -98,11 +98,13 @@ class AppsController < ApplicationController
     }
     return_apps = []
     @apps.each do |a|
+      if a.published?
         return_apps.push({
             Id: a.id,
             name: a.name,
             cate: a.category_id
         })
+      end
     end
     result_json[:code] = true
     result_json[:data] = return_apps
