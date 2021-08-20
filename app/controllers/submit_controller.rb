@@ -434,7 +434,6 @@ class SubmitController < ApplicationController
   end
 
   private
-
   def process_module_result
   
   end
