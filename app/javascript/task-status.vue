@@ -11,15 +11,13 @@
   <br>
   <div v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
-    <!-- <el-col :span=21> -->
-      <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
-    <!-- </el-col> -->
-    <!-- <el-col :span=3> -->
-      <b-btn class="mt-2" @click="dialogVisible = true" align="right">
-        <i class="far fa-edit"></i>
-        Create
-      </b-btn>
-    <!-- </el-col> -->
+    <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
+    <div class="clear"></div>
+    <b-btn class="mt-2 float-right" @click="dialogVisible = true">
+      <i class="far fa-edit"></i>
+      Create
+    </b-btn>
+    <div class="clear"></div>
         <el-dialog
           style="text-align: center"
           :title="'Create New Task for '+ app.name"
@@ -355,5 +353,8 @@ export default {
 #appTitle :hover{
   color: #ccd7ff;
   cursor: pointer;
+}
+.clear {
+  clear: both;
 }
 </style>
