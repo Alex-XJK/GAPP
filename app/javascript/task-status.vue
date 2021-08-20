@@ -198,7 +198,7 @@ export default {
         this.$refs.ruleForm[0].validate((valid) => {
           if (valid) {
             this.hideDialog()
-            this.CreateTask(appId)
+            this.SubmitTask(appId)
             this.resetForm()
             console.log("toCreate emitted and appid "+appId)
           } else {
@@ -248,8 +248,36 @@ export default {
         }).finally(() => {
       });
     },
-    CreateTask(appId) {
+    SubmitTask(appId) {
       console.log("here is appid for task " + appId)
+      axios.post(
+          `/submit/api`,
+        objectToFormData({
+          "app": appId,
+          "uid": this.id,
+          "fid": this.ruleForm.checkedData.dataId
+        }),
+        {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        ).then((response) => {
+          if (response.data.code) {
+            CreateTask(appId)
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.data.data
+            })
+          }
+        }).catch((reason) => {
+          console.log(reason)
+        }).finally(() => {});
+    },
+    CreateTask(appId) {
       axios.post(
           `/create-task`,
         objectToFormData({
@@ -273,7 +301,10 @@ export default {
                 message: 'Created successfully!'
             })
           } else {
-            console.log(response.data.msg)
+            this.$message({
+              type: 'error',
+              message: 'Fail to create!'
+            })
           }
         }).catch((reason) => {
           console.log(reason)
