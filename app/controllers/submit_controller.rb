@@ -330,6 +330,71 @@ class SubmitController < ApplicationController
     render json: result_json
   end
 
+  def query_task
+    result_json = {
+      code: false,
+      data: ''
+    }
+    begin
+
+      # Receive and decode task id
+      task_param = params[:tid]
+      task_id = decode(task_param)
+
+      if task_id
+        # Query task
+        client = LocalApi::Client.new
+        result = client.task_info(UID, task_id, 'app')
+
+        logger.debug "In QuT :: after query get result #{result} !"
+
+        # Interpret result
+        result_json[:code] = result[:status]
+        result_json[:data] = result[:message]
+      else
+        result_json[:code] = true
+        result_json[:data] = {
+          'msg': 'Task not found!',
+          'task_id': task_param
+        }
+      end
+    rescue StandardError => e
+      result_json[:code] = false
+      result_json[:data] = e.message
+    end
+    logger.debug "In QuT :: now every thing done with JSON: #{result_json} !"
+    render json: result_json
+  end
+
+  def query_task_status
+    result_json = {
+      status: ''
+    }
+    begin
+
+      # Receive and decode task id
+      task_param = params[:tid]
+      task_id = decode(task_param)
+
+      if task_id
+        # Query task
+        client = LocalApi::Client.new
+        result = client.task_info(UID, task_id, 'app')
+
+        logger.debug "In QTs :: after query get result #{result} !"
+
+        # Interpret result
+        result_json[:status] = result[:message][:status]
+      else
+        result_json[:status] = 'Task not found!'
+      end
+    rescue StandardError => e
+      result_json[:status] = e.message
+    end
+    logger.debug "In QTs :: now every thing done with JSON: #{result_json} !"
+    render json: result_json
+  end
+
   def query_task_debug
     @result_json = {
       code: false,
@@ -343,94 +408,29 @@ class SubmitController < ApplicationController
       @task_param = params[:tid]
       @task_id = decode(@task_param)
 
-      # Query task
-      client = LocalApi::Client.new
-      @result = client.task_info(UID, @task_id, 'app')
+      if @task_id
+        # Query task
+        client = LocalApi::Client.new
+        @result = client.task_info(UID, @task_id, 'app')
 
-      logger.debug "In QTD :: after query get result #{@result} !"
+        logger.debug "In QTD :: after query get result #{@result} !"
 
-      # Interpret result
-      @result_json[:data] = @result['message']
+        # Interpret result
+        @result_json[:code] = @result[:status]
+        @result_json[:data] = @result[:message]
+      else
+        @result_json[:code] = true
+        @result_json[:data] = {
+          'msg': 'Task not found!',
+          'task_id': @task_param
+        }
+      end
     rescue StandardError => e
       @result_json[:code] = false
       @result_json[:data] = e.message
     end
     # render json: result_json
     logger.debug "In QTD :: now every thing done with JSON: #{@result_json} !"
-  end
-
-  def query_app_task
-    result_json = {
-      code: false,
-      data: ''
-    }
-    begin
-      @task = Task.find_by! id:params[:job_id], user_id:session[:user_id]
-      
-      if TaskOutput.where(task_id:@task.id).exists?
-        response_body = []
-        task_outputs = TaskOutput.where(task_id:@task.id)
-        task_outputs.each do |otp|
-          @task_output = otp
-          @analysis = otp.analysis
-          parsed_output = processTaskOutput()
-          response_body << parsed_output
-        end
-        render json: response_body
-        return
-      end
-      # query task
-      client = LocalApi::Client.new
-      result = ''
-      if !@task.analysis.blank?
-        result = client.task_info(UID, @task.tid, 'app')
-      else
-        result = client.task_info(UID, @task.tid, 'pipeline')
-      end
-      Rails.logger.info(result)
-
-      if @task.status == 'submitted'
-        @task.status = result['message']['status']
-        @task.save!
-      end
-
-
-      if result['status'] == 'success'
-        response_body = []
-
-        @task_output = {}
-
-        if result['message']['status'] == 'finished'
-          if !@task.analysis.blank? # module task
-            @analysis = @task.analysis
-            @task_output = create_task_output(result['message'])
-            parsed_output = processTaskOutput()
-            response_body << parsed_output
-          else
-            @response_body = []
-            # pipeline = AnalysisPipeline.find @task.analysis_pipeline_id
-            result['message']['nodes'].each do |mrs|
-              @analysis = Analysis.find_by(mid:mrs['id'])
-              @task_output = create_task_output(mrs)
-              parsed_output = processTaskOutput()
-              response_body << parsed_output
-            end
-          end
-        end
-        render json: response_body
-        return
-        result_json[:data] = {
-          'msg': "the task is #{result['message']['status']}",
-        }
-      else
-        result_json[:data] = result['message']
-      end
-     
-    rescue StandardError => e
-      result_json[:code] = false
-      result_json[:data] = e.message
-    end
-    render json: result_json
   end
 
   private
