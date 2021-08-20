@@ -349,8 +349,8 @@ class SubmitController < ApplicationController
         logger.debug "In QuT :: after query get result #{result} !"
 
         # Interpret result
-        result_json[:code] = result[:status]
-        result_json[:data] = result[:message]
+        result_json[:code] = result['status']
+        result_json[:data] = result['message']
       else
         result_json[:code] = true
         result_json[:data] = {
@@ -384,7 +384,7 @@ class SubmitController < ApplicationController
         logger.debug "In QTs :: after query get result #{result} !"
 
         # Interpret result
-        result_json[:status] = result[:message][:status]
+        result_json[:status] = result['message']['status']
       else
         result_json[:status] = 'Task not found!'
       end
@@ -416,8 +416,8 @@ class SubmitController < ApplicationController
         logger.debug "In QTD :: after query get result #{@result} !"
 
         # Interpret result
-        @result_json[:code] = @result[:status]
-        @result_json[:data] = @result[:message]
+        @result_json[:code] = @result['status']
+        @result_json[:data] = @result['message']
       else
         @result_json[:code] = true
         @result_json[:data] = {
