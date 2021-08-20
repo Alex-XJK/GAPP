@@ -11,15 +11,13 @@
   <br>
   <div v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
-    <!-- <el-col :span=21> -->
-      <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
-    <!-- </el-col> -->
-    <!-- <el-col :span=3> -->
-      <b-btn class="mt-2" @click="dialogVisible = true" align="right">
-        <i class="far fa-edit"></i>
-        Create
-      </b-btn>
-    <!-- </el-col> -->
+    <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
+    <div class="clear"></div>
+    <b-btn class="mt-2 float-right" @click="dialogVisible = true">
+      <i class="far fa-edit"></i>
+      Create
+    </b-btn>
+    <div class="clear"></div>
         <el-dialog
           style="text-align: center"
           :title="'Create New Task for '+ app.name"
@@ -49,7 +47,7 @@
         <el-row :gutter="12">
           <div  v-for="task in tasks" :key="task.id">
             <div v-if="task.app_id === app.Id">
-              <el-col :span="4">
+              <el-col :span="5">
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
                   <el-progress :percentage="task.status"></el-progress>
@@ -198,7 +196,7 @@ export default {
         this.$refs.ruleForm[0].validate((valid) => {
           if (valid) {
             this.hideDialog()
-            this.CreateTask(appId)
+            this.SubmitTask(appId)
             this.resetForm()
             console.log("toCreate emitted and appid "+appId)
           } else {
@@ -248,8 +246,36 @@ export default {
         }).finally(() => {
       });
     },
-    CreateTask(appId) {
+    SubmitTask(appId) {
       console.log("here is appid for task " + appId)
+      axios.post(
+          `/submit/api`,
+        objectToFormData({
+          "app": appId,
+          "uid": this.id,
+          "fid": this.ruleForm.checkedData.dataId
+        }),
+        {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        ).then((response) => {
+          if (response.data.code) {
+            CreateTask(appId)
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.data.data
+            })
+          }
+        }).catch((reason) => {
+          console.log(reason)
+        }).finally(() => {});
+    },
+    CreateTask(appId) {
       axios.post(
           `/create-task`,
         objectToFormData({
@@ -273,7 +299,10 @@ export default {
                 message: 'Created successfully!'
             })
           } else {
-            console.log(response.data.msg)
+            this.$message({
+              type: 'error',
+              message: 'Fail to create!'
+            })
           }
         }).catch((reason) => {
           console.log(reason)
@@ -324,5 +353,8 @@ export default {
 #appTitle :hover{
   color: #ccd7ff;
   cursor: pointer;
+}
+.clear {
+  clear: both;
 }
 </style>
