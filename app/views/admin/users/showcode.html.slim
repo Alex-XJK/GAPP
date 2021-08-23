@@ -1,0 +1,23 @@
+- content_for :title
+  | Activation Code
+
+css:
+  body {
+    background-color: #343a40;
+  }
+
+.invitation-page
+  .container.login-section.text-body.m-4
+    .card.login-card.w-75.mx-auto
+      .card-body
+        .card-title.text-center
+            h2 Your invitation is sent
+        p.text-warning
+            = link_to new_account_invitation_path do
+                .fa.fa-arrow-left
+                span Back to invitation
+        p.lead The activation code is:
+        .alert.alert-success.text-center
+            strong
+                = @tk
+        p.lead Please keep this code as a reference.
