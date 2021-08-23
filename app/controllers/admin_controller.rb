@@ -1,5 +1,8 @@
 class AdminController < ApplicationController
-    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
+    before_action :authenticate_account!
+    before_action :require_admin
+
+    # http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
     $abd_dir = "#{Rails.root}/app/data/abd_files/"
     def index
         @projects = App.order(:name)
@@ -18,8 +21,14 @@ class AdminController < ApplicationController
         @appcnt = App.count
         @taskcnt = Task.count
         @ruby_ver = RUBY_VERSION
+        @acccnt = Account.count
+    end
 
-
+    def require_admin
+        unless account_signed_in? and current_account.has_role? :admin
+          flash[:error] = "You must be an admin to access this page. (Current role: " + current_account.roles.first.name + ")"
+          redirect_to "/" # halts request cycle
+        end
     end
 
     def modify_sample_abd

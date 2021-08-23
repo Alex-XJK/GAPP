@@ -1,6 +1,16 @@
 class Admin::UsersController < ApplicationController
-    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
+    before_action :authenticate_account!
+    before_action :require_admin
+    
+    # http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx"
     $user_stor_dir = "#{Rails.root}/data/user"
+
+    def require_admin
+        unless account_signed_in? and current_account.has_role? :admin
+          flash[:error] = "You must be an admin to access this page. (Current role: " + current_account.roles.first.name + ")"
+          redirect_to "/" # halts request cycle
+        end
+    end
 
     def index
         @projects = App.order(:name)
@@ -9,28 +19,56 @@ class Admin::UsersController < ApplicationController
         @ana = Analysis.order(:name)
         @a_attrs = Analysis.column_names
 
-        @users = User.select(:id, :username, :created_at, :role_id) 
+        @users = User.all
+        @accounts = Account.all
         @usercolumn = ["id", "username", "role_id", "created_at"]
-        @usercolumnname = ["id", "username", "role", "register time"]
+        @usercolumnname = ["id", "name", "role", "register time"]
         @roles = Role.select(:id, :name)
     end
 
     def show
-        @user = User.find(params[:id])
-        @user_attrs = User.column_names
-        @role = Role.select(:id, :name).find(@user.role_id)
+        @uid = params[:id]
+        if User.find(params[:id]).account_id == nil
+            @user = User.find(params[:id])
+            @user_attrs = User.column_names
+        else
+            @user = Account.find(User.find(params[:id]).account_id)
+            @user_attrs = Account.column_names
+        end
+    end
+
+    def showcode
+        @tk = params[:token]
     end
 
     def destroy
-        @tapps = App.where({ user_id: params[:id] })
-        for uapp in @tapps
-            uapp.user_id = 1
-            uapp.save(:validate => false)
+        @usr = User.find(params[:id])
+        if @usr.account_id == nil
+            @tapps = App.where({ user_id: params[:id] })
+            for uapp in @tapps
+                uapp.user_id = 1
+                uapp.save(:validate => false)
+            end
+            @user = User.find(params[:id])
+            @user.destroy
+            redirect_to action: "index"
+        else
+            if String(@usr.account_id) == String(current_account.id)
+                flash[:error] = "Please don't delete your own account!" 
+                redirect_to action: "index"
+            else
+                @bkid = @usr.account_id
+                @tapps = App.where({ user_id: params[:id] })
+                for uapp in @tapps
+                    uapp.user_id = 1
+                    uapp.save(:validate => false)
+                end
+                @user = User.find(params[:id])
+                @user.destroy
+                Account.find(@bkid).destroy
+                redirect_to action: "index"
+            end
         end
-        @user = User.find(params[:id])
-        @user.destroy
-    
-        redirect_to action: "index"
     end
 
     def destroyRole
@@ -41,8 +79,28 @@ class Admin::UsersController < ApplicationController
     end
 
     def editRole
-        @user = User.find(params[:id])
-        @user.update(edit_params)
+        @usr = User.find(params[:id])
+        if @usr.account_id == nil
+            @usr.update(edit_params)
+        else
+            @user = Account.find(@usr.account_id)
+            if String(@usr.account_id) == String(current_account.id)
+                flash[:error] = "Please don't edit your own role!" 
+                redirect_to action: "index"
+            else
+                @usr.update(edit_params)
+                @user.roles = []
+                if params[:role_id] == "1"
+                    @user.add_role(:admin)
+                else
+                    if params[:role_id] == "2"
+                        @user.add_role(:producer)
+                    else
+                        @user.add_role(:user)
+                    end
+                end
+            end
+        end
     end
 
     def new
