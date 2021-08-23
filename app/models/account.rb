@@ -14,5 +14,8 @@ class Account < ApplicationRecord
       if not has_any_role?(:admin, :producer, :user)
         add_role("user")
       end
+      name = String(self.email).split("@")[0]
+      un = User.new(username: name, password_digest: self.encrypted_password, role_id: 3, account_id: self.id)
+      un.save()
   end
 end

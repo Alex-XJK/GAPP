@@ -47,4 +47,6 @@ css:
                 form novalidate="novalidate" action="/accounts/invitation" accept-charset="UTF-8" method="post"
                   = hidden_field_tag :authenticity_token, form_authenticity_token
                   input type="hidden" value=ac2.email name="account[email]"
-                  button.btn.btn-outline-info type="submit" Resend Invitation
+                  button.btn.btn-outline-info type="submit"
+                    i.fas.fa-paper-plane
+                    span Resend

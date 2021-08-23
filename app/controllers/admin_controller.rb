@@ -21,6 +21,7 @@ class AdminController < ApplicationController
         @appcnt = App.count
         @taskcnt = Task.count
         @ruby_ver = RUBY_VERSION
+        @acccnt = Account.count
     end
 
     def require_admin

@@ -19,15 +19,22 @@ class Admin::UsersController < ApplicationController
         @ana = Analysis.order(:name)
         @a_attrs = Analysis.column_names
 
-        @users = Account.all
-        @usercolumn = ["id", "email", "role", "created_at"]
-        @usercolumnname = ["id", "email", "role", "register time"]
+        @users = User.all
+        @accounts = Account.all
+        @usercolumn = ["id", "username", "role_id", "created_at"]
+        @usercolumnname = ["id", "name", "role", "register time"]
         @roles = Role.select(:id, :name)
     end
 
     def show
-        @user = Account.find(params[:id])
-        @user_attrs = Account.column_names
+        @uid = params[:id]
+        if User.find(params[:id]).account_id == nil
+            @user = User.find(params[:id])
+            @user_attrs = User.column_names
+        else
+            @user = Account.find(User.find(params[:id]).account_id)
+            @user_attrs = Account.column_names
+        end
     end
 
     def showcode
@@ -35,19 +42,32 @@ class Admin::UsersController < ApplicationController
     end
 
     def destroy
-        # @tapps = App.where({ user_id: params[:id] })
-        # for uapp in @tapps
-        #     uapp.user_id = 1
-        #     uapp.save(:validate => false)
-        # end
-        # @user = User.find(params[:id])
-        # @user.destroy
-        if String(params[:id]) == String(current_account.id)
-            flash[:error] = "Please don't delete your own account!" 
+        @usr = User.find(params[:id])
+        if @usr.account_id == nil
+            @tapps = App.where({ user_id: params[:id] })
+            for uapp in @tapps
+                uapp.user_id = 1
+                uapp.save(:validate => false)
+            end
+            @user = User.find(params[:id])
+            @user.destroy
             redirect_to action: "index"
         else
-            Account.find(params[:id]).destroy
-            redirect_to action: "index"
+            if String(@usr.account_id) == String(current_account.id)
+                flash[:error] = "Please don't delete your own account!" 
+                redirect_to action: "index"
+            else
+                @bkid = @usr.account_id
+                @tapps = App.where({ user_id: params[:id] })
+                for uapp in @tapps
+                    uapp.user_id = 1
+                    uapp.save(:validate => false)
+                end
+                @user = User.find(params[:id])
+                @user.destroy
+                Account.find(@bkid).destroy
+                redirect_to action: "index"
+            end
         end
     end
 
@@ -59,19 +79,25 @@ class Admin::UsersController < ApplicationController
     end
 
     def editRole
-        if String(params[:id]) == String(current_account.id)
-            flash[:error] = "Please don't edit your own role!" 
-            redirect_to action: "index"
+        @usr = User.find(params[:id])
+        if @usr.account_id == nil
+            @usr.update(edit_params)
         else
-            @user = Account.find(params[:id])
-            @user.roles = []
-            if params[:role_id] == "1"
-                @user.add_role(:admin)
+            @user = Account.find(@usr.account_id)
+            if String(@usr.account_id) == String(current_account.id)
+                flash[:error] = "Please don't edit your own role!" 
+                redirect_to action: "index"
             else
-                if params[:role_id] == "2"
-                    @user.add_role(:producer)
+                @usr.update(edit_params)
+                @user.roles = []
+                if params[:role_id] == "1"
+                    @user.add_role(:admin)
                 else
-                    @user.add_role(:user)
+                    if params[:role_id] == "2"
+                        @user.add_role(:producer)
+                    else
+                        @user.add_role(:user)
+                    end
                 end
             end
         end

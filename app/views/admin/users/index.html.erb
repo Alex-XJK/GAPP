@@ -141,10 +141,10 @@
             <tr>
               <% @usercolumn.each do |attr| %>
 
-                <% if attr == 'role' %>
+                <% if attr == 'role_id' && String(usr[attr]) != "" %>
                 <td> 
                   <div class="table_cell role_cell">
-                    <%= usr.roles.first.name %>
+                    <%= @roles.find(usr[attr])["name"] %>
                   </div>
                 </td>
                 <% else %>
@@ -164,7 +164,7 @@
               <td>
                 <form action="/admin/users/edit" method="POST">  
                   <%= link_to '<button type="button" data-toggle="tooltip" title="Delete" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>'.html_safe, "/admin/users/" + String(usr.id), method: :delete,
-                          data: { confirm: 'Are you sure you want to delete user "' + String(usr.email) + '"?<br>You can\'t undo this action.', 
+                          data: { confirm: 'Are you sure you want to delete user "' + String(usr.username) + '"?<br>You can\'t undo this action.', 
                                   title: 'Confirm your action', 
                                   commit: 'Delete' } %>
                   
