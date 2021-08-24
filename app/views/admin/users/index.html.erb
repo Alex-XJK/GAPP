@@ -144,7 +144,11 @@
                 <% if attr == 'role_id' && String(usr[attr]) != "" %>
                 <td> 
                   <div class="table_cell role_cell">
+                    <% if usr.account_id != nil %>
+                    <%= Account.find(usr.account_id).roles.first.name %>
+                    <% else %>
                     <%= @roles.find(usr[attr])["name"] %>
+                    <% end %>
                   </div>
                 </td>
                 <% else %>
