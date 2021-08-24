@@ -11,8 +11,13 @@
   <br>
   <div v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
-      <h5><i>{{app.name}}</i></h5>
-      <el-button type="info" plain size="small" @click="dialogVisible = true">Create</el-button>
+    <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
+    <div class="clear"></div>
+    <b-btn class="mt-2 float-right" @click="dialogVisible = true">
+      <i class="far fa-edit"></i>
+      Create
+    </b-btn>
+    <div class="clear"></div>
         <el-dialog
           style="text-align: center"
           :title="'Create New Task for '+ app.name"
@@ -20,16 +25,16 @@
           :show-close=false
           :close-on-click-modal="false"
           width="50%">
-          <el-form :model="form"  label-width="100px">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
             <el-form-item label="Select Data" :label-width="formLabelWidth">
-              <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.checkAll" @change="handleCheckAllChange">All</el-checkbox>
+              <el-checkbox :indeterminate="ruleForm.isIndeterminate" v-model="ruleForm.checkAll" @change="handleCheckAllChange">All</el-checkbox>
               <div style="margin: 15px 0;"></div>
-              <el-checkbox-group v-model="form.checkedData" @change="handleCheckedDataChange">
-                <el-checkbox v-for="datum in form.data" :label="datum" :key="datum.id">{{datum.name}}</el-checkbox>
+              <el-checkbox-group v-model="ruleForm.checkedData" @change="handleCheckedDataChange">
+                <el-checkbox v-for="datum in ruleForm.data" :label="datum" :key="datum.id">{{datum.name}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="Task Name" :label-width="formLabelWidth">
-              <el-input v-model="form.taskName" placeholder="Please input your task name"></el-input>
+            <el-form-item label="Task Name" :label-width="formLabelWidth" prop="taskName">
+              <el-input v-model="ruleForm.taskName" placeholder="Please input your task name"></el-input>
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
@@ -42,7 +47,7 @@
         <el-row :gutter="12">
           <div  v-for="task in tasks" :key="task.id">
             <div v-if="task.app_id === app.Id">
-              <el-col :span="4">
+              <el-col :span="5">
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
                   <el-progress :percentage="task.status"></el-progress>
@@ -77,12 +82,18 @@ export default {
       apps: [],
       tasks: [],
       formLabelWidth: '120px',
-      form: {
+      ruleForm: {
           checkAll: false,
           checkedData: [],
           data: [],
           isIndeterminate: true,
           taskName: ''
+      },
+      rules: {
+        taskName: [
+          { required: true, message: 'Task name cannot be empty!' },
+          { min: 3, max: 5, message: 'Length should be between 3 and 5 characters.', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -182,29 +193,33 @@ export default {
         }).finally(() => {});
       },
       toCreate (appId) {
-      this.hideDialog()
-      this.CreateTask(appId)
-      console.log("toCreate emitted and appid "+appId)
-      this.resetForm()
+        this.$refs.ruleForm[0].validate((valid) => {
+          if (valid) {
+            this.hideDialog()
+            this.SubmitTask(appId)
+            this.resetForm()
+            console.log("toCreate emitted and appid "+appId)
+          } else {
+            this.resetForm()
+            return false
+          }
+        });
     },
     cancelCreate () {
       this.resetForm()
       this.hideDialog()
     },
     resetForm () {
-      this.form.checkAll = false
-      this.form.checkedData = []
-      this.form.isIndeterminate = true
-      this.form.taskName = ''
+      this.$refs.ruleForm[0].resetFields()
     },
     handleCheckAllChange(val) {
-      this.form.checkedData = val ? this.form.data : []
-      this.form.isIndeterminate = false;
+      this.ruleForm.checkedData = val ? this.ruleForm.data : []
+      this.ruleForm.isIndeterminate = false;
     },
     handleCheckedDataChange(value) {
       let checkedCount = value.length
-      this.form.checkAll = checkedCount === this.form.data.length
-      this.form.isIndeterminate = checkedCount > 0 && checkedCount < this.form.data.length
+      this.ruleForm.checkAll = checkedCount === this.ruleForm.data.length
+      this.ruleForm.isIndeterminate = checkedCount > 0 && checkedCount < this.ruleForm.data.length
     },
     getDataInfo() {
       axios.post(
@@ -221,8 +236,8 @@ export default {
         },
         ).then((response) => {
           if (response.data.code) {
-            this.form.data = response.data.data
-            console.log(this.form.data)
+            this.ruleForm.data = response.data.data
+            console.log(this.ruleForm.data)
           } else {
             console.log(response.data.msg)
           }
@@ -231,15 +246,43 @@ export default {
         }).finally(() => {
       });
     },
-    CreateTask(appId) {
+    SubmitTask(appId) {
       console.log("here is appid for task " + appId)
+      axios.post(
+          `/submit/api`,
+        objectToFormData({
+          "app": appId,
+          "uid": this.id,
+          "fid": this.ruleForm.checkedData.dataId
+        }),
+        {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        ).then((response) => {
+          if (response.data.code) {
+            CreateTask(appId)
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.data.data
+            })
+          }
+        }).catch((reason) => {
+          console.log(reason)
+        }).finally(() => {});
+    },
+    CreateTask(appId) {
       axios.post(
           `/create-task`,
         objectToFormData({
-          "taskName": this.form.taskName,
+          "taskName": this.ruleForm.taskName,
           "app_id": appId,
           "user_id": this.id,
-          "usedData": this.form.checkedData
+          "usedData": this.ruleForm.checkedData
         }),
         {
           headers: {
@@ -256,11 +299,17 @@ export default {
                 message: 'Created successfully!'
             })
           } else {
-            console.log(response.data.msg)
+            this.$message({
+              type: 'error',
+              message: 'Fail to create!'
+            })
           }
         }).catch((reason) => {
           console.log(reason)
         }).finally(() => {});
+    },
+    gotoApp(appId) {
+      Turbolinks.visit(`/apps/${appId}`, {'action':'replace'})
     }
   },
     watch: {
@@ -295,5 +344,17 @@ export default {
 .el-col {
   padding-top : 6px !important;
   padding-bottom : 6px !important;
+}
+#appTitle {
+  text-decoration:underline;
+  color: #0066ff;
+  cursor: pointer;
+}
+#appTitle :hover{
+  color: #ccd7ff;
+  cursor: pointer;
+}
+.clear {
+  clear: both;
 }
 </style>

@@ -165,16 +165,6 @@
           = icon 'fas', 'id-card', class: 'fa-fw'
           span.sidebar-text Profile
 
-  .sidebar-section
-    .sidebar-heading
-      span.uncollapsed-only Applications
-      span.collapsed-only
-        = icon 'fab', 'app-store-ios', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to apps_path do
-          = icon 'fas', 'desktop', class: 'fa-fw'
-          span.sidebar-text My Apps
 
   - if account_signed_in? and (current_account.has_role? :admin or current_account.has_role? :producer)
     .sidebar-section
@@ -188,7 +178,7 @@
             = icon 'fas', 'list', class: 'fa-fw'
             span.sidebar-text Manage
         li.sidebar-item
-          = link_to createnew_app_path("1") do
+          = link_to createnew_app_path do
             = icon 'fas', 'plus', class: 'fa-fw'
             span.sidebar-text New App
 
@@ -219,6 +209,7 @@
           = link_to admin_tasks_path do
             = icon 'fas', 'tasks', class: 'fa-fw'
             span.sidebar-text Task
+
 
   .sidebar-section
       .sidebar-heading

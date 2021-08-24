@@ -113,11 +113,11 @@ export default {
     },
     renameData(index) {
       var dataId = this.tableData[index].dataId
-      this.$prompt('Please input a new name', 'Notice', {
+      this.$prompt('Please input a new name.', 'Notice', {
           confirmButtonText: 'Confirm',
-          cancelButtonText: 'Cancel'
-          // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          // inputErrorMessage: '邮箱格式不正确'
+          cancelButtonText: 'Cancel',
+          inputPattern: /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/,
+          inputErrorMessage: 'The file name was incorrectly formed'
         }).then(({ value }) => {
           axios.post(
           `/data-file-rename`,

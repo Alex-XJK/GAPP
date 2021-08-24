@@ -7,9 +7,14 @@
     <script>
         $( document ).on('turbolinks:load', function() {
             $('#data-table').DataTable({
-                paging: false,
+                paging: true,
+                lengthChange: false,
+                pageLength: 10,
                 searching: false,
-                order: [0, 'asc'],
+                order: [
+                    [0, 'asc'],
+                    [1, 'asc']
+                ],
                 columnDefs: [
                     {orderable: false, targets: 2},
                     {orderable: false, targets: 5}
@@ -21,15 +26,19 @@
 
 <% content_for :title, "Producer" %>
 
-<h1>Welcome to use GAPP</h1>
+<h1>Welcome <i><%= @user_name %></i> to use GAPP producer's page</h1>
 
 <table style="width: 100%">
     <tr>
       <td>
+        <% if account_signed_in? and current_account.has_role? :admin %>
+          In total there are <%= @apps.count %> Apps on our website: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .
+        <% else %>
           Currently you have created <%= @apps.count %> Apps: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .
+        <% end %>
       </td>
       <td style="float: right;">
-          <%= button_to createnew_app_path("1"), method: :get, class: 'btn btn-primary' do %>
+          <%= button_to createnew_app_path, method: :get, class: 'btn btn-primary' do %>
               <i class="fas fa-pen-nib"></i> + CREATE NEW APP
           <% end %>
       </td>
@@ -39,7 +48,7 @@
 <table id="data-table" class="table table-hover">
     <thead>
         <tr>
-            <th>App Number</th>
+            <th>Category</th>
             <th>App Name</th>
             <th>Cover Image</th>
             <th>Status</th>
@@ -50,7 +59,7 @@
     <tbody>
         <% @apps.each do |app| %>
             <tr style="height: 100px;">
-                <td style="vertical-align: middle;"> <%= app.app_no %> </td>
+                <td style="vertical-align: middle;"> <%= Category.find(app.category_id).name %> </td>
                 <td style="vertical-align: middle;"> <%= app.name %> </td>
                 <td style="vertical-align: middle;">
                     <% if app.cover_image.attached? %>
@@ -95,9 +104,11 @@
                             <i class="fas fa-undo-alt"></i>hide
                         <% end %>
                     <% end %>
-                    <% if app.awaiting? %>
-                        <%= button_to onshelf_app_path(app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do %>
-                            <i class="fas fa-share"></i>pass
+                    <% if account_signed_in? and current_account.has_role? :admin %>
+                        <% if app.awaiting? %>
+                            <%= button_to onshelf_app_path(app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do %>
+                                <i class="fas fa-share"></i>pass
+                            <% end %>
                         <% end %>
                     <% end %>
                 </td>

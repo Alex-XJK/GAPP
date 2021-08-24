@@ -76,8 +76,6 @@ Rails.application.routes.draw do
   post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
-  post 'query_app_task_dummy', to: 'submit#query_app_task_dummy'
-  post 'submit_app_task_dummy', to: 'submit#submit_app_task_dummy'
   root 'welcome#index'
 
   get "welcome", to: 'welcome#index', as: "welcome"
@@ -121,17 +119,25 @@ Rails.application.routes.draw do
   end
 
   # submit pages
+  # # < SUBMIT > Added by Alex
+  get 'submit/traditional/:id', to: 'submit#index', as: 'submit_manual'
+  get 'submit/debug/:uid/:fid/:app', to: 'submit#submit_task_debug', as: 'submit_print'
+  post 'submit/api', to: 'submit#submit_task', as: 'submit_api', format: 'json'
+  post 'submit/manual', to: 'submit#submit_task_traditional', format: 'json'
+  # # End of useful things
   get "submit/analyses", to: "submit#analyses"
   get "submit/pipelines", to: "submit#pipelines"
   get 'submit/job-query', to: 'submit#query', as: 'query'
-  get 'submit/analysis/:id', to: 'submit#index', as: 'submit_analysis'
   get 'submit/pipeline/:id', to: 'submit#pipeline', as: 'submit_pipeline'
   
   
   # post 'submit-app-task', to: 'submit#submit_app_task', format: 'json'
+  # # < QUERY > Added by Alex
+  get 'query/debug/:tid', to: 'submit#query_task_debug', as: 'query_print'
+  post 'query/api', to: 'submit#query_task', as: 'query_api', format: 'json'
+  post 'query/status/api', to: 'submit#query_task_status', as: 'query_status_api', format: 'json'
+  # # End of useful things
   post 'query-app-task', to: 'submit#query_app_task', format: 'json'
-  # post 'query-app-task-dummy', to: 'submit#query_app_task_dummy', format: 'json'
-  post 'submit-app-task', to: 'submit#submit_app_task', format: 'json'
   post 'query-all-tasks', to: 'submit#query_all', format: 'json'
   post 'remove-task', to: 'submit#remove_task', format: 'json'
 
@@ -168,7 +174,7 @@ Rails.application.routes.draw do
   get 'apps/details/:id', to: 'apps#details', as: 'check_detail_app'
   get 'apps/operate/offshelf/:id', to: 'apps#downgrade', as: 'offshelf_app'
   get 'apps/operate/onshelf/:id', to: 'apps#upgrade', as: 'onshelf_app'
-  get 'apps/new/:uid', to: 'apps#new', as: 'createnew_app'
+  get 'apps/new', to: 'apps#new', as: 'createnew_app'
   resources :apps
 
 end

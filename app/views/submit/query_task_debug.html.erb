@@ -1,0 +1,99 @@
+<h2>Direct Query Test</h2>
+
+<br>
+
+<h4>Rails Server Root:</h4>
+
+<span>Path ==> </span>
+<%= @rrot %>
+<br>
+
+<br>
+
+<h4>Parameter</h4>
+
+<span>Parameter Received as ==> </span>
+<%= @task_param %>
+<br>
+<span> And decoded to ==> </span>
+<%= @task_id %>
+<br>
+
+<br>
+
+<h4>Server response</h4>
+
+<%= @result %>
+<br>
+
+<br>
+
+<h4>Returned result:</h4>
+
+<b style="color: #B00100">
+  <%= @result_json %>
+</b>
+
+<br>
+
+<br>
+
+<hr>
+
+<h3>API test</h3>
+
+<h4>API 1 :</h4>
+
+<pre>
+  @url      ~/query/api
+  @alias    query_api
+  @method   POST
+  @param    tid   Task_ID
+  @return   JSON
+  @example  {
+                :code=>success,
+                :data=>{
+                    "status"=>"finished", "type"=>"module",
+                    "inputs"=>[{"id"=>1004, "name"=>"meta_viz_test_i", "desc"=>"meta_viz_test_i", "files"=>[{"name"=>"gennosa.fq", "path"=>"/data"}]}],
+                    "outputs"=>[{"id"=>842, "name"=>"meta_viz_test_o", "desc"=>"meta_viz_test_o", "files"=>[{"name"=>"T1_sample.csv", "path"=>"/project/platform_task_test/task_20210820103538"}]}],
+                    "params"=>[], "tasks"=>[], "error_message"=>""
+                }
+            }
+  @author   Alex
+  @since    Aug. 20, 2021
+</pre>
+
+<%= form_with url: "/query/api", method: :post do |form| %>
+  <%= form.label :tid, "Task id:" %>
+  <%= form.text_field :tid %>
+  <%= form.submit "Test" %>
+<% end %>
+
+<br>
+
+<hr>
+
+<h4>API 2 :</h4>
+
+<pre>
+  @url      ~/query/status/api
+  @alias    query_status_api
+  @method   POST
+  @param    tid   Task_ID
+  @return   JSON
+  @example  {
+                :status=>"finished"
+            }
+  @author   Alex
+  @since    Aug. 20, 2021
+</pre>
+
+<%= form_with url: "/query/status/api", method: :post do |form| %>
+  <%= form.label :tid, "Task id:" %>
+  <%= form.text_field :tid %>
+  <%= form.submit "Test" %>
+<% end %>
+
+<br>
+
+<hr>

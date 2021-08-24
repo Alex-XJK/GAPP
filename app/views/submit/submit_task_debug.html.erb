@@ -1,0 +1,102 @@
+<h2>Direct Submit Test</h2>
+
+<br>
+
+<h4>Rails Server Root:</h4>
+
+<span>Path ==> </span>
+<%= @rrot %>
+<br>
+
+<br>
+
+<h4>User Data File:</h4>
+
+<span>File Name ==> </span>
+<%= @fnam %>
+<br>
+
+<span>File Location ==> </span>
+<%= @floc %>
+<br>
+
+<span>| ~~ Moved to ~~> </span>
+<%= @file_new_location %>
+<br>
+
+<br>
+
+<h4>Panel File:</h4>
+
+<span>Panel File Name ==> </span>
+<%= @pnam %>
+<br>
+
+<span>Panel Location ==> </span>
+<%= @ploc %>
+<br>
+
+<span>| ~~ Moved to ~~> </span>
+<%= @panel_new_location %>
+<br>
+
+<br>
+
+<h4>Test Params (as shown in log):</h4>
+
+app_id.to_i <br>
+==> <%= @anaid %> <br>
+
+inputs <br>
+==> <%= @inputs %> <br>
+
+<br>
+
+<h4>Returned result:</h4>
+
+<b style="color: #B00100">
+  <%= @result_json %>
+</b>
+
+<br>
+
+<br>
+
+<hr>
+
+<h3>API test</h3>
+
+<h4>API 1 :</h4>
+
+<pre>
+  @url      ~/submit/api
+  @alias    submit_api
+  @method   POST
+  @param    uid   User_ID
+  @param    fid   File_ID/Index
+  @param    app   App_ID
+  @return   JSON
+  @example  {
+                :code=>true,
+                :data=>{
+                    :msg=>"Task submitted.",
+                    :task_id=>"xxx...16_digits...xxx"
+                }
+            }
+  @author   Alex
+  @since    Aug. 19, 2021
+</pre>
+
+<%= form_with url: "/submit/api", method: :post do |form| %>
+  <%= form.label :uid, "User id:" %>
+  <%= form.text_field :uid %>
+  <%= form.label :fid, "Data File id:" %>
+  <%= form.text_field :fid %>
+  <%= form.label :app, "App id:" %>
+  <%= form.text_field :app %>
+  <%= form.submit "Test" %>
+<% end %>
+
+<br>
+
+<hr>
