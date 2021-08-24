@@ -98,7 +98,7 @@
     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
     Search for an app by Name: &nbsp;
     <input type="text" id="text" name="name">
-    <button type="submit" id="search" class="btn btn-primary">
+    <button data-toggle="tooltip" type="submit" id="search" class="btn btn-primary" title="Search">
       <i class="fas fa-search"></i>
     </button> &nbsp;
     <span class="badge badge-pill badge-danger" id="warning">Please input a keyword.</span>
