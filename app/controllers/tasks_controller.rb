@@ -117,6 +117,43 @@ class TasksController < ApplicationController
   end
 
   private
+    # Query and update all task inside the db
+    def query_all_task
+      tasks = Task.all
+      tasks.each do |ta|
+        # If task already finished, then no need to check again
+        orista = ta.status
+        if orista == 'finished' || orista ==' failed'
+          next
+        end
+
+        # Decode the task id first
+        taskID = decode(ta.task_id)
+
+        # Query task
+        if taskID
+          client = LocalApi::Client.new
+          result = client.task_info(UID, taskID, 'app')
+
+          logger.debug "In QAT :: query #{taskID} then get result #{result} !"
+
+          # Interpret result
+          if result['status'] == 'success'
+            statusStr = result['message']['status']
+          else
+            # Failed to query the task information
+            statusStr = 'Error_query_task'
+          end
+        else
+          # Task id cannot be decoded successfully
+          statusStr = 'Error_decode_id'
+        end
+
+        # Write to DB
+        ta.update(status: statusStr)
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = Task.find(params[:id])
