@@ -37,10 +37,11 @@ css:
         = button_to offshelf_app_path(@app), method: :get, data: { confirm: "Hide this app?" }, class: 'btn btn-outline-secondary btn-sm'  do
           i.fas.fa-undo-alt
           | hide
-      - if @app.awaiting?
-        = button_to onshelf_app_path(@app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do
-          i.fas.fa-share
-          | pass
+      - if account_signed_in? and current_account.has_role? :admin
+        - if @app.awaiting?
+          = button_to onshelf_app_path(@app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do
+            i.fas.fa-share
+            | pass
       button onclick="window.print();" class="btn btn-outline-info btn-sm"
         i.fas.fa-print
         | print
