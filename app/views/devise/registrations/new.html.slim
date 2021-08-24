@@ -5,7 +5,8 @@ javascript:
   $(document).ready(function(){
       $('#btn').click(function(e) {  
           var inputvalue = $("#code").val();
-          window.location.replace("http://localhost:3000/accounts/invitation/accept?invitation_token=" + inputvalue);
+          var loc = String(window.location.href).split("accounts/")[0];
+          window.location.replace(loc + "accounts/invitation/accept?invitation_token=" + inputvalue);
       });
   });
 
@@ -25,7 +26,7 @@ javascript:
         p This platform currently does not accept registration.
         p Accounts are created only through invitation.
   
-  .container.login-section.text-body.m-4
+  .container.login-section.text-body.mt-4.mb-4
     .card.login-card.w-50.mx-auto
       .card-body
         .card-title.text-center
