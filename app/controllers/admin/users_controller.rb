@@ -28,12 +28,14 @@ class Admin::UsersController < ApplicationController
 
     def show
         @uid = params[:id]
+        @flag = false
         if User.find(params[:id]).account_id == nil
             @user = User.find(params[:id])
             @user_attrs = User.column_names
         else
             @user = Account.find(User.find(params[:id]).account_id)
             @user_attrs = Account.column_names
+            @flag = true
         end
     end
 
