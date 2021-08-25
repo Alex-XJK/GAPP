@@ -73,7 +73,7 @@ Rails.application.routes.draw do
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
-  post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
+  # post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
   root 'welcome#index'
@@ -120,26 +120,26 @@ Rails.application.routes.draw do
 
   # submit pages
   # # < SUBMIT > Added by Alex
-  get 'submit/traditional/:id', to: 'submit#index', as: 'submit_manual'
-  get 'submit/debug/:uid/:fid/:app', to: 'submit#submit_task_debug', as: 'submit_print'
-  post 'submit/api', to: 'submit#submit_task', as: 'submit_api', format: 'json'
-  post 'submit/manual', to: 'submit#submit_task_traditional', format: 'json'
+  get 'submit/traditional/:id', to: 'tasks#index', as: 'submit_manual'
+  get 'submit/debug/:uid/:fid/:app', to: 'tasks#submit_task_debug', as: 'submit_print'
+  post 'submit/api', to: 'tasks#submit_task', as: 'submit_api', format: 'json'
+  post 'submit/manual', to: 'tasks#submit_task_traditional', format: 'json'
   # # End of useful things
-  get "submit/analyses", to: "submit#analyses"
-  get "submit/pipelines", to: "submit#pipelines"
-  get 'submit/job-query', to: 'submit#query', as: 'query'
-  get 'submit/pipeline/:id', to: 'submit#pipeline', as: 'submit_pipeline'
+  get "submit/analyses", to: "tasks#analyses"
+  get "submit/pipelines", to: "tasks#pipelines"
+  get 'submit/job-query', to: 'tasks#query', as: 'query'
+  get 'submit/pipeline/:id', to: 'tasks#pipeline', as: 'submit_pipeline'
   
   
-  # post 'submit-app-task', to: 'submit#submit_app_task', format: 'json'
+  # post 'submit-app-task', to: 'tasks#submit_app_task', format: 'json'
   # # < QUERY > Added by Alex
-  get 'query/debug/:tid', to: 'submit#query_task_debug', as: 'query_print'
-  post 'query/api', to: 'submit#query_task', as: 'query_api', format: 'json'
-  post 'query/status/api', to: 'submit#query_task_status', as: 'query_status_api', format: 'json'
+  get 'query/debug/:tid', to: 'tasks#query_task_debug', as: 'query_print'
+  post 'query/api', to: 'tasks#query_task', as: 'query_api', format: 'json'
+  post 'query/status/api', to: 'tasks#query_task_status', as: 'query_status_api', format: 'json'
   # # End of useful things
-  post 'query-app-task', to: 'submit#query_app_task', format: 'json'
-  post 'query-all-tasks', to: 'submit#query_all', format: 'json'
-  post 'remove-task', to: 'submit#remove_task', format: 'json'
+  post 'query-app-task', to: 'tasks#query_app_task', format: 'json'
+  post 'query-all-tasks', to: 'tasks#query_all', format: 'json'
+  post 'remove-task', to: 'tasks#remove_task', format: 'json'
 
   # admin
   get '/admin', to: 'admin#index', as: "admin"
