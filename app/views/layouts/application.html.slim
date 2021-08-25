@@ -28,7 +28,7 @@ html
           .progress style="height: 2px;"
             div class="progress-bar progress-bar-striped bg-#{bootstrap_class_for_flash(type)}" role="progressbar" style="width:0%;"
     = render 'partials/nav'
-    .d-flex
+    .d-flex#mainpart
       - if (controller_name.eql? "welcome") && ((action_name.eql? "index") || (action_name.eql? "contact"))
         pass
       - else
