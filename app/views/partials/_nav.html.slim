@@ -18,18 +18,6 @@
           = link_to applist_path, class: 'nav-link' do
             = icon 'fa', 'bullseye'
             | Apps
-        li.nav-item.dropdown
-          = link_to '#', class: 'nav-link dropdown-toggle', data: { toggle: 'dropdown' } do
-            = icon 'fa', 'user-alt'
-            |  Role
-            = icon 'fas', caret_icon
-          .dropdown-menu
-            = link_to user_path(1), class: 'dropdown-item' do
-              | User
-            = link_to apps_path, class: 'dropdown-item' do
-              | Producer
-            = link_to admin_path, class: 'dropdown-item' do
-              | Admin
         li.nav-item
           = link_to '/docs', class: 'nav-link' do
             = icon 'fa', 'file-alt'
@@ -38,4 +26,24 @@
           = link_to '/contact', class: 'nav-link' do
             = icon 'fa', 'phone'
             | Contact
-
+        / Account Management Block
+        - if account_signed_in? and current_account.has_role? :admin
+          li.nav-item
+            = link_to admin_path, class: 'nav-link' do
+              = icon 'fa', 'user-shield'
+              | Admin
+        - elsif account_signed_in? and current_account.has_role? :producer
+          li.nav-item
+            = link_to apps_path, class: 'nav-link' do
+              = icon 'fa', 'user-graduate'
+              | Producer
+        - elsif account_signed_in? and current_account.has_role? :user
+          li.nav-item
+            = link_to user_path, class: 'nav-link' do
+              = icon 'fa', 'user-alt'
+              | User
+        - else
+          li.nav-item
+            = link_to new_account_session_path, class: 'nav-link' do
+              = icon 'fas', 'key'
+              | Log In
