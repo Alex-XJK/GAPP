@@ -39,7 +39,7 @@
               | Producer
         - elsif account_signed_in? and current_account.has_role? :user
           li.nav-item
-            = link_to user_path, class: 'nav-link' do
+            = link_to user_path(User.find_by(account_id: current_account.id).id), class: 'nav-link' do
               = icon 'fa', 'user-alt'
               | User
         - else
