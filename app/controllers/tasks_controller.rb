@@ -34,7 +34,7 @@ class TasksController < ApplicationController
     @task.app_id = params[:app_id]
     @task.user_id = params[:user_id]
     @task.task_id = params[:task_id]
-    @task.usedData = params[:checkedData]
+    # @task.usedData = params[:checkedData]
     @task.status = 'running'
     @task.created_at = Time.now
     @task.updated_at = Time.now

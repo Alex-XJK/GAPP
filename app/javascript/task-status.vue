@@ -288,7 +288,7 @@ export default {
           "app_id": info.appId,
           "user_id": this.id,
           "task_id": info.taskId,
-          "usedData": this.ruleForm.checkedData
+          // "usedData": this.ruleForm.checkedData
         }),
         {
           headers: {
