@@ -19,7 +19,7 @@ css:
         = simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post } do |f|
             = f.error_notification
             .form-inputs
-                = f.input :email, hint: "An email with activation link will be sent to this address."
+                = f.input :email, hint: "<i class='fa fa-exclamation-triangle'></i>Email system is disabled, no email will be sent.".html_safe
             .form-actions
                 = f.button :submit, "Send Invitation"
     
