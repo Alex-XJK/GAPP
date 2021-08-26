@@ -40,8 +40,10 @@ class TasksController < ApplicationController
     @task.updated_at = Time.now
     if @task.save
       result_json[:code] = true
+      flash[:success] = "Task successfully created"
       render json: result_json
     else
+      flash[:error] = "Fail to create a task"
       format.html { render :new }
       format.json { render json: @task.errors, status: :unprocessable_entity }
     end
