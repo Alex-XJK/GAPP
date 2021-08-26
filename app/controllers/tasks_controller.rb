@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
+    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:submit_task_debug, :query_task_debug]
 
   # GET /tasks
   # GET /tasks.json
@@ -39,8 +40,10 @@ class TasksController < ApplicationController
     @task.updated_at = Time.now
     if @task.save
       result_json[:code] = true
+      flash[:success] = "Task successfully created"
       render json: result_json
     else
+      flash[:error] = "Fail to create a task"
       format.html { render :new }
       format.json { render json: @task.errors, status: :unprocessable_entity }
     end
@@ -266,20 +269,20 @@ class TasksController < ApplicationController
       # Already existing code
       # submit task
       client = LocalApi::Client.new
-      result = client.run_module(UID, PROJECT_ID, @anaid, @inputs, params)
+      @result = client.run_module(UID, PROJECT_ID, @anaid, @inputs, params)
 
-      logger.debug "In STD :: after submit get result #{result} !"
+      logger.debug "In STD :: after submit get result #{@result} !"
 
-      if result['message']['code']
+      if @result['message']['code']
         @result_json[:code] = true
         @result_json[:data] = {
-          'msg': result['message']['data']['msg'],
-          'task_id': encode(result['message']['data']['task_id'])
+          'msg': @result['message']['data']['msg'],
+          'task_id': encode(@result['message']['data']['task_id'])
         }
       else
         @result_json[:code] = false
         @result_json[:data] = {
-          'msg': result['message']
+          'msg': @result['message']
         }
       end
     rescue StandardError => e
@@ -486,7 +489,7 @@ class TasksController < ApplicationController
     Rails.logger.debug("at query all tasks")
     tasks = Task.all
     tasks.each do |ta|
-    # If task already finished, then no need to check again
+      # If task already finished, then no need to check again
       orista = ta.status
       if orista == 'finished' || orista ==' failed'
         next
