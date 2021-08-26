@@ -50,7 +50,7 @@
               <el-col :span="5">
                 <el-card shadow="hover">
                   <p>{{task.name}}</p>
-                  <el-progress :percentage="task.status"></el-progress>
+                  <el-progress :percentage="task.status" :status="task.barType"></el-progress>
                   <el-button type="text" @click="goTo(task.id)">More</el-button>
               </el-card>
             </el-col>
@@ -264,7 +264,11 @@ export default {
         },
         ).then((response) => {
           if (response.data.code) {
-            CreateTask(appId)
+            var info = {
+              'appId': appId,
+              'taskId': response.data.task_id
+            }
+            this.CreateTask(info)
           } else {
             this.$message({
               type: 'error',
@@ -275,13 +279,15 @@ export default {
           console.log(reason)
         }).finally(() => {});
     },
-    CreateTask(appId) {
+    CreateTask(info) {
+      console.log("at create task")
       axios.post(
           `/create-task`,
         objectToFormData({
           "taskName": this.ruleForm.taskName,
-          "app_id": appId,
+          "app_id": info.appId,
           "user_id": this.id,
+          "task_id": info.taskId,
           "usedData": this.ruleForm.checkedData
         }),
         {
@@ -293,7 +299,6 @@ export default {
         },
         ).then((response) => {
           if (response.data.code) {
-            // this.reload()
             this.$message({
                 type: 'success',
                 message: 'Created successfully!'

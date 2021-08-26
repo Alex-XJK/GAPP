@@ -153,17 +153,17 @@
           = icon 'fas', 'clipboard-list', class: 'fa-fw'
           span.sidebar-text App List
 
-
-  .sidebar-section
-    .sidebar-heading
-      span.uncollapsed-only Personal Data
-      span.collapsed-only
-        = icon 'fas', 'user-circle', class: 'fa-fw'
-    ul
-      li.sidebar-item
-        = link_to user_path("1") do
-          = icon 'fas', 'id-card', class: 'fa-fw'
-          span.sidebar-text Profile
+  - if account_signed_in?
+    .sidebar-section
+      .sidebar-heading
+        span.uncollapsed-only Personal Data
+        span.collapsed-only
+          = icon 'fas', 'user-circle', class: 'fa-fw'
+      ul
+        li.sidebar-item
+          = link_to user_path(User.find_by(account_id: current_account.id).id) do
+            = icon 'fas', 'id-card', class: 'fa-fw'
+            span.sidebar-text Profile
 
 
   - if account_signed_in? and (current_account.has_role? :admin or current_account.has_role? :producer)

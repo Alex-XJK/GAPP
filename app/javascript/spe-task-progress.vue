@@ -1,7 +1,13 @@
 <template>
   <div class="block">
     <h5>Progress Bar</h5>
-    <el-progress :percentage="percentage" type="circle" :color="colors"></el-progress>
+    <!-- <el-progress :percentage="percentage" type="circle" :color="colors"></el-progress> -->
+    <br>
+    <el-steps :active="active">
+      <el-step title="Submitted" status="success"></el-step>
+      <el-step title="Running" status="process "></el-step>
+      <el-step :title="endTitle" :status="result"></el-step>
+    </el-steps>
     <el-divider></el-divider>
     <h5>Progress Details</h5>
     <p>
@@ -25,22 +31,25 @@ export default {
   data() {
     return {
       task_id: window.gon.task_id,
-      percentage: 0,
-      colors: [
-        {color: '#f56c6c', percentage: 20},
-        {color: '#e6a23c', percentage: 40},
-        {color: '#5cb87a', percentage: 60},
-        {color: '#1989fa', percentage: 80},
-        {color: '#6f7ad3', percentage: 100}
-      ]
+      result: "wait",
+      endTitle: "Result",
+      active: 1
+      // percentage: 0,
+      // colors: [
+      //   {color: '#f56c6c', percentage: 20},
+      //   {color: '#e6a23c', percentage: 40},
+      //   {color: '#5cb87a', percentage: 60},
+      //   {color: '#1989fa', percentage: 80},
+      //   {color: '#6f7ad3', percentage: 100}
+      // ]
     }
   },
   methods: {
     getStatus() {
     axios.post(
-      `task-status`,
+      `/query/api`,
       objectToFormData({
-          "task_id": this.task_id
+          "id": this.task_id //the id from db auto generating not the complex one
       }),
       {
         headers: {
@@ -50,8 +59,15 @@ export default {
         },
       }).then((response) => {
           if (response.data.code) {
-            this.percentage = response.data.data
-            console.log(this.percentage)
+            if (response.data.status == 'finished') {
+              this.active = 2
+              this.result = 'success'
+              this.endTitle = 'Finished'
+            } else if (response.data.status == 'failed') {
+              this.active = 2
+              this.result = 'error'
+              this.endTitle = 'Failed'
+            }
           } else {
             console.log(response.data.msg)
           }
