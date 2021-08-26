@@ -33,6 +33,16 @@
 
 <div style="margin : 20px;">
 
+<div class="alert alert-warning alert-dismissible fade show">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <i class='fa fa-exclamation-triangle'></i>Users created through this page will not have an account. To create an account, use
+      <a href="/accounts/invitation/new">
+      <strong>Invite User</strong>
+      </a>
+      .
+</div>
+<br>
+
 <%= simple_form_for @user, url: "/admin/users/new/" do |f| %>
   <%= f.input :username %>
   <%= f.input :password_digest %>
