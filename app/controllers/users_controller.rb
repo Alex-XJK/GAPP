@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :authenticate_account!
   before_action :set_user, only: [:show, :edit, :update, :destroy]
     
     def index
@@ -7,6 +8,20 @@ class UsersController < ApplicationController
 
     def show
         gon.push(user_id: @user.id)
+        # User and Visitor can view published apps
+        # Producer can only check their own apps or other peoples' published apps
+        # Admin do not have restrictions
+        if account_signed_in?
+            # Rails.logger.debug("current account id is #{current_account.id}, user.id is #{@user.id}, param is #{params[:id]}")
+            # Rails.logger.debug("anser is #{params[:id].to_i != @user.id.to_i}")
+            if params[:id].to_i != @user.id.to_i
+                flash[:error] = "You should not visit other's profile page. Redirect to your own page"
+                redirect_to user_path(@user.id)
+            end
+        else
+            flash[:error] = "You should login first"
+            redirect_to root_path
+        end
     end
 
     def new
@@ -126,7 +141,7 @@ class UsersController < ApplicationController
         
     private
         def set_user
-            @user = User.find(params[:id])
+            @user = User.find_by(account_id: current_account.id)
         end
 
         def user_params
