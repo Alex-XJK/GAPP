@@ -242,6 +242,10 @@ class TasksController < ApplicationController
       @ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
       @pnam = panl.filename.to_s
 
+      # Optimize disk storage
+      @optf = @floc.to_s.gsub(@rrot, '/data')
+      @optp = @ploc.to_s.gsub(@rrot, '/data')
+
       # The hard code area, used to set the location path
       datafn = 'i-1004'
       panefn = 'i-1005'
@@ -253,15 +257,17 @@ class TasksController < ApplicationController
       @panel_new_location = tarloc + @pnam
 
       # Copy the files to the target place and rename them to the system accepted one
-      system "cp #{@floc} #{@file_new_location}"
-      system "cp #{@ploc} #{@panel_new_location}"
+      # system "cp #{@floc} #{@file_new_location}"
+      # system "cp #{@ploc} #{@panel_new_location}"
 
       # Prepare the API parameters (redirect to stdout for debug now)
       @anaid = Analysis.find(app.analysis_id).doap_id.to_i
       logger.debug "In STD :: #{@anaid} >>"
       @inputs = Array.new
-      @inputs.push({ datafn => '/data/' + @fnam, })
+      # @inputs.push({ datafn => '/data/' + @fnam, })
+      @inputs.push({ datafn => @optf, })
       # @inputs.push({ panefn => '/data/' + @pnam, })
+      # @inputs.push({ panefn => @optp, })
       logger.debug "In STD :: #{@inputs} >>"
       params = Array.new
       logger.debug "In STD :: #{params} >>"
