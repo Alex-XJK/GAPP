@@ -228,7 +228,7 @@ class TasksController < ApplicationController
       @rrot = Rails.root.to_s
       #@rrot = '/home/platform/gapp_rails/releases/20210827080937'
       edroot = @rrot.split('releases')[0]
-      @uproot = edroot + 'releases/shared/'
+      @uproot = edroot + 'releases/shared'
 
       # Receive and find the User Data File
       id = params[:uid]
