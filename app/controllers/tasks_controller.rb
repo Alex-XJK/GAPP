@@ -82,14 +82,16 @@ class TasksController < ApplicationController
         }
     apps = params[:apps]
     user_id = params[:id]
+  Rails.logger.debug("apps! #{params[:apps]}")
+  Rails.logger.debug("user_id! #{params[:id]}")
     return_tasks = []
     if apps != nil
       apps.each do |a|
         app_id = a["Id"]
         @tasks = Task.where(app_id: app_id, user_id: user_id)
-        # Rails.logger.debug("here i am! #{@tasks.length}")
+        Rails.logger.debug("here i am! #{@tasks.length}")
         @tasks.each do |t|
-          # Rails.logger.debug("here i am again!")
+          Rails.logger.debug("here is a #{a}")
           t_status = 0
           barType = ''
           if t.status == 'running'
@@ -391,7 +393,7 @@ class TasksController < ApplicationController
       else
         result_json[:code] = true
         result_json[:data] = {
-          'msg': 'Task not found!',
+          'status': 'Task not found!',
           'task_id': task_param
         }
       end
