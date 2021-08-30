@@ -59,11 +59,11 @@ export default {
         },
       }).then((response) => {
           if (response.data.code) {
-            if (response.data.status == 'finished') {
+            if (response.data.data.status == 'finished') {
               this.active = 2
               this.result = 'success'
               this.endTitle = 'Finished'
-            } else if (response.data.status == 'failed') {
+            } else if (response.data.data.status == 'failed') {
               this.active = 2
               this.result = 'error'
               this.endTitle = 'Failed'
