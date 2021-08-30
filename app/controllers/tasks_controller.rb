@@ -34,14 +34,16 @@ class TasksController < ApplicationController
     @task.app_id = params[:app_id]
     @task.user_id = params[:user_id]
     @task.task_id = params[:task_id]
-    @task.usedData = params[:checkedData]
+    # @task.usedData = params[:checkedData]
     @task.status = 'running'
     @task.created_at = Time.now
     @task.updated_at = Time.now
     if @task.save
       result_json[:code] = true
+      flash[:success] = "Task successfully created"
       render json: result_json
     else
+      flash[:error] = "Fail to create a task"
       format.html { render :new }
       format.json { render json: @task.errors, status: :unprocessable_entity }
     end
@@ -224,6 +226,9 @@ class TasksController < ApplicationController
 
       # Display the Rails root for debug
       @rrot = Rails.root.to_s
+      #@rrot = '/home/platform/gapp_rails/releases/20210827080937'
+      edroot = @rrot.split('releases')[0]
+      @uproot = edroot + 'releases/shared'
 
       # Receive and find the User Data File
       id = params[:uid]
@@ -241,8 +246,8 @@ class TasksController < ApplicationController
       @pnam = panl.filename.to_s
 
       # Optimize disk storage
-      @optf = @floc.to_s.gsub(@rrot, '/data')
-      @optp = @ploc.to_s.gsub(@rrot, '/data')
+      @optf = @floc.to_s.gsub(@uproot, '/data')
+      @optp = @ploc.to_s.gsub(@uproot, '/data')
 
       # The hard code area, used to set the location path
       datafn = 'i-1004'
@@ -251,8 +256,8 @@ class TasksController < ApplicationController
       tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
 
       # Create the string of filename
-      @file_new_location = tarloc + @fnam
-      @panel_new_location = tarloc + @pnam
+      @file_new_location = tarloc + @fnam + '(NO_NEED_ANY_MORE)'
+      @panel_new_location = tarloc + @pnam + '(NO_NEED_ANY_MORE)'
 
       # Copy the files to the target place and rename them to the system accepted one
       # system "cp #{@floc} #{@file_new_location}"

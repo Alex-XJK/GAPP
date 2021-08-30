@@ -268,7 +268,7 @@ export default {
               'appId': appId,
               'taskId': response.data.task_id
             }
-            CreateTask(info)
+            this.CreateTask(info)
           } else {
             this.$message({
               type: 'error',
@@ -280,6 +280,7 @@ export default {
         }).finally(() => {});
     },
     CreateTask(info) {
+      console.log("at create task")
       axios.post(
           `/create-task`,
         objectToFormData({
@@ -287,7 +288,7 @@ export default {
           "app_id": info.appId,
           "user_id": this.id,
           "task_id": info.taskId,
-          "usedData": this.ruleForm.checkedData
+          // "usedData": this.ruleForm.checkedData
         }),
         {
           headers: {
@@ -298,7 +299,6 @@ export default {
         },
         ).then((response) => {
           if (response.data.code) {
-            // this.reload()
             this.$message({
                 type: 'success',
                 message: 'Created successfully!'

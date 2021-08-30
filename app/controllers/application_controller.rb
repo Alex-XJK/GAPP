@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
     def after_sign_in_path_for(acc)
         if acc.roles.first.name == "user"
-            "/users/1"
+            user_path(User.find_by(account_id: current_account.id).id)
         else 
             if acc.roles.first.name == "producer"
                 "/apps"
