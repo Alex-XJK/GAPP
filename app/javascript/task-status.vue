@@ -274,7 +274,7 @@ export default {
           if (response.data.code) {
             var info = {
               'appId': appId,
-              'taskId': response.data.task_id
+              'taskId': response.data.data.task_id
             }
             this.CreateTask(info)
           } else {
