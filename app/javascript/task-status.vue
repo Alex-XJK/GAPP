@@ -12,46 +12,23 @@
   <div v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
     <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
+
     <div class="clear"></div>
-    <b-btn class="mt-2 float-right" @click="dialogVisible = true">
+    <b-btn class="mt-2 float-right" @click="showDialog(app)">
       <i class="far fa-edit"></i>
       Create
     </b-btn>
     <div class="clear"></div>
-        <el-dialog
-          style="text-align: center"
-          :title="'Create New Task for '+ app.name"
-          :visible.sync="dialogVisible"
-          :show-close=false
-          :close-on-click-modal="false"
-          width="50%">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-            <el-form-item label="Select Data" :label-width="formLabelWidth">
-              <el-checkbox :indeterminate="ruleForm.isIndeterminate" v-model="ruleForm.checkAll" @change="handleCheckAllChange">All</el-checkbox>
-              <div style="margin: 15px 0;"></div>
-              <el-checkbox-group v-model="ruleForm.checkedData" @change="handleCheckedDataChange">
-                <el-checkbox v-for="datum in ruleForm.data" :label="datum" :key="datum.id">{{datum.name}}</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="Task Name" :label-width="formLabelWidth" prop="taskName">
-              <el-input v-model="ruleForm.taskName" placeholder="Please input your task name"></el-input>
-            </el-form-item>
-          </el-form>
-          <span slot="footer" class="dialog-footer">
-            <el-button v-on:click="cancelCreate()" class="cancel">Cancel</el-button>
-            <el-button v-on:click="toCreate(app.Id)" class="confirm">Confirm</el-button>
-          </span>
-        </el-dialog>
-        
-      <div class="task-card">
-        <el-row :gutter="12">
-          <div  v-for="task in tasks" :key="task.id">
-            <div v-if="task.app_id === app.Id">
-              <el-col :span="5">
-                <el-card shadow="hover">
-                  <p>{{task.name}}</p>
-                  <el-progress :percentage="task.status" :status="task.barType"></el-progress>
-                  <el-button type="text" @click="goTo(task.id)">More</el-button>
+
+    <div class="task-card">
+      <el-row :gutter="12">
+        <div  v-for="task in tasks" :key="task.id">
+          <div v-if="task.app_id === app.Id">
+            <el-col :span="5">
+              <el-card shadow="hover">
+                <p>{{task.name}}</p>
+                <el-progress :percentage="task.status" :status="task.barType"></el-progress>
+                <el-button type="text" @click="goTo(task.id)">More</el-button>
               </el-card>
             </el-col>
           </div>
@@ -59,6 +36,32 @@
       </el-row>
     </div>
   </div>
+
+  <el-dialog
+      style="text-align: center"
+      :title="'Create New Task for '+ currentApp.name"
+      :visible.sync="dialogVisible"
+      :show-close=false
+      :close-on-click-modal="false"
+      width="50%">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+      <el-form-item label="Select Data" :label-width="formLabelWidth">
+        <el-checkbox :indeterminate="ruleForm.isIndeterminate" v-model="ruleForm.checkAll" @change="handleCheckAllChange">All</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="ruleForm.checkedData" @change="handleCheckedDataChange">
+          <el-checkbox v-for="datum in ruleForm.data" :label="datum" :key="datum.id">{{datum.name}}</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="Task Name" :label-width="formLabelWidth" prop="taskName">
+        <el-input v-model="ruleForm.taskName" placeholder="Please input your task name"></el-input>
+      </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+      <el-button v-on:click="cancelCreate()" class="cancel">Cancel</el-button>
+      <el-button v-on:click="toCreate(currentApp.Id)" class="confirm">Confirm</el-button>
+    </span>
+  </el-dialog>
+
 </div>
 </template>
 
@@ -94,12 +97,17 @@ export default {
           { required: true, message: 'Task name cannot be empty!' },
           { min: 3, max: 5, message: 'Length should be between 3 and 5 characters.', trigger: 'blur' }
         ]
-      }
+      },
+      currentApp: {}
     }
   },
     methods: {
       hideDialog () {
       this.dialogVisible = false
+      },
+      showDialog(app) {
+        this.currentApp = app
+        this.dialogVisible = true
       },
       goTo(taskId) {
       axios.post(
@@ -193,7 +201,7 @@ export default {
         }).finally(() => {});
       },
       toCreate (appId) {
-        this.$refs.ruleForm[0].validate((valid) => {
+        this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             this.hideDialog()
             this.SubmitTask(appId)
@@ -210,7 +218,7 @@ export default {
       this.hideDialog()
     },
     resetForm () {
-      this.$refs.ruleForm[0].resetFields()
+      this.$refs.ruleForm.resetFields()
     },
     handleCheckAllChange(val) {
       this.ruleForm.checkedData = val ? this.ruleForm.data : []
