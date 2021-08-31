@@ -154,8 +154,8 @@ class TasksController < ApplicationController
       id = params[:uid]
       idx = params[:fid]
       user = User.find(id)
-      # file = user.dataFiles.find(idx)
-      file = user.dataFiles[idx.to_i]
+      file = user.dataFiles.find(idx)
+      # file = user.dataFiles[idx.to_i]
       floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
       fnam = file.filename.to_s
 
@@ -236,7 +236,8 @@ class TasksController < ApplicationController
       id = params[:uid]
       idx = params[:fid]
       user = User.find(id)
-      file = user.dataFiles[idx.to_i]
+      file = user.dataFiles.find(idx)
+      # file = user.dataFiles[idx.to_i]
       @floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
       @fnam = file.filename.to_s
 
