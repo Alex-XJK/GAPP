@@ -45,10 +45,9 @@
       :close-on-click-modal="false"
       width="50%">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-      <el-form-item label="Select Data" :label-width="formLabelWidth">
-        <el-checkbox :indeterminate="ruleForm.isIndeterminate" v-model="ruleForm.checkAll" @change="handleCheckAllChange">All</el-checkbox>
+      <el-form-item label="Select Data" :label-width="formLabelWidth" prop="checkedData">
         <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="ruleForm.checkedData" @change="handleCheckedDataChange">
+        <el-checkbox-group v-model="ruleForm.checkedData">
           <el-checkbox v-for="datum in ruleForm.data" :label="datum" :key="datum.id">{{datum.name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
@@ -96,6 +95,9 @@ export default {
         taskName: [
           { required: true, message: 'Task name cannot be empty!' },
           { min: 3, max: 5, message: 'Length should be between 3 and 5 characters.', trigger: 'blur' }
+        ],
+        checkedData: [
+          { type: 'array', required: true, message: 'Please choose at least one file.', trigger: 'change' }
         ]
       },
       currentApp: {}
@@ -205,8 +207,9 @@ export default {
           if (valid) {
             this.hideDialog()
             this.SubmitTask(appId)
-            this.resetForm()
             console.log("toCreate emitted and appid "+appId)
+            console.log("toCreate taskNAme  "+this.ruleForm.taskName)
+            console.log(this.ruleForm.checkedData)
           } else {
             this.resetForm()
             return false
@@ -219,15 +222,6 @@ export default {
     },
     resetForm () {
       this.$refs.ruleForm.resetFields()
-    },
-    handleCheckAllChange(val) {
-      this.ruleForm.checkedData = val ? this.ruleForm.data : []
-      this.ruleForm.isIndeterminate = false;
-    },
-    handleCheckedDataChange(value) {
-      let checkedCount = value.length
-      this.ruleForm.checkAll = checkedCount === this.ruleForm.data.length
-      this.ruleForm.isIndeterminate = checkedCount > 0 && checkedCount < this.ruleForm.data.length
     },
     getDataInfo() {
       axios.post(
@@ -261,7 +255,7 @@ export default {
         objectToFormData({
           "app": appId,
           "uid": this.id,
-          "fid": this.ruleForm.checkedData.dataId
+          "fid": this.ruleForm.checkedData[0].dataId
         }),
         {
           headers: {
@@ -282,6 +276,7 @@ export default {
               type: 'error',
               message: response.data.data
             })
+            this.resetForm()
           }
         }).catch((reason) => {
           console.log(reason)
@@ -319,7 +314,9 @@ export default {
           }
         }).catch((reason) => {
           console.log(reason)
-        }).finally(() => {});
+        }).finally(() => {
+          this.resetForm()
+        });
     },
     gotoApp(appId) {
       Turbolinks.visit(`/apps/${appId}`, {'action':'replace'})
