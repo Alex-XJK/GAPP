@@ -61,12 +61,12 @@ export default {
       }).then((response) => {
           if (response.data.code) {
             if (response.data.data.status == 'finished') {
-              this.active = 2
+              this.active = 3
               this.result = 'success'
               this.endTitle = 'Finished'
               this.running = 'success'
             } else if (response.data.data.status == 'failed') {
-              this.active = 2
+              this.active = 3
               this.result = 'error'
               this.endTitle = 'Failed'
               this.running = 'success'
