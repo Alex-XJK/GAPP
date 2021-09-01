@@ -5,7 +5,7 @@
     <br>
     <el-steps :active="active">
       <el-step title="Submitted" status="success"></el-step>
-      <el-step title="Running" status="process "></el-step>
+      <el-step title="Running" :status="running "></el-step>
       <el-step :title="endTitle" :status="result"></el-step>
     </el-steps>
     <el-divider></el-divider>
@@ -33,7 +33,8 @@ export default {
       task_id: window.gon.task_id,
       result: "wait",
       endTitle: "Result",
-      active: 1
+      active: 1,
+      running: "process"
       // percentage: 0,
       // colors: [
       //   {color: '#f56c6c', percentage: 20},
@@ -59,14 +60,16 @@ export default {
         },
       }).then((response) => {
           if (response.data.code) {
-            if (response.data.status == 'finished') {
-              this.active = 2
+            if (response.data.data.status == 'finished') {
+              this.active = 3
               this.result = 'success'
               this.endTitle = 'Finished'
-            } else if (response.data.status == 'failed') {
-              this.active = 2
+              this.running = 'success'
+            } else if (response.data.data.status == 'failed') {
+              this.active = 3
               this.result = 'error'
               this.endTitle = 'Failed'
+              this.running = 'success'
             }
           } else {
             console.log(response.data.msg)
