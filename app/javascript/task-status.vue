@@ -11,12 +11,18 @@
   <br>
   <div v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
-    <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5>
+    <!-- <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5> -->
+    <h5><i class="far fa-bookmark"></i>{{app.name}}</h5>
 
     <div class="clear"></div>
-    <b-btn class="mt-2 float-right" @click="showDialog(app)">
+    <b-btn class="mt-2 float-right taskButton" @click="showDialog(app)">
       <i class="far fa-edit"></i>
       Create
+    </b-btn>
+
+    <b-btn class="mt-2 float-right taskButton" @click="gotoApp(app.Id)">
+      <i class="fas fa-info-circle"></i>
+      Detail
     </b-btn>
     <div class="clear"></div>
 
@@ -366,5 +372,8 @@ export default {
 }
 .clear {
   clear: both;
+}
+.taskButton {
+  margin-left: 6px;
 }
 </style>
