@@ -72,7 +72,7 @@ Rails.application.configure do
   # 原分析流程输出路径
   config.task_output_dir = '/home/caronkey/'
   # 生成报告python环境
-  config.python_env = '/disk2/apps/custom_library/python/lib/python3.8/site-packages'
+  config.python_env = '/disk2/apps/custom_library/python/bin/'
   config.custom_storage = Rails.root.join('storage/custom')
   # 分析流程相关
   config.flow_smart_template = "#{config.custom_storage}/json_file/template/flow_smart/"
