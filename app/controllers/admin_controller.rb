@@ -20,6 +20,7 @@ class AdminController < ApplicationController
         @catcnt = Category.count
         @appcnt = App.count
         @taskcnt = Task.count
+        @rolecnt = Role.count
         @ruby_ver = RUBY_VERSION
         @acccnt = Account.count
     end
