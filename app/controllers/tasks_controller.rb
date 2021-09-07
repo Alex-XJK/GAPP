@@ -476,6 +476,8 @@ class TasksController < ApplicationController
   def reportGenerate
     `#{Rails.configuration.infres_main} #{Rails.configuration.generate_report_template}template.json`
     `#{Rails.configuration.exps_main} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini`
+    logger.debug "#{Rails.configuration.infres_main} #{Rails.configuration.generate_report_template}template.json"
+    logger.debug "#{Rails.configuration.exps_main} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini"
   end
 
   private
