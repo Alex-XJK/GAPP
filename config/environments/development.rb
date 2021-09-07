@@ -67,4 +67,33 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+    # Custom configuration
+  # 原分析流程输出路径
+  config.task_output_dir = '/home/caronkey/'
+  # 生成报告python环境
+  config.python_env = '/disk2/apps/custom_library/python/lib/python3.8/site-packages'
+  config.custom_storage = Rails.root.join('storage/custom')
+  # 分析流程相关
+  config.flow_smart_template = "#{config.custom_storage}/json_file/template/flow_smart/"
+  config.flow_smart_result = "#{config.custom_storage}/json_file/result/flow_smart/"
+  config.bio_task_result = "#{config.custom_storage}/bio_task_result/"
+  config.bio_task_sample_csv = "#{config.custom_storage}/bio_task_sample_csv/"
+  # 生成报告相关
+  # config.generate_report_template = "#{config.custom_storage}/json_file/template/generate_report/"
+  # config.generate_report_result = "#{config.custom_storage}/json_file/result/generate_report/"
+  config.generate_report_template = '/home/platform/exps_test/'
+  config.generate_report_result = '/home/platform/infresTest/'
+  config.html_report_out = '/home/platform/exps_test/output/child/html'
+  config.pdf_report_out = '/home/platform/exps_test/output/child/pdf'
+  config.infres_main = "#{Rails.configuration.python_env}/infres process  -i"
+  config.exps_main = "#{Rails.configuration.python_env}/exps  -i"
+  config.template_loader_path = '/home/platform/exps_test/report/templates/'
+  # 产品相关
+  config.product_operator = "#{config.custom_storage}/operator"
+
+  # 临时中转文件
+  config.tmp_zip = 'tmp/zip'
+  config.tmp_panel = 'tmp/panel'
+  config.tmp_operator = 'tmp/operator'
 end

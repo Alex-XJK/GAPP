@@ -105,3 +105,8 @@
 <br>
 
 <hr>
+
+<h3>Test report generating function</h3>
+<%= form_with url: "report-generate", method: :get do |form| %>
+  <%= form.submit "Generate" %>
+<% end %>
