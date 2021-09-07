@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
   get '/admin/apps/', to: 'admin/apps#index'
   post '/admin/apps/search', to: 'admin/apps#search'
+  post '/admin/apps/hide', to: 'admin/apps#hide'
+  post '/admin/apps/pass', to: 'admin/apps#pass'
 
   get '/admin/tasks/', to: 'admin/tasks#index'
   post '/admin/tasks/search', to: 'admin/tasks#search'
@@ -140,6 +142,7 @@ Rails.application.routes.draw do
   post 'query-app-task', to: 'tasks#query_app_task', format: 'json'
   post 'query-all-tasks', to: 'tasks#query_all', format: 'json'
   post 'remove-task', to: 'tasks#remove_task', format: 'json'
+  get 'report-generate', to: 'tasks#reportGenerate', format: 'json'
 
   # admin
   get '/admin', to: 'admin#index', as: "admin"

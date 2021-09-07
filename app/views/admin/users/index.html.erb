@@ -20,7 +20,7 @@
     $(document).ready(function() {
         $('#pj_table').DataTable( {
              dom:
-              "<'row'<'col-sm-6'B><'col-sm-3'f>>" +
+              "<'row'<'#barea.col-sm-6'><'col-sm-3'f>>" +
               "<'row'<'col-sm-12'tr>>" +
               "<'row'<'col-sm-4'i><'col-sm-4 text-center'l><'col-sm-4'p>>",
 
@@ -83,7 +83,7 @@
         This page is made for admin to :
         <ul>
           <li>Check out all users in the system</li>
-          <li>Edit user role</li>
+          <li>Edit user role and delete user</li>
         </ul>
     </p>
   
@@ -106,7 +106,7 @@
       <br>
     </div><br>
 
-      <div>
+      <div style="display: none;">
       <a href="/admin/users/new">
         <button class="btn btn-primary" type="button">
           <i class="fas fa-user-plus"></i>New User

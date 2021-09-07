@@ -473,6 +473,13 @@ class TasksController < ApplicationController
     logger.debug "In QTD :: now every thing done with JSON: #{@result_json} !"
   end
 
+  def reportGenerate
+    `#{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json`
+    `#{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini`
+    logger.debug "report generate infres -- #{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json"
+    logger.debug "report generate exps -- #{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini"
+  end
+
   private
 
   def encode(id)
