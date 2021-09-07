@@ -31,17 +31,17 @@
           li.nav-item
             = link_to admin_path, class: 'nav-link' do
               = icon 'fa', 'user-shield'
-              | Admin
+              = User.find_by(account_id: current_account.id).username
         - elsif account_signed_in? and current_account.has_role? :producer
           li.nav-item
             = link_to apps_path, class: 'nav-link' do
               = icon 'fa', 'user-graduate'
-              | Producer
+              = User.find_by(account_id: current_account.id).username
         - elsif account_signed_in? and current_account.has_role? :user
           li.nav-item
             = link_to user_path(User.find_by(account_id: current_account.id).id), class: 'nav-link' do
               = icon 'fa', 'user-alt'
-              | User
+              = User.find_by(account_id: current_account.id).username
         - else
           li.nav-item
             = link_to new_account_session_path, class: 'nav-link' do
