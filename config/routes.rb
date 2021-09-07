@@ -140,6 +140,7 @@ Rails.application.routes.draw do
   post 'query-app-task', to: 'tasks#query_app_task', format: 'json'
   post 'query-all-tasks', to: 'tasks#query_all', format: 'json'
   post 'remove-task', to: 'tasks#remove_task', format: 'json'
+  get 'report-generate', to: 'tasks#reportGenerate', format: 'json'
 
   # admin
   get '/admin', to: 'admin#index', as: "admin"
