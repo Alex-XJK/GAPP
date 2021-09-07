@@ -28,25 +28,48 @@
 <div class="col-11 pl-4">
   <ol class="breadcrumb">
     <li class="breadcrumb-item">
-      <%=link_to 'Admin Home', '/admin' %>
+      <%=link_to 'Admin home', '/admin' %>
     </li>
   </ol>
 
+<div class="d-none">
   [&nbsp;
   <%=link_to 'User', '/admin/users' %> |&nbsp;
   <%=link_to 'Category', '/admin/categories' %> |&nbsp;
   <%=link_to 'App', '/admin/apps' %> |&nbsp;
   <%=link_to 'Task', '/admin/tasks' %>&nbsp;
   ]
+</div>
 
 
   <h1>
   Admin Home
   </h1>
 
-  <div class="container-fluid">
+  <ul class="nav nav-tabs nav-justified rounded">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#account">Account</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#system">System</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#db">Database</a>
+    </li>
+
+  </ul>
+
+<div class="tab-content border-right border-bottom border-left rounded">
+<br>
+
+  <div class="tab-pane container-fluid active" id="account">
   <h3>My Account</h3>
-  <p>Here is the information for your account.</p>            
+  <p>Here is some selected information of your account.</p>
+  <p>
+  <a href=<%= "/admin/users/" + String(User.find_by(account_id: current_account.id).id) %>>
+  Detailed Information
+  </a>
+  </p>        
   <table class="table table-hover">
     <tbody>
       <tr>
@@ -70,7 +93,7 @@
 </div>
 
 
-  <div class="container-fluid">
+  <div class="tab-pane container-fluid fade" id="system">
   <h3>System information</h3>
   <p>Here is the information for the server.</p>            
   <table class="table table-hover">
@@ -91,7 +114,7 @@
   </table>
 </div>
 
-  <div class="container-fluid">
+  <div class="tab-pane container-fluid fade" id="db">
   <h3>Database information</h3>
   <p>Here is the information for main tables in the database.</p>            
   <table class="table table-hover">
@@ -111,6 +134,10 @@
         <td><%= @usercnt %></td>
       </tr>
       <tr>
+        <td>Role</td>
+        <td><%= @rolecnt %></td>
+      </tr>
+      <tr>
         <td>Category</td>
         <td><%= @catcnt%></td>
       </tr>
@@ -126,6 +153,8 @@
   </table>
 </div>
 
+
+</div>
 
 
   <%
