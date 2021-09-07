@@ -8,11 +8,7 @@ class AppsController < ApplicationController
 
     @cuser_id = User.find_by(account_id: current_account.id).id
     @user_name = User.find(@cuser_id).username
-    if current_account.has_role? :admin
-      @apps = App.all
-    else
-      @apps = App.where(user_id: @cuser_id)
-    end
+    @apps = App.where(user_id: @cuser_id)
     @count_online = @apps.where(status: 'online').count
     @count_audit = @apps.where(status: 'audit').count
     @count_offline = @apps.where(status: 'offline').count

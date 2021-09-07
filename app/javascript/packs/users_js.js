@@ -17,6 +17,7 @@ $(document).ready(function() {
     for (let i of buttons) {
         i.onclick = edit;
     }
+    document.querySelector("#barea").innerHTML = '&nbsp; <a href="/admin/users/new"><button class="btn btn-primary" type="button"><i class="fas fa-user-plus"></i>New User</button></a> &nbsp; <a href="/accounts/invitation/new"><button class="btn btn-info" type="button"><i class="fas fa-envelope-open-text"></i>Invite User</button></a>';
 });
 
 function edit() {
