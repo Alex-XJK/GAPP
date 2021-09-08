@@ -152,7 +152,11 @@
                 <% else %>
                 <td> 
                 <div class="table_cell"> 
+                    <% if attr == 'created_at' %>
+                    <%= String(cts[attr].localtime).split(" ")[0] %>
+                    <% else %>
                     <%= cts[attr] %>
+                    <% end %>
                     &nbsp;
                 </div>
                 </td> 

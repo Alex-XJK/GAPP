@@ -190,7 +190,12 @@
                     <% if attr == "user_id" %>
                     <%= @users.find(tsk[attr])["username"] %>
                     <% else %>
-                    <%= tsk[attr] %>
+                      <% if attr == 'created_at' %>
+                      <%= String(tsk[attr].localtime).split(" ")[0] %>
+                      <%= String(tsk[attr].localtime).split(" ")[1] %>
+                      <% else %>
+                      <%= tsk[attr] %>
+                      <% end %>
                     <% end %>
                     &nbsp;
                 </div>
