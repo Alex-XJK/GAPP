@@ -64,12 +64,12 @@
     <table id="pj_table" class="display table table-hover" style="margin: 0; width:100%">
         <thead>
                
-            <th> App No. </th>
-            <th> Name </th>
-            <th> Author </th>
-            <th> Last Update Time </th>
-            <th> Status </th>
-            <th> Action </th>
+            <th style="padding-left: 1%;"> App No. </th>
+            <th style="padding-left: 1%;"> Name </th>
+            <th style="padding-left: 1%;"> Author </th>
+            <th style="padding-left: 1%;"> Last Update Time </th>
+            <th style="padding-left: 1%;"> Status </th>
+            <th style="padding-left: 1%;"> Action </th>
           
         </thead>
 
@@ -83,7 +83,12 @@
                     <% if attr == "user_id" %>
                     <%= @users.find(tapp[attr])["username"] %>
                     <% else %>
-                    <%= tapp[attr] %>
+                      <% if attr == 'updated_at' %>
+                      <%= String(tapp[attr].localtime).split(" ")[0] %>
+                      <%= String(tapp[attr].localtime).split(" ")[1] %>
+                      <% else %>
+                      <%= tapp[attr] %>
+                      <% end %>
                     <% end %>
                     &nbsp;
                 </div>
