@@ -476,9 +476,10 @@ class TasksController < ApplicationController
   def reportGenerate
     # `#{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json`
     # `#{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini`
-    logger.debug "report generate infres -- #{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json"
-    logger.debug "report generate exps -- #{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini"
-    system(exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini)
+    # logger.debug "report generate infres -- #{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json"
+    # logger.debug "report generate exps -- #{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini"
+    # system(exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini)
+    `exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini`
   end
 
   private
