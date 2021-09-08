@@ -11,7 +11,7 @@
           = f.input :email
           = f.input :password
           - if devise_mapping.rememberable?
-            = f.input :remember_me, as: :boolean, wrapper: :vertical_boolean
+            = f.input :remember_me, as: :boolean, wrapper: :vertical_boolean, input_html: { class: 'mr-1' }
           = f.button :submit, "Log in"
         p &nbsp;
         = render "devise/shared/links"

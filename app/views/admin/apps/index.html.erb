@@ -181,7 +181,12 @@
                     <% if attr == "user_id" %>
                     <%= @users.find(app[attr])["username"] %>
                     <% else %>
-                    <%= app[attr] %>
+                      <% if attr == 'updated_at' %>
+                      <%= String(app[attr].localtime).split(" ")[0] %>
+                      <%= String(app[attr].localtime).split(" ")[1] %>
+                      <% else %>
+                      <%= app[attr] %>
+                      <% end %>
                     <% end %>
                     &nbsp;
                 </div>
@@ -250,7 +255,10 @@
           <td><%= app.name %></td>
           <td><%= User.find(app.user_id).username %></td>
           <td><%= Category.find(app.category_id).name %></td>
-          <td><%= app.updated_at %></td>
+          <td>
+              <%= String(app["updated_at"].localtime).split(" ")[0] %>
+              <%= String(app["updated_at"].localtime).split(" ")[1] %>
+          </td>
       </tr>
       <% end %>
       <tr>
@@ -295,7 +303,10 @@
           <td><%= app.name %></td>
           <td><%= User.find(app.user_id).username %></td>
           <td><%= Category.find(app.category_id).name %></td>
-          <td><%= app.updated_at %></td>
+          <td>
+              <%= String(app["updated_at"].localtime).split(" ")[0] %>
+              <%= String(app["updated_at"].localtime).split(" ")[1] %>
+          </td>
       </tr>
       <% end %>
       <tr>
@@ -333,7 +344,10 @@
           <td><%= app.name %></td>
           <td><%= User.find(app.user_id).username %></td>
           <td><%= Category.find(app.category_id).name %></td>
-          <td><%= app.updated_at %></td>
+          <td>
+              <%= String(app["updated_at"].localtime).split(" ")[0] %>
+              <%= String(app["updated_at"].localtime).split(" ")[1] %>
+          </td>
         </tr>
       <% end %>
       </tbody>

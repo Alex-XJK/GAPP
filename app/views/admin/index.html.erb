@@ -48,10 +48,10 @@
 
   <ul class="nav nav-tabs nav-justified rounded">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#account">Account</a>
+      <a class="nav-link" data-toggle="tab" href="#account">Account</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#system">System</a>
+      <a class="nav-link active" data-toggle="tab" href="#system">System</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#db">Database</a>
@@ -62,7 +62,7 @@
 <div class="tab-content border-right border-bottom border-left rounded">
 <br>
 
-  <div class="tab-pane container-fluid active" id="account">
+  <div class="tab-pane container-fluid fade" id="account">
   <h3>My Account</h3>
   <p>Here is some selected information of your account.</p>
   <p>
@@ -93,7 +93,7 @@
 </div>
 
 
-  <div class="tab-pane container-fluid fade" id="system">
+  <div class="tab-pane container-fluid active" id="system">
   <h3>System information</h3>
   <p>Here is the information for the server.</p>            
   <table class="table table-hover">
@@ -106,9 +106,17 @@
         <td>RUBY_PLATFORM</td>
         <td><%= RUBY_PLATFORM %></td>
       </tr>
-      <tr>
+      <tr class="d-none">
         <td>RUBY_RELEASE_DATE</td>
         <td><%= RUBY_RELEASE_DATE %></td>
+      </tr>
+      <tr>
+        <td>Server Time</td>
+        <td><%= Time.now %></td>
+      </tr>
+      <tr>
+        <td>Time Zone</td>
+        <td><%= Time.now.zone %></td>
       </tr>
     </tbody>
   </table>
