@@ -53,6 +53,12 @@
 
   <body data-turbolinks="false">
 
+  <style>
+  /* .sorting {
+    padding-left: 0;
+  } */
+  </style>
+
   <div class="container-fluid p-0">
   <div class="row no-gutters">
   <%
@@ -125,7 +131,7 @@
           
           <% @usercolumnname.each do |attr| %>
             
-            <th> <%= attr.capitalize %> </th>
+            <th style="padding-left: 1%;"> <%= attr.capitalize %> </th>
             
           <% end %>
           <th>
