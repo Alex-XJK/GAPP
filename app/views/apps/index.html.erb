@@ -32,11 +32,7 @@
 <table style="width: 100%">
     <tr>
       <td>
-        <% if account_signed_in? and current_account.has_role? :admin %>
-          In total there are <%= @apps.count %> Apps on our website: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .
-        <% else %>
           Currently you have created <%= @apps.count %> Apps: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .
-        <% end %>
       </td>
       <td style="float: right;">
           <%= button_to createnew_app_path, method: :get, class: 'btn btn-primary' do %>

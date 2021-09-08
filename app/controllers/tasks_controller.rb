@@ -82,14 +82,16 @@ class TasksController < ApplicationController
         }
     apps = params[:apps]
     user_id = params[:id]
+  Rails.logger.debug("apps! #{params[:apps]}")
+  Rails.logger.debug("user_id! #{params[:id]}")
     return_tasks = []
     if apps != nil
       apps.each do |a|
         app_id = a["Id"]
         @tasks = Task.where(app_id: app_id, user_id: user_id)
-        # Rails.logger.debug("here i am! #{@tasks.length}")
+        Rails.logger.debug("here i am! #{@tasks.length}")
         @tasks.each do |t|
-          # Rails.logger.debug("here i am again!")
+          Rails.logger.debug("here is a #{a}")
           t_status = 0
           barType = ''
           if t.status == 'running'
@@ -152,8 +154,8 @@ class TasksController < ApplicationController
       id = params[:uid]
       idx = params[:fid]
       user = User.find(id)
-      # file = user.dataFiles.find(idx)
-      file = user.dataFiles[idx.to_i]
+      file = user.dataFiles.find(idx)
+      # file = user.dataFiles[idx.to_i]
       floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
       fnam = file.filename.to_s
 
@@ -234,7 +236,8 @@ class TasksController < ApplicationController
       id = params[:uid]
       idx = params[:fid]
       user = User.find(id)
-      file = user.dataFiles[idx.to_i]
+      file = user.dataFiles.find(idx)
+      # file = user.dataFiles[idx.to_i]
       @floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
       @fnam = file.filename.to_s
 
@@ -391,7 +394,7 @@ class TasksController < ApplicationController
       else
         result_json[:code] = true
         result_json[:data] = {
-          'msg': 'Task not found!',
+          'status': 'Task not found!',
           'task_id': task_param
         }
       end
@@ -470,6 +473,15 @@ class TasksController < ApplicationController
     logger.debug "In QTD :: now every thing done with JSON: #{@result_json} !"
   end
 
+  def reportGenerate
+    # `#{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json`
+    # `#{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini`
+    # logger.debug "report generate infres -- #{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json"
+    # logger.debug "report generate exps -- #{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini"
+    # system(exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini)
+    `/disk2/apps/custom_library/python/bin/exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini`
+  end
+
   private
 
   def encode(id)
@@ -500,7 +512,7 @@ class TasksController < ApplicationController
     tasks.each do |ta|
       # If task already finished, then no need to check again
       orista = ta.status
-      if orista == 'finished' || orista ==' failed'
+      if orista == 'finished' || orista == 'failed'
         next
       end
   
