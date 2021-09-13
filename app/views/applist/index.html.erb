@@ -186,35 +186,47 @@ $(document).ready(function() {
         </li>
         <div class="dropdown-divider"></div>
         <% @categories.each do |cat| %>
-        <li class="nav-item">
-          <% if String(cat["id"]) == String(@id) %>
-            <a href="javascript:void(0)" class="nav-link iactive active">
-                &nbsp;
-                <i class="far fa-folder-open"></i>
-                <%= cat["name"] %>
-            </a>
-          <% else %>
-            <% @count = 0 %>
-            <% @apps.each do |app| %>
-              <% if String(app["category_id"]) == String(cat["id"]) %>
-                <% @count += 1 %>
+          <li class="nav-item">
+            <% if String(cat["id"]) == String(@id) %>
+              <a href="javascript:void(0)" class="nav-link iactive active">
+                  &nbsp;
+                  <i class="far fa-folder-open"></i>
+                  <%= cat["name"] %>
+              </a>
+            <% else %>
+              <% @count = 0 %>
+              <% @apps.each do |app| %>
+                <% if String(app["category_id"]) == String(cat["id"]) %>
+                  <% @count += 1 %>
+                <% end %>
+              <% end %>
+              <% if @count > 0 %>
+                <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link">
+                    &nbsp;
+                    <i class="far fa-folder"></i>
+                    <%= cat["name"] %>
+                </a>
               <% end %>
             <% end %>
-            <% if @count == 0 %>
+          </li>
+        <% end %>
+
+        <% @categories.each do |cat| %>
+          <li class="nav-item">
+            <% @count = 0 %>
+                  <% @apps.each do |app| %>
+                    <% if String(app["category_id"]) == String(cat["id"]) %>
+                      <% @count += 1 %>
+                    <% end %>
+            <% end %>
+            <% if @count == 0 && String(cat["id"]) != String(@id) %>
               <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link disabled">
                   &nbsp;
                   <i class="far fa-folder"></i>
                   <%= cat["name"] %>
               </a>
-            <% else %>
-              <a href=<%= "/applist/" + String(cat["id"]) %> class="nav-link">
-                  &nbsp;
-                  <i class="far fa-folder"></i>
-                  <%= cat["name"] %>
-              </a>
             <% end %>
-          <% end %>
-        </li>
+          </li>
         <% end %>
     </ul>
     </nav>
