@@ -133,6 +133,11 @@
           i.fas.fa-times
           | App not ready !
       - else
-        = button_to user_path(User.find_by(account_id: current_account.id).id), method: :get, class: 'btn btn-outline-success btn-lg btn-block' do
-          i.fas.fa-play
-          | Run This App
+        - if account_signed_in?
+          = button_to user_path(User.find_by(account_id: current_account.id).id), method: :get, class: 'btn btn-outline-success btn-lg btn-block' do
+            i.fas.fa-play
+            | Run This App
+        - else
+          = button_to new_account_session_path, method: :get, class: 'btn btn-outline-success btn-lg btn-block' do
+            i.fas.fa-play
+            | Log In To Run This App
