@@ -55,8 +55,8 @@ class Admin::UsersController < ApplicationController
             @user.destroy
             redirect_to action: "index"
         else
-            if String(@usr.account_id) == String(current_account.id)
-                flash[:error] = "Please don't delete your own account!" 
+            if Account.find(@usr.account_id).has_role? :admin
+                flash[:error] = "Please don't delete an admin account!" 
                 redirect_to action: "index"
             else
                 @bkid = @usr.account_id
