@@ -9,7 +9,30 @@
 </div>
 
 <%= simple_form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
+  
+  <% if resource.errors.any? %>
+    <div class="alert alert-danger alert-dismissible fade show">
+      <button class="close" data-dismiss="alert" type="button">
+          <%= "×" %>
+      </button>
+      <strong>
+          <i class="fa fa-exclamation-triangle"></i>
+          <%= resource.errors.full_messages.count %>
+          <% if resource.errors.full_messages.count <= 1 %>
+            <%= " error occurred!" %>
+          <% else %>
+            <%= " errors occurred!" %>
+          <% end %>
+      </strong>
+      <br>
+      <% resource.errors.full_messages.each do |message| %>
+        <%= "- " %>
+        <%= message %>
+        <br>
+      <% end %>
+    </div>
+  <% end %>
+
   <%= f.full_error :unlock_token %>
 
   <div class="form-inputs">
