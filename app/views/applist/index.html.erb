@@ -206,9 +206,10 @@ ul {
         <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
           <div class="card col-3">
             <header class="card-header">
-              <p class="card-header-title">
+              <h5 class="card-header-title"><b>
                 <%= app["name"] %>
-              </p>
+                </b>
+              </h5>
             </header>
             <div class="card-image">
               <div class="img-container">
@@ -225,6 +226,7 @@ ul {
                 <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
               </div>
             </div>
+            <br>
             <footer class="card-footer">
               <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %>>
                 <i class="far fa-eye"></i>
