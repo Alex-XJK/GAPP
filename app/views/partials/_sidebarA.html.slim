@@ -156,7 +156,7 @@
   - if account_signed_in?
     .sidebar-section
       .sidebar-heading
-        span.uncollapsed-only Personal Data
+        span.uncollapsed-only Personal Info
         span.collapsed-only
           = icon 'fas', 'user-circle', class: 'fa-fw'
       ul
@@ -169,7 +169,7 @@
   - if account_signed_in? and (current_account.has_role? :admin or current_account.has_role? :producer)
     .sidebar-section
       .sidebar-heading
-        span.uncollapsed-only Producer
+        span.uncollapsed-only App Management
         span.collapsed-only
           = icon 'fas', 'industry', class: 'fa-fw'
       ul

@@ -23,13 +23,14 @@ body {
 }
 
 #sidebar0 {
+    top: 70px;
     bottom: 0;
     left: 0;
     width: 240px;
     padding: 1.5rem 1rem;
+    position: absolute;
     /* background: #444950; */
     /* overflow: scroll; */
-    background: #fff;
 }
 
 .menu-list {
@@ -46,31 +47,22 @@ ul {
 }
 
 #charts .container {
+    margin-left: 250px;
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
-    margin: 0 auto;
     position: relative;
     width: auto;
 }
 
  #charts .card {
-    margin: 4px;
+    margin: 6px;
     width: 240px;
-    flex: 1 0 auto;
     padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    max-width: 33.3333%;
     /* background-color: green; */
   }
-
-  .card {
-    /* background-color: #444950; */
-    box-shadow: 0 2px 3px rgb(9 10 11 / 10%), 0 0 0 1px rgb(9 10 11 / 10%);
-    /* color: #f4f5f6; */
-    max-width: 21%;
-    position: relative;
-
-    background-color: #fff;
-}
 
 .card-content {
     background-color: transparent;
@@ -145,19 +137,6 @@ ul {
 </style>
 
 <%end%>
-
-<script>
-
-$(document).ready(function() {
-    console.log('Loaded.');
-    let ss = document.querySelector("#sidebar-button").querySelector("a");
-    var evt = document.createEvent("MouseEvents"); 
-    evt.initEvent("click", false, false);
-    ss.dispatchEvent(evt);
-});
-
-</script>
-
 
 <% content_for :title, "App List" %>
 
