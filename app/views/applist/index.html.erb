@@ -140,6 +140,30 @@ ul {
     display: block;
     width: 100%;
   }
+   #charts .card {
+    margin: 6px;
+    width: 500px;
+    padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    max-width: 70%;
+    margin-right: 6px;
+    /* background-color: green; */
+  }
+
+  @media (max-width: 650px) {
+  #charts .container {
+    margin-left: 250px;
+    display: block;
+    width: 100%;
+  }
+   #charts .card {
+    margin: 6px;
+    width: 300px;
+    padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    margin-right: 6px;
+    /* background-color: green; */
+  }
 }
 
 
@@ -152,7 +176,7 @@ ul {
 <body data-turbolinks="false">
 <div class="container-fluid p-0">
 
-    <div id="main-content" class="row no-gutters">
+    <div id="main-content">
 
     <div id="sidebar0" class="col">
     <nav class="menu pl-4 navbar navbar-light p-0">
@@ -208,12 +232,12 @@ ul {
     </nav>
     </div>
 
-      <div id="charts" class="col-10">
+      <div id="charts">
         <div class="container">
 
         <% @apps.each do |app| %>
         <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
-          <div class="card col-3">
+          <div class="card">
             <header class="card-header">
               <h5 class="card-header-title"><b>
                 <%= app["name"] %>
