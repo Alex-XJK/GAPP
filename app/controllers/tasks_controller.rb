@@ -164,10 +164,10 @@ class TasksController < ApplicationController
 
       # Find the User Data Files
       user = User.find(id)
-      file1 = user.dataFiles.find(idx)
-      file2 = user.dataFiles.find(idx)
-      # file1 = user.dataFiles.find(idx[0])
-      # file2 = user.dataFiles.find(idx[1])
+      # file1 = user.dataFiles.find(idx)
+      # file2 = user.dataFiles.find(idx)
+      file1 = user.dataFiles.find(idx[0])
+      file2 = user.dataFiles.find(idx[1])
       floc1 = ActiveStorage::Blob.service.send(:path_for, file1.blob.key)
       floc2 = ActiveStorage::Blob.service.send(:path_for, file2.blob.key)
 
