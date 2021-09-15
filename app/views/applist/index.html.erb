@@ -23,13 +23,14 @@ body {
 }
 
 #sidebar0 {
+    top: 70px;
     bottom: 0;
     left: 0;
     width: 240px;
     padding: 1.5rem 1rem;
+    position: absolute;
     /* background: #444950; */
     /* overflow: scroll; */
-    background: #fff;
 }
 
 .menu-list {
@@ -46,31 +47,22 @@ ul {
 }
 
 #charts .container {
+    margin-left: 250px;
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
-    margin: 0 auto;
     position: relative;
     width: auto;
 }
 
  #charts .card {
-    margin: 4px;
+    margin: 6px;
     width: 240px;
-    flex: 1 0 auto;
     padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    max-width: 33.3333%;
     /* background-color: green; */
   }
-
-  .card {
-    /* background-color: #444950; */
-    box-shadow: 0 2px 3px rgb(9 10 11 / 10%), 0 0 0 1px rgb(9 10 11 / 10%);
-    /* color: #f4f5f6; */
-    max-width: 21%;
-    position: relative;
-
-    background-color: #fff;
-}
 
 .card-content {
     background-color: transparent;
@@ -142,29 +134,49 @@ ul {
     min-height: 100%;
 }
 
+@media (max-width: 1000px) {
+  #charts .container {
+    margin-left: 250px;
+    display: block;
+    width: 100%;
+  }
+   #charts .card {
+    margin: 6px;
+    width: 500px;
+    padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    max-width: 70%;
+    margin-right: 6px;
+    /* background-color: green; */
+  }
+
+  @media (max-width: 650px) {
+  #charts .container {
+    margin-left: 250px;
+    display: block;
+    width: 100%;
+  }
+   #charts .card {
+    margin: 6px;
+    width: 300px;
+    padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    margin-right: 6px;
+    /* background-color: green; */
+  }
+}
+
+
 </style>
 
 <%end%>
-
-<script>
-
-$(document).ready(function() {
-    console.log('Loaded.');
-    let ss = document.querySelector("#sidebar-button").querySelector("a");
-    var evt = document.createEvent("MouseEvents"); 
-    evt.initEvent("click", false, false);
-    ss.dispatchEvent(evt);
-});
-
-</script>
-
 
 <% content_for :title, "App List" %>
 
 <body data-turbolinks="false">
 <div class="container-fluid p-0">
 
-    <div id="main-content" class="row no-gutters">
+    <div id="main-content">
 
     <div id="sidebar0" class="col">
     <nav class="menu pl-4 navbar navbar-light p-0">
@@ -232,16 +244,17 @@ $(document).ready(function() {
     </nav>
     </div>
 
-      <div id="charts" class="col-10">
+      <div id="charts">
         <div class="container">
 
         <% @apps.each do |app| %>
         <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
-          <div class="card col-3">
+          <div class="card">
             <header class="card-header">
-              <p class="card-header-title">
+              <h5 class="card-header-title"><b>
                 <%= app["name"] %>
-              </p>
+                </b>
+              </h5>
             </header>
             <div class="card-image">
               <div class="img-container">
@@ -258,6 +271,7 @@ $(document).ready(function() {
                 <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
               </div>
             </div>
+            <br>
             <footer class="card-footer">
               <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %>>
                 <i class="far fa-eye"></i>
