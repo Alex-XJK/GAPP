@@ -25,95 +25,99 @@
     </script>
 <% end %>
 
-<% content_for :title, "Producer" %>
+<% content_for :title, "App Index List" %>
 
-<h1>Welcome <i><%= @user_name %></i> to use GAPP producer's page</h1>
+<div class="container-fluid p-0">
 
-<table style="width: 100%">
-    <tr>
-      <td>
-        <% if account_signed_in? and current_account.has_role? :admin %>
-          In total there are <%= @apps.count %> Apps on our website: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .
-        <% else %>
-          Currently you have created <%= @apps.count %> Apps: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .
-        <% end %>
-      </td>
-      <td style="float: right;">
-          <%= button_to createnew_app_path, method: :get, class: 'btn btn-primary' do %>
-              <i class="fas fa-pen-nib"></i> + CREATE NEW APP
-          <% end %>
-      </td>
-    </tr>
-</table>
+    <div  class="col-12 pl-4 pb-4">
 
-<table id="data-table" class="table table-hover">
-    <thead>
-        <tr>
-            <th>Category</th>
-            <th>App Name</th>
-            <th>Cover Image</th>
-            <th>Status</th>
-            <th>Last Modified At</th>
-            <th>Operations</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% @apps.each do |app| %>
-            <tr style="height: 100px;">
-                <td style="vertical-align: middle;"> <%= Category.find(app.category_id).name %> </td>
-                <td style="vertical-align: middle;"> <%= app.name %> </td>
-                <td style="vertical-align: middle;">
-                    <% if app.cover_image.attached? %>
-                        <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
-                    <%  else %>
-                        No Image
-                    <% end %>
-                </td>
-                <td style="vertical-align: middle;">
-                    <% if app.status=="online" %>
-                        <b style="color: forestgreen;"><i class="fas fa-check-circle"></i>online</b>
-                    <% elsif app.status=="audit" %>
-                        <b style="color: goldenrod;"><i class="fas fa-exclamation-circle"></i>audit</b>
-                    <% else %>
-                        <b style="color: crimson;"><i class="fas fa-times-circle"></i>offline</b>
-                    <% end %>
-                </td>
-                <td style="vertical-align: middle;">
-                  <%= String(app.updated_at.localtime).split(' ')[0] %>
-                  &nbsp;
-                  <%= String(app.updated_at.localtime).split(' ')[1].split(':')[0] %>:<%= String(app.updated_at.localtime).split(' ')[1].split(':')[1] %>
-                </td>
-                <td style="padding-top: 40px;" class="container btn-group btn-group-justified">
-                    <%= button_to app_path(app), method: :get, class: 'btn btn-outline-primary btn-sm' do %>
-                        <i class="fas fa-edit"></i>use
-                    <% end %>
+        <h1>Welcome <i><%= @user_name %></i> to use GAPP producer's page</h1>
 
-                    <%= button_to check_detail_app_path(app), method: :get, class: 'btn btn-outline-info btn-sm' do %>
-                        <i class="fas fa-file-alt"></i>info
-                    <% end %>
-
-                    <%= button_to edit_app_path(app), method: :get, class: 'btn btn-outline-success btn-sm' do %>
-                        <i class="fas fa-wrench"></i>edit
-                    <% end %>
-
-                    <%= button_to app_path(app), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-outline-danger btn-sm'  do %>
-                        <i class="fas fa-trash-alt"></i>delete
-                    <% end %>
-                
-                    <% if app.published? %>
-                        <%= button_to offshelf_app_path(app), method: :get, data: { confirm: "Hide this app?" }, class: 'btn btn-outline-secondary btn-sm'  do %>
-                            <i class="fas fa-undo-alt"></i>hide
-                        <% end %>
-                    <% end %>
-                    <% if account_signed_in? and current_account.has_role? :admin %>
-                        <% if app.awaiting? %>
-                            <%= button_to onshelf_app_path(app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do %>
-                                <i class="fas fa-share"></i>pass
-                            <% end %>
-                        <% end %>
-                    <% end %>
-                </td>
+        <table style="width: 100%">
+            <tr>
+              <td>
+                  Currently you have created <%= @apps.count %> Apps: Online: <%= @count_online %> ; Audit: <%= @count_audit %> ; Offline: <%= @count_offline %> .
+              </td>
+              <td style="float: right;">
+                  <%= button_to createnew_app_path, method: :get, class: 'btn btn-primary' do %>
+                      <i class="fas fa-pen-nib"></i> + CREATE NEW APP
+                  <% end %>
+              </td>
             </tr>
-        <% end %>
-    <tbody>
-</table>
+        </table>
+
+        <table id="data-table" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>App Name</th>
+                    <th>Cover Image</th>
+                    <th>Status</th>
+                    <th>Last Modified At</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @apps.each do |app| %>
+                    <tr style="height: 100px;">
+                        <td style="vertical-align: middle;"> <%= Category.find(app.category_id).name %> </td>
+                        <td style="vertical-align: middle;"> <%= app.name %> </td>
+                        <td style="vertical-align: middle;">
+                            <% if app.cover_image.attached? %>
+                                <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
+                            <%  else %>
+                                No Image
+                            <% end %>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <% if app.status=="online" %>
+                                <b style="color: forestgreen;"><i class="fas fa-check-circle"></i>online</b>
+                            <% elsif app.status=="audit" %>
+                                <b style="color: goldenrod;"><i class="fas fa-exclamation-circle"></i>audit</b>
+                            <% else %>
+                                <b style="color: crimson;"><i class="fas fa-times-circle"></i>offline</b>
+                            <% end %>
+                        </td>
+                        <td style="vertical-align: middle;">
+                          <%= String(app.updated_at.localtime).split(' ')[0] %>
+                          &nbsp;
+                          <%= String(app.updated_at.localtime).split(' ')[1].split(':')[0] %>:<%= String(app.updated_at.localtime).split(' ')[1].split(':')[1] %>
+                        </td>
+                        <td>
+                            <div style="padding-top: 40px;" class="container btn-group btn-group-justified">
+                                <%= button_to app_path(app), method: :get, class: 'btn btn-outline-primary btn-sm' do %>
+                                    <i class="fas fa-edit"></i>use
+                                <% end %>
+
+                                <%= button_to check_detail_app_path(app), method: :get, class: 'btn btn-outline-info btn-sm' do %>
+                                    <i class="fas fa-file-alt"></i>info
+                                <% end %>
+
+                                <%= button_to edit_app_path(app), method: :get, class: 'btn btn-outline-success btn-sm' do %>
+                                    <i class="fas fa-wrench"></i>edit
+                                <% end %>
+
+                                <%= button_to app_path(app), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-outline-danger btn-sm'  do %>
+                                    <i class="fas fa-trash-alt"></i>delete
+                                <% end %>
+
+                                <% if app.published? %>
+                                    <%= button_to offshelf_app_path(app), method: :get, data: { confirm: "Hide this app?" }, class: 'btn btn-outline-secondary btn-sm'  do %>
+                                        <i class="fas fa-undo-alt"></i>hide
+                                    <% end %>
+                                <% end %>
+                                <% if account_signed_in? and current_account.has_role? :admin %>
+                                    <% if app.awaiting? %>
+                                        <%= button_to onshelf_app_path(app), method: :get, data: { confirm: "Release to the public?" }, class: 'btn btn-outline-warning btn-sm'  do %>
+                                            <i class="fas fa-share"></i>pass
+                                        <% end %>
+                                    <% end %>
+                                <% end %>
+                            </div>
+                        </td>
+                    </tr>
+                <% end %>
+            <tbody>
+        </table>
+    </div>
+</div>

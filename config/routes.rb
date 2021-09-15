@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
   get '/admin/apps/', to: 'admin/apps#index'
   post '/admin/apps/search', to: 'admin/apps#search'
+  post '/admin/apps/hide', to: 'admin/apps#hide'
+  post '/admin/apps/pass', to: 'admin/apps#pass'
 
   get '/admin/tasks/', to: 'admin/tasks#index'
   post '/admin/tasks/search', to: 'admin/tasks#search'

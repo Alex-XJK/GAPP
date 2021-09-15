@@ -65,11 +65,11 @@
     <table id="pj_table" class="display table" style="margin: 0; width:100%">
         <thead>
                
-            <th> Task Id </th>
-            <th> Run By </th>
-            <th> Start Time </th>
-            <th> Status </th>
-            <th> Actions </th>
+            <th style="padding-left: 1%;"> Task Id </th>
+            <th style="padding-left: 1%;"> Run By </th>
+            <th style="padding-left: 1%;"> Start Time </th>
+            <th style="padding-left: 1%;"> Status </th>
+            <th style="padding-left: 1%;"> Actions </th>
           
         </thead>
 
@@ -83,7 +83,12 @@
                     <% if attr == "user_id" %>
                     <%= @users.find(res[attr])["username"] %>
                     <% else %>
-                    <%= res[attr] %>
+                      <% if attr == 'created_at' %>
+                      <%= String(res[attr].localtime).split(" ")[0] %>
+                      <%= String(res[attr].localtime).split(" ")[1] %>
+                      <% else %>
+                      <%= res[attr] %>
+                      <% end %>
                     <% end %>
                     &nbsp;
                 </div>

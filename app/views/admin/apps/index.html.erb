@@ -30,6 +30,17 @@
             "ordering": false,
             "info":     false
         } );
+
+        $('#check_all_online').click(function() {
+          var checkboxes = $(".onlinecheck");
+          checkboxes.prop('checked', this.checked);
+        });
+
+        $('#check_all_audit').click(function() {
+          var checkboxes = $(".auditcheck");
+          checkboxes.prop('checked', this.checked);
+        });
+
     } );
 
       $( function() {
@@ -51,6 +62,7 @@
             }
           });
       } );
+
 
     </script>
   
@@ -88,7 +100,7 @@
         This page is made for admin to : 
         <ul>
           <li>Check out all apps in the system</li>
-          <li>Edit app details (through producer's page)</li>
+          <li>Change status of multiple apps</li>
         </ul>
     </p>
   
@@ -96,15 +108,33 @@
 
     <form action="/admin/apps/search" method="POST" id="searchapp">
     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
-    Search for an app by Name: &nbsp;
+    Search for apps by Name: &nbsp;
     <input type="text" id="text" name="name">
     <button data-toggle="tooltip" type="submit" id="search" class="btn btn-primary" title="Search">
       <i class="fas fa-search"></i>
     </button> &nbsp;
     <span class="badge badge-pill badge-danger" id="warning">Please input a keyword.</span>
     </form>
+    <br>
 
-    <div id="accordion">
+<ul class="nav nav-tabs nav-justified rounded">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#accordion">All</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#b">Online</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#c">Audit</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#d">Offline</a>
+    </li>
+  </ul>
+
+  <div class="tab-content border-right border-bottom border-left rounded">
+
+    <div id="accordion" class="tab-pane container-fluid active">
       <br>
 
       <% @cats.each do |cts| %>
@@ -151,7 +181,12 @@
                     <% if attr == "user_id" %>
                     <%= @users.find(app[attr])["username"] %>
                     <% else %>
-                    <%= app[attr] %>
+                      <% if attr == 'updated_at' %>
+                      <%= String(app[attr].localtime).split(" ")[0] %>
+                      <%= String(app[attr].localtime).split(" ")[1] %>
+                      <% else %>
+                      <%= app[attr] %>
+                      <% end %>
                     <% end %>
                     &nbsp;
                 </div>
@@ -191,6 +226,138 @@
       </div>
       <% end %>
     </div>
+
+    <div id="b" class="tab-pane container-fluid fade">
+    <br>
+    <form action="/admin/apps/hide" method="POST" id="hidef">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+    <button class="btn btn-outline-secondary">
+      <i class="fas fa-undo-alt"></i>
+      Hide
+    </button>
+    <br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th> </th>
+          <th>App No.</th>
+          <th>Name</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>Last Update Time</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @apponline.each do |app| %>
+      <tr>
+          <td><input type="checkbox" class="onlinecheck" name=<%= app.id %> style="cursor: pointer;"></td>
+          <td><%= app.app_no %></td>
+          <td><%= app.name %></td>
+          <td><%= User.find(app.user_id).username %></td>
+          <td><%= Category.find(app.category_id).name %></td>
+          <td>
+              <%= String(app["updated_at"].localtime).split(" ")[0] %>
+              <%= String(app["updated_at"].localtime).split(" ")[1] %>
+          </td>
+      </tr>
+      <% end %>
+      <tr>
+        <td>
+        <input type="checkbox" id="check_all_online" style="cursor: pointer;">
+        </td>
+        <td>
+        <label for="check_all_online">[Check All]</label><br>
+        </td>
+        <td></td><td></td><td></td><td></td>
+      </tr>
+      </tbody>
+    </table>
+    </form>
+    </div>
+
+    <div id="c" class="tab-pane container-fluid fade">
+    <br>
+    <form action="/admin/apps/pass" method="POST" id="passf">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+    <button class="btn btn-outline-warning">
+      <i class="fas fa-share"></i>
+      Pass
+    </button>
+    <br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th> </th>
+          <th>App No.</th>
+          <th>Name</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>Last Update Time</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @appaudit.each do |app| %>
+      <tr>
+          <td><input type="checkbox" class="auditcheck" name=<%= app.id %> style="cursor: pointer;"></td>
+          <td><%= app.app_no %></td>
+          <td><%= app.name %></td>
+          <td><%= User.find(app.user_id).username %></td>
+          <td><%= Category.find(app.category_id).name %></td>
+          <td>
+              <%= String(app["updated_at"].localtime).split(" ")[0] %>
+              <%= String(app["updated_at"].localtime).split(" ")[1] %>
+          </td>
+      </tr>
+      <% end %>
+      <tr>
+        <td>
+        <input type="checkbox" id="check_all_audit" style="cursor: pointer;">
+        </td>
+        <td>
+        <label for="check_all_audit">[Check All]</label><br>
+        </td>
+        <td></td><td></td><td></td><td></td>
+      </tr>
+      </tbody>
+    </table>
+    </form>
+    </div>
+
+    <div id="d" class="tab-pane container-fluid fade">
+    
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th> </th>
+          <th>App No.</th>
+          <th>Name</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>Last Update Time</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @appoffline.each do |app| %>
+      <tr>
+          <td> </td>
+          <td><%= app.app_no %></td>
+          <td><%= app.name %></td>
+          <td><%= User.find(app.user_id).username %></td>
+          <td><%= Category.find(app.category_id).name %></td>
+          <td>
+              <%= String(app["updated_at"].localtime).split(" ")[0] %>
+              <%= String(app["updated_at"].localtime).split(" ")[1] %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    </div>
+
+
+</div>
+
     <br>
 
   </div>
