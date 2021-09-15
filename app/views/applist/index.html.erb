@@ -57,6 +57,8 @@ ul {
 
  #charts .card {
     margin: 6px;
+    margin-top: 20px;
+    padding-top: 10px;
     width: 240px;
     padding-bottom: 3rem;
     flex: 0 0 33.33333%;
@@ -84,7 +86,7 @@ ul {
 }
 
 .card-footer a {
-    color: #0066ff;
+    color: #808080;
     cursor: pointer;
     text-decoration: none;
 }
@@ -98,7 +100,7 @@ ul {
 
 .menu-list a:hover:not(.iactive) {
   /* background-color: #31353a; */
-  background-color: #ccd7ff;
+  background-color: #C0C0C0;
 }
 
 
@@ -114,11 +116,11 @@ ul {
 
 .card-footer-item:hover {
   /* color: #ffffff; */
-  color: #ccd7ff;
+  color: #C0C0C0;
 }
 
 .iactive {
-    background-color: #0066ff;
+    background-color: #808080;
     color: #fff;
     cursor: default;
 }
@@ -250,12 +252,6 @@ ul {
         <% @apps.each do |app| %>
         <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
           <div class="card">
-            <header class="card-header">
-              <h5 class="card-header-title"><b>
-                <%= app["name"] %>
-                </b>
-              </h5>
-            </header>
             <div class="card-image">
               <div class="img-container">
                 <% if app.cover_image.attached? %>
@@ -267,6 +263,10 @@ ul {
             </div>
             <div class="card-content">
               <div class="content">
+              <h5 class="card-header-title"><b>
+                <%= app["name"] %>
+                </b>
+              </h5>
                 <% @des = String(app["description"]) %>
                 <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
               </div>
