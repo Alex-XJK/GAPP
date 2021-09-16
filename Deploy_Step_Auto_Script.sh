@@ -41,7 +41,7 @@ bundle exec cap production puma:restart
 echo " "
 
 echo "D.S.A.S. >> Deploy Steps Finished Now!"
-echo -e "\t >> If you didn't see any error occur, then go to our websit and have a look!"
+echo -e "\t >> If you didn't see any error occur, then go to our website and have a look!"
 echo " "
 
 echo "D.S.A.S. >> Thank you for using our Deploy Step Auto Script (D.S.A.S.)!"
