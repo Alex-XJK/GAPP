@@ -23,12 +23,7 @@ body {
 }
 
 #sidebar0 {
-    top: 70px;
-    bottom: 0;
-    left: 0;
     width: 240px;
-    padding: 1.5rem 1rem;
-    position: absolute;
     /* background: #444950; */
     /* overflow: scroll; */
 }
@@ -38,7 +33,7 @@ body {
 }
 
 #sidebar0 .nav-item {
-  width: 180px;
+  width: 200px;
 }
 
 
@@ -46,7 +41,7 @@ ul {
     list-style: none;
 }
 
-#charts .container {
+/*#charts .container {
     margin-left: 250px;
     display: flex;
     flex-wrap: wrap;
@@ -66,7 +61,7 @@ ul {
     /* background-color: green; */
   }
 
-.card-content {
+/*.card-content {
     background-color: transparent;
     padding: 1.5rem;
 }
@@ -76,7 +71,7 @@ ul {
       left: 0;
       right: 0;
       bottom: 0;
-    }
+    }*/
 
 .card-footer {
     background-color: transparent;
@@ -125,7 +120,7 @@ ul {
     cursor: default;
 }
 
-.img-container {
+/*.img-container {
     text-align: center;
     display: block;
     height: 180px;
@@ -152,7 +147,7 @@ ul {
     /* background-color: green; */
   }
 
-  @media (max-width: 650px) {
+  /*@media (max-width: 650px) {
   #charts .container {
     margin-left: 250px;
     display: block;
@@ -165,7 +160,7 @@ ul {
     flex: 0 0 33.33333%;
     margin-right: 6px;
     /* background-color: green; */
-  }
+  /*}*/
 }
 
 
@@ -176,11 +171,10 @@ ul {
 <% content_for :title, "App List" %>
 
 <body data-turbolinks="false">
-<div class="container-fluid p-0">
+  <div class="container my-5">
+    <div class="row cols-xs-space cols-sm-space cols-md-space">
 
-    <div id="main-content">
-
-    <div id="sidebar0" class="col">
+    <div id="sidebar0"class="col-lg-3 order-lg-1 mb-3">
     <nav class="menu pl-4 navbar navbar-light p-0">
     <ul class="menu-list navbar-nav">
         <li class="nav-item">
@@ -246,43 +240,38 @@ ul {
     </nav>
     </div>
 
-      <div id="charts">
-        <div class="container">
-
-        <% @apps.each do |app| %>
-        <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
-          <div class="card">
-            <div class="card-image">
-              <div class="img-container">
-                <% if app.cover_image.attached? %>
+      <div class="col-lg-9 order-lg-2">
+        <div class="row cols-xs-space cols-sm-space cols-md-space">
+          <% @apps.each do |app| %>
+          <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
+              <div class="card col-lg-4 mb-4 mr-4">
+                <div class="card-img-top">
+                  <% if app.cover_image.attached? %>
                     <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
-                <%  else %>
+                  <%  else %>
                     [NO IMAGE]
-                <% end %>
+                  <% end %>
+                </div>
+                <div class="card_body">
+                  <h5 class="card-header-title">
+                    <b>
+                      <%= app["name"] %>
+                    </b>
+                  </h5>
+                  <% @des = String(app["description"]) %>
+                  <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
+                </div>
+                <br>
+                <footer class="card-footer">
+                  <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %>>
+                    <i class="far fa-eye"></i>
+                    View
+                  </a>
+                </footer>
               </div>
-            </div>
-            <div class="card-content">
-              <div class="content">
-              <h5 class="card-header-title"><b>
-                <%= app["name"] %>
-                </b>
-              </h5>
-                <% @des = String(app["description"]) %>
-                <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
-              </div>
-            </div>
-            <br>
-            <footer class="card-footer">
-              <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %>>
-                <i class="far fa-eye"></i>
-                View
-              </a>
-            </footer>
-          </div>
-        <% end %>
-        <% end %>
-
-        </div>
+          <% end %>
+          <% end %>
+      </div>
       </div>
     </div>
   </div>
