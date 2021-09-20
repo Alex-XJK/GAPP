@@ -28,7 +28,7 @@ else
 fi
 echo " "
 
-echo "D.S.A.S. >> Step 4: SSh key"
+echo "D.S.A.S. >> Step 4: SSH key"
 ssh-add
 echo " "
 
