@@ -34,7 +34,8 @@
   <% end %>
 
   <div class="form-inputs">
-    <%= f.input :email, required: true, autofocus: true %>
+    <%= f.input :email, required: true, autofocus: true,
+                      disabled: true, hint: "To change email address or username, please <a href='/contact' target='_blank'>contact site admin</a>.".html_safe %>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
       <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
@@ -60,19 +61,26 @@
 
 <%
 =begin%>
- <div id="deleteAccount" style="display:none;">
+ 
+ <div id="deleteAccount">
   <p>&nbsp;</p><hr>
 
   <h3>Cancel my account</h3>
+
+  <%= simple_form_for User.find_by(account_id: current_account.id), url: "/admin/users/new/" do |f| %>
+  <%= f.input :username %>
+  <%= f.button :submit %>
+  <% end %>
 
   <p>
   Unhappy?
   <%= link_to "Cancel my account", registration_path(resource_name), method: :delete, data: { confirm: "Are you sure?", title: 'Confirm your action', commit: 'Delete' } %>
   </p>
   <%= link_to "Back", :back %>
-</div> 
+</div>  
 <%
 =end%>
+
 
 </div>
 </div>

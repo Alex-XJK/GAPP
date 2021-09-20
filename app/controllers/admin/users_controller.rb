@@ -56,7 +56,7 @@ class Admin::UsersController < ApplicationController
             redirect_to action: "index"
         else
             if Account.find(@usr.account_id).has_role? :admin
-                flash[:error] = "Please don't delete an admin account!" 
+                flash[:error] = "Operations on admin account is not allowed." 
                 redirect_to action: "index"
             else
                 @bkid = @usr.account_id
@@ -86,8 +86,8 @@ class Admin::UsersController < ApplicationController
             @usr.update(edit_params)
         else
             @user = Account.find(@usr.account_id)
-            if String(@usr.account_id) == String(current_account.id)
-                flash[:error] = "Please don't edit your own role!" 
+            if @user.roles.first.name == "admin"
+                flash[:error] = "Operations on admin account is not allowed." 
                 redirect_to action: "index"
             else
                 @usr.update(edit_params)

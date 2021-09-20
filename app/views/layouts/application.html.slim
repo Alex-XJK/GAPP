@@ -10,7 +10,7 @@ html
   - body_class = [controller_name]
   - if page_is_dark?
     - body_class << 'bg-dark'
-    - body_class << 'text-light'
+    / - body_class << 'text-light'
   body class=(body_class.join ' ')
     = include_gon
     / flash
