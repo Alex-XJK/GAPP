@@ -246,9 +246,10 @@ ul {
           <% @apps.each do |app| %>
           <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
               <div class="col-lg-4 mb-4">
-              <div class="card">
+                <div class="container-fluid container">
+                  <div class="card">
                   <% if app.cover_image.attached? %>
-                    <%= image_tag app.cover_image, alt: "image"%>
+                    <%= image_tag app.cover_image, alt: "image" %>
                   <%  else %>
                     [NO IMAGE]
                   <% end %>
@@ -268,6 +269,7 @@ ul {
                   </a>
                 </div>
               </div>
+             </div>
             </div>
           <% end %>
           <% end %>
