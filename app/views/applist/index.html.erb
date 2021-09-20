@@ -248,7 +248,7 @@ ul {
               <div class="col-lg-4 mb-4">
               <div class="card">
                   <% if app.cover_image.attached? %>
-                    <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
+                    <%= image_tag app.cover_image, alt: "image"%>
                   <%  else %>
                     [NO IMAGE]
                   <% end %>
