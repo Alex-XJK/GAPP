@@ -21,7 +21,7 @@
         $('#pj_table').DataTable( {
              dom:
               "<'row'<'col-sm-12'tr>>" +
-              "<'row'<'col-sm-4'i><'col-sm-4 text-center'l><'col-sm-4'p>>",
+              "<'p-1'><'row'<'col-sm-4'i><'col-sm-4 text-center'l><'col-sm-4'p>>",
         } );
     } );
 
@@ -88,7 +88,7 @@
       <br>
     </div><br>
 
-      <div>
+      <div class="d-none">
       <form action="/admin/categories/new" method="POST">
         <button type="button" id="intro" style="display: block;" class="btn btn-primary">
             <i class="fas fa-folder-plus"></i>New Category
