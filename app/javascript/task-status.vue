@@ -9,7 +9,13 @@
     </el-option>
   </el-select>
   <br>
-  <div v-for="app in apps" :key="app.id">
+  <div v-if="apps.length === 0 && value != ''">
+    <el-divider></el-divider>
+    <div class="p-3 mb-2 bg-secondary text-white"> 
+      This category has no app currently, please choose another one or try again later.
+    </div>
+  </div>
+  <div v-else v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
     <!-- <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5> -->
     <h5><i class="far fa-bookmark"></i>{{app.name}}</h5>
@@ -28,16 +34,24 @@
 
     <div class="task-card">
       <el-row :gutter="12">
-        <div  v-for="task in tasks" :key="task.id">
+        <div v-for="task in tasks" :key="task.id">
           <div v-if="task.app_id === app.Id">
             <el-col :span="5">
               <el-card shadow="hover">
                 <p>{{task.name}}</p>
+                {{window.addOne()}}
                 <el-progress :percentage="task.status" :status="task.barType"></el-progress>
                 <el-button type="text" @click="goTo(task.id)">More</el-button>
               </el-card>
             </el-col>
           </div>
+          <div v-if="taskCount === 0">
+            <br>
+            <div class="p-3 mb-2 bg-secondary text-white">
+              You haven't create a task of <b>{{app.name}}</b> currently. Click <b><i>Create</i></b> button to create one now.
+            </div>
+          </div>
+          {{window.setZero()}}
         </div>
       </el-row>
     </div>
@@ -106,7 +120,8 @@ export default {
           { type: 'array', required: true, message: 'Please choose at least one file.', trigger: 'change' }
         ]
       },
-      currentApp: {}
+      currentApp: {},
+      taskCount: 0
     }
   },
     methods: {
@@ -326,6 +341,12 @@ export default {
     },
     gotoApp(appId) {
       Turbolinks.visit(`/apps/${appId}`, {'action':'replace'})
+    },
+    addOne() {
+      this.taskCount += 1
+    },
+    setZero() {
+      this.taskCount = 0
     }
   },
     watch: {
@@ -348,7 +369,9 @@ export default {
     },
     created() {
       this.getCategoies(),
-      this.getDataInfo()
+      this.getDataInfo(),
+      window.setZero = this.setZero,
+      window.addOne = this.addOne
     },
     computed: {
 
