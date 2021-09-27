@@ -10,7 +10,7 @@
 </div>
 <% end %>
 
-<% content_for:head do%>
+<% content_for :head do%>
   
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -49,7 +49,7 @@
 
   <%= javascript_pack_tag 'users_js' %>
   
-  <% content_for :title, "Users" %>
+  <% content_for :title, "User Management" %>
 
   <body data-turbolinks="false">
 
