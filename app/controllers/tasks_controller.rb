@@ -275,13 +275,16 @@ class TasksController < ApplicationController
       # @inputs.push({ panefn => '/data/' + @pnam, })
       # @inputs.push({ panefn => @optp, })
       logger.debug "In STD :: #{@inputs} >>"
-      params = Array.new
-      logger.debug "In STD :: #{params} >>"
+      @params = Array.new
+      @params.push({ 'p-1761' => '/disk2/workspace/platform/gapp/websrl.list', })
+      @params.push({ 'p-1760' => './gapp/code', })
+      @params.push({ 'p-1758' => './gapp', })
+      logger.debug "In STD :: #{@params} >>"
 
       # Already existing code
       # submit task
       client = LocalApi::Client.new
-      @result = client.run_module(UID, PROJECT_ID, @anaid, @inputs, params)
+      @result = client.run_module(UID, PROJECT_ID, @anaid, @inputs, @params)
 
       logger.debug "In STD :: after submit get result #{@result} !"
 
