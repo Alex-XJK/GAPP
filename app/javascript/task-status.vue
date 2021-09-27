@@ -39,19 +39,11 @@
             <el-col :span="5">
               <el-card shadow="hover">
                 <p>{{task.name}}</p>
-                {{window.addOne()}}
                 <el-progress :percentage="task.status" :status="task.barType"></el-progress>
                 <el-button type="text" @click="goTo(task.id)">More</el-button>
               </el-card>
             </el-col>
           </div>
-          <div v-if="taskCount === 0">
-            <br>
-            <div class="p-3 mb-2 bg-secondary text-white">
-              You haven't create a task of <b>{{app.name}}</b> currently. Click <b><i>Create</i></b> button to create one now.
-            </div>
-          </div>
-          {{window.setZero()}}
         </div>
       </el-row>
     </div>
@@ -120,8 +112,7 @@ export default {
           { type: 'array', required: true, message: 'Please choose at least one file.', trigger: 'change' }
         ]
       },
-      currentApp: {},
-      taskCount: 0
+      currentApp: {}
     }
   },
     methods: {
@@ -369,9 +360,7 @@ export default {
     },
     created() {
       this.getCategoies(),
-      this.getDataInfo(),
-      window.setZero = this.setZero,
-      window.addOne = this.addOne
+      this.getDataInfo()
     },
     computed: {
 
