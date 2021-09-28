@@ -138,9 +138,8 @@ class TasksController < ApplicationController
   # end
 
 
-  UID = 45
-  PROJECT_ID = 289
-  # $user_stor_dir = "#{Rails.root}/data/user"
+  UID = 50
+  PROJECT_ID = 344
 
   def submit_task
     # init
@@ -228,7 +227,6 @@ class TasksController < ApplicationController
 
       # Display the Rails root for debug
       @rrot = Rails.root.to_s
-      #@rrot = '/home/platform/gapp_rails/releases/20210827080937'
       edroot = @rrot.split('releases')[0]
       @uproot = edroot + 'releases/shared'
 
@@ -267,8 +265,10 @@ class TasksController < ApplicationController
       @inputs = Array.new
       logger.debug "In STD :: #{@inputs} >>"
       @params = Array.new
-      @params.push({ 'p-1764' => userid, })
-      @params.push({ 'p-1765' => timestamp, })
+      p4uid = Analysis.find(app.analysis_id).param_for_userid.to_s
+      p4fid = Analysis.find(app.analysis_id).param_for_filename.to_s
+      @params.push({ p4uid => userid, })
+      @params.push({ p4fid => timestamp, })
       logger.debug "In STD :: #{@params} >>"
 
       # # Optimize disk storage
