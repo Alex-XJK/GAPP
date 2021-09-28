@@ -267,9 +267,8 @@ class TasksController < ApplicationController
       @inputs = Array.new
       logger.debug "In STD :: #{@inputs} >>"
       @params = Array.new
-      @params.push({ 'p-1761' => '/disk2/workspace/platform/gapp/websrl.list', })
-      @params.push({ 'p-1762' => userid, })
-      @params.push({ 'p-1763' => timestamp, })
+      @params.push({ 'p-1764' => userid, })
+      @params.push({ 'p-1765' => timestamp, })
       logger.debug "In STD :: #{@params} >>"
 
       # # Optimize disk storage
