@@ -248,38 +248,59 @@ class TasksController < ApplicationController
       @ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
       @pnam = panl.filename.to_s
 
-      # Optimize disk storage
-      @optf = @floc.to_s.gsub(@uproot, '/data')
-      @optp = @ploc.to_s.gsub(@uproot, '/data')
-
-      # The hard code area, used to set the location path
-      datafn = 'i-1004'
-      panefn = 'i-1005'
-      # tarloc = '/Users/jiakaixu2/Desktop/RA-GAPP/gapp_rails/tmp/'
-      tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
-
-      # Create the string of filename
-      @file_new_location = tarloc + @fnam + '(NO_NEED_ANY_MORE)'
-      @panel_new_location = tarloc + @pnam + '(NO_NEED_ANY_MORE)'
-
+      # New version here >>>
+      userid = id.to_s
+      disk = "/disk2/workspace/platform/gapp/user#{userid}/data/"
+      timestamp = Time.now.to_i.to_s
+      @file1_new_location = disk + timestamp + '_1.fq'
+      @file2_new_location = disk + timestamp + '_2.fq'
       # Copy the files to the target place and rename them to the system accepted one
-      # system "cp #{@floc} #{@file_new_location}"
-      # system "cp #{@ploc} #{@panel_new_location}"
+      system "mkdir #{disk}"
+      system "cp #{@floc} #{@file1_new_location}"
+      system "cp #{@ploc} #{@file2_new_location}"
 
       # Prepare the API parameters (redirect to stdout for debug now)
       @anaid = Analysis.find(app.analysis_id).doap_id.to_i
       logger.debug "In STD :: #{@anaid} >>"
       @inputs = Array.new
-      # @inputs.push({ datafn => '/data/' + @fnam, })
-      @inputs.push({ datafn => @optf, })
-      # @inputs.push({ panefn => '/data/' + @pnam, })
-      # @inputs.push({ panefn => @optp, })
       logger.debug "In STD :: #{@inputs} >>"
       @params = Array.new
       @params.push({ 'p-1761' => '/disk2/workspace/platform/gapp/websrl.list', })
-      @params.push({ 'p-1760' => './gapp/code', })
-      @params.push({ 'p-1758' => './gapp', })
+      @params.push({ 'p-1762' => userid, })
+      @params.push({ 'p-1763' => timestamp, })
       logger.debug "In STD :: #{@params} >>"
+
+      # # Optimize disk storage
+      # @optf = @floc.to_s.gsub(@uproot, '/data')
+      # @optp = @ploc.to_s.gsub(@uproot, '/data')
+      #
+      # # The hard code area, used to set the location path
+      # datafn = 'i-1004'
+      # panefn = 'i-1005'
+      # tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
+      #
+      # # Create the string of filename
+      # @file_new_location = tarloc + @fnam + '(NO_NEED_ANY_MORE)'
+      # @panel_new_location = tarloc + @pnam + '(NO_NEED_ANY_MORE)'
+
+      # # Copy the files to the target place and rename them to the system accepted one
+      # system "cp #{@floc} #{@file_new_location}"
+      # system "cp #{@ploc} #{@panel_new_location}"
+
+      # # Prepare the API parameters (redirect to stdout for debug now)
+      # @anaid = Analysis.find(app.analysis_id).doap_id.to_i
+      # logger.debug "In STD :: #{@anaid} >>"
+      # @inputs = Array.new
+      # # @inputs.push({ datafn => '/data/' + @fnam, })
+      # @inputs.push({ datafn => @optf, })
+      # # @inputs.push({ panefn => '/data/' + @pnam, })
+      # # @inputs.push({ panefn => @optp, })
+      # logger.debug "In STD :: #{@inputs} >>"
+      # @params = Array.new
+      # @params.push({ 'p-1761' => '/disk2/workspace/platform/gapp/websrl.list', })
+      # @params.push({ 'p-1760' => './gapp/code', })
+      # @params.push({ 'p-1758' => './gapp', })
+      # logger.debug "In STD :: #{@params} >>"
 
       # Already existing code
       # submit task
