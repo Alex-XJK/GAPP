@@ -36,18 +36,30 @@ section#demo
   .container
     h2
       | Demo
-    #demo_container
-      .demo_body.demo_img
-        =link_to '#'
-          =image_tag "research.png", :alt=>"Demo of this site.png"
-      .demo_body.demo_text
-        h3
-          |Demo of GAPP
-        ul
-          li
-            |Intro-1
-          li
-            |Intro-2
+    / #demo_container
+    /   .demo_body.demo_img
+    /     =link_to '#'
+    /       =image_tag "research.png", :alt=>"Demo of this site.png"
+    /   .demo_body.demo_text
+    /     h3
+    /       |Demo of GAPP
+    /     ul
+    /       li
+    /         |Intro-1
+    /       li
+    /         |Intro-2
+    .jumbotron
+      .row 
+        .col-4
+          .demo_img
+            =link_to '#'
+              =image_tag "research.png", :alt=>"Demo of this site.png"
+        .col-8
+          h1.display-4.
+            | A Demo 
+          p.lead
+            | Some introduction here
+          hr.my-4
 
 / section#test
 /   .container 
@@ -117,7 +129,7 @@ section#app_card
 /           /   | Learn More
 section.contact
   .container
-    .lead.w-100.text-center
+    .lead.w-100.text-center.text-light
       | DOAP's team works directly with researchers, developers and individual users.&nbsp;
       = link_to 'Speak with us to learn more.' ,'/contact'
 
