@@ -250,11 +250,13 @@ class TasksController < ApplicationController
 
       # New version here >>>
       userid = id.to_s
-      disk = "/disk2/workspace/platform/gapp/user#{userid}/data/"
+      diskuser = "/disk2/workspace/platform/gapp/user#{userid}"
+      disk = "#{diskuser}/data/"
       timestamp = Time.now.to_i.to_s
-      @file1_new_location = disk + timestamp + '_1.fq'
-      @file2_new_location = disk + timestamp + '_2.fq'
+      @file1_new_location = disk + timestamp + '_1.fq.gz'
+      @file2_new_location = disk + timestamp + '_2.fq.gz'
       # Copy the files to the target place and rename them to the system accepted one
+      system "mkdir #{diskuser}"
       system "mkdir #{disk}"
       system "cp #{@floc} #{@file1_new_location}"
       system "cp #{@ploc} #{@file2_new_location}"
