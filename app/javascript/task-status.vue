@@ -261,13 +261,19 @@ export default {
       });
     },
     SubmitTask(appId) {
-      console.log("here is appid for task " + appId)
+      // console.log("here is appid for task " + appId)
+      var fidAry = []
+      for (var i = 0; i < this.ruleForm.checkedData.length; i++) {
+        fidAry.push(this.ruleForm.checkedData[i].dataId)
+      }
+      console.log('fid =>')
+      console.log(fidAry)
       axios.post(
           `/submit/api`,
         objectToFormData({
           "app": appId,
           "uid": this.id,
-          "fid": this.ruleForm.checkedData[0].dataId
+          "fid": fidAry
         }),
         {
           headers: {
