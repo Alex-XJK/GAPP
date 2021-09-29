@@ -137,8 +137,9 @@ class TasksController < ApplicationController
   #   render json: result_json
   # end
 
-
+  # Used for GAPP only!
   UID = 50
+  # Used for our GAPP_TEST project only!
   PROJECT_ID = 344
 
   def submit_task
@@ -149,45 +150,63 @@ class TasksController < ApplicationController
     }
     begin
 
-      # Receive and find the User Data File
+      # Receive parameters from fronten-end
       id = params[:uid]
       idx = params[:fid]
-      user = User.find(id)
-      file = user.dataFiles.find(idx)
-      # file = user.dataFiles[idx.to_i]
-      floc = ActiveStorage::Blob.service.send(:path_for, file.blob.key)
-      fnam = file.filename.to_s
-
-      # Receive and find the App Panel File
       aid = params[:app]
+
+      # Judge whether selected TWO files for *_1.fq.gz and *_2.fq.gz datafile
+      if idx.length < 2
+        result_json[:code] = false
+        result_json[:data] = "The selected user data files less than 2, which does not meet the analysis requirement!"
+        exit(1)
+      end
+
+      # Find the User Data Files
+      user = User.find(id)
+      file1 = user.dataFiles.find(idx)
+      file2 = user.dataFiles.find(idx)
+      # file1 = user.dataFiles.find(idx[0])
+      # file2 = user.dataFiles.find(idx[1])
+      floc1 = ActiveStorage::Blob.service.send(:path_for, file1.blob.key)
+      floc2 = ActiveStorage::Blob.service.send(:path_for, file2.blob.key)
+
+      # Find the App Panel File
       app = App.find(aid)
       panl = app.panel
       ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
-      pnam = panl.filename.to_s
 
-      # The hard code area, used to set the location path
-      datafn = 'i-1004'
-      panefn = 'i-1005'
-      tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
-
-      # Create the string of filename
-      file_new_location = tarloc + fnam
-      panel_new_location = tarloc + pnam
+      # Set system variables
+      userid = id.to_s
+      timestamp = Time.now.to_i.to_s
+      disk_user = "/disk2/workspace/platform/gapp/user#{userid}"
+      disk_data = "#{disk_user}/data/"
+      file1_new_location = disk_data + timestamp + '_1.fq.gz'
+      file2_new_location = disk_data + timestamp + '_2.fq.gz'
+      panel_new_location = disk_data + timestamp + '_panel.csv'
 
       # Copy the files to the target place and rename them to the system accepted one
-      system "cp #{floc} #{file_new_location}"
+      system "mkdir #{disk_user}"
+      system "mkdir #{disk_data}"
+      system "cp #{floc1} #{file1_new_location}"
+      system "cp #{floc2} #{file2_new_location}"
       system "cp #{ploc} #{panel_new_location}"
 
       # Prepare the API parameters
       anaid = Analysis.find(app.analysis_id).doap_id.to_i
       logger.debug "In SuT :: #{anaid} >>"
 
+      p4uid = Analysis.find(app.analysis_id).param_for_userid.to_s
+      p4fid = Analysis.find(app.analysis_id).param_for_filename.to_s
+
+      # Build the file input dictionary
       inputs = Array.new
-      inputs.push({ datafn => '/data/' + fnam, })
-      # inputs.push({ panefn => '/data/' + pnam, })
       logger.debug "In SuT :: #{inputs} >>"
 
+      # Build the parameter input dictionary
       params = Array.new
+      params.push({ p4uid => userid, })
+      params.push({ p4fid => timestamp, })
       logger.debug "In SuT :: #{params} >>"
 
       # Submit task
