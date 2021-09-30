@@ -515,10 +515,10 @@ class TasksController < ApplicationController
     # render json: result_json
     logger.debug "In QTD :: now every thing done with JSON: #{@result_json} !"
 
-    @path = @result_json[:data][:outputs][0][:files][0][:path]
+    @path = @result_json[:data]["outputs"][0]["files"][0]["path"]
     @full_path = "/home/platform/omics_rails/current/media/user/gapp" + @path + "/data.raw.vcf.gz"
-    @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/data/")[0]
-    @download_path = "/result/task_" + @path.split("task_")[1].split("/data/")[0] + "/data.raw.vcf.gz"
+    @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/user")[0]
+    @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
 
     system "mkdir #{@dir}"
     system "cp #{@full_path} #{@dir}"
