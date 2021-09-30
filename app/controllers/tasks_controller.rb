@@ -158,14 +158,13 @@ class TasksController < ApplicationController
       # Judge whether selected TWO files for *_1.fq.gz and *_2.fq.gz datafile
       if idx.length < 2
         result_json[:code] = false
-        result_json[:data] = "The selected user data files less than 2, which does not meet the analysis requirement!"
+        result_json[:data] = "The selected user data files number less than 2, which does not meet the analysis requirement!"
+        render json: result_json
         exit(1)
       end
 
       # Find the User Data Files
       user = User.find(id)
-      # file1 = user.dataFiles.find(idx)
-      # file2 = user.dataFiles.find(idx)
       file1 = user.dataFiles.find(idx[0])
       file2 = user.dataFiles.find(idx[1])
       floc1 = ActiveStorage::Blob.service.send(:path_for, file1.blob.key)
@@ -515,6 +514,15 @@ class TasksController < ApplicationController
     end
     # render json: result_json
     logger.debug "In QTD :: now every thing done with JSON: #{@result_json} !"
+
+    @path = @result_json[:data][:outputs][0][:files][0][:path]
+    @full_path = "/home/platform/omics_rails/current/media/user/gapp" + @path + "/data.raw.vcf.gz"
+    @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/data/")[0]
+    @download_path = "/result/task_" + @path.split("task_")[1].split("/data/")[0] + "/data.raw.vcf.gz"
+
+    system "mkdir #{@dir}"
+    system "cp #{@full_path} #{@dir}"
+
   end
 
   def reportGenerate
