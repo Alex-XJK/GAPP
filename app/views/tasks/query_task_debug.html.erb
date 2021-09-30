@@ -110,3 +110,24 @@
 <%= form_with url: "/report-generate", method: :get do |form| %>
   <%= form.submit%>
 <% end %>
+
+<p>
+Path:
+<%= @path %>
+</p>
+
+<p>
+Full path:
+<%= @full_path %>
+</p>
+
+<p>
+Dir:
+<%= @dir %>
+</p>
+
+<p>
+<a href=<%= @download_path %> download>
+Download
+</a>
+</p>
