@@ -5,11 +5,6 @@
   background-color: green;
 } */
 
-* {
-    # box-sizing: inherit;
-    font-family: "Source Sans Pro", sans-serif;
-}
-
 body {
   /* background-color: #31353a; */
   /* overflow: scroll; */
@@ -23,13 +18,9 @@ body {
 }
 
 #sidebar0 {
-    bottom: 0;
-    left: 0;
     width: 240px;
-    padding: 1.5rem 1rem;
     /* background: #444950; */
     /* overflow: scroll; */
-    background: #fff;
 }
 
 .menu-list {
@@ -37,7 +28,7 @@ body {
 }
 
 #sidebar0 .nav-item {
-  width: 180px;
+  width: 200px;
 }
 
 
@@ -45,34 +36,27 @@ ul {
     list-style: none;
 }
 
-#charts .container {
+/*#charts .container {
+    margin-left: 250px;
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
-    margin: 0 auto;
     position: relative;
     width: auto;
 }
 
  #charts .card {
-    margin: 4px;
+    margin: 6px;
+    margin-top: 20px;
+    padding-top: 10px;
     width: 240px;
-    flex: 1 0 auto;
     padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    max-width: 33.3333%;
     /* background-color: green; */
   }
 
-  .card {
-    /* background-color: #444950; */
-    box-shadow: 0 2px 3px rgb(9 10 11 / 10%), 0 0 0 1px rgb(9 10 11 / 10%);
-    /* color: #f4f5f6; */
-    max-width: 21%;
-    position: relative;
-
-    background-color: #fff;
-}
-
-.card-content {
+/*.card-content {
     background-color: transparent;
     padding: 1.5rem;
 }
@@ -82,7 +66,7 @@ ul {
       left: 0;
       right: 0;
       bottom: 0;
-    }
+    }*/
 
 .card-footer {
     background-color: transparent;
@@ -92,7 +76,7 @@ ul {
 }
 
 .card-footer a {
-    color: #0066ff;
+    color: #808080;
     cursor: pointer;
     text-decoration: none;
 }
@@ -106,7 +90,7 @@ ul {
 
 .menu-list a:hover:not(.iactive) {
   /* background-color: #31353a; */
-  background-color: #ccd7ff;
+  background-color: #C0C0C0;
 }
 
 
@@ -118,20 +102,21 @@ ul {
     flex-shrink: 0;
     justify-content: center;
     padding: 0.75rem;
+    color: #000000;
 }
 
 .card-footer-item:hover {
   /* color: #ffffff; */
-  color: #ccd7ff;
+  color: #C0C0C0;
 }
 
 .iactive {
-    background-color: #0066ff;
+    background-color: #808080;
     color: #fff;
     cursor: default;
 }
 
-.img-container {
+/*.img-container {
     text-align: center;
     display: block;
     height: 180px;
@@ -142,31 +127,50 @@ ul {
     min-height: 100%;
 }
 
+@media (max-width: 1000px) {
+  #charts .container {
+    margin-left: 250px;
+    display: block;
+    width: 100%;
+  }
+   #charts .card {
+    margin: 6px;
+    width: 500px;
+    padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    max-width: 70%;
+    margin-right: 6px;
+    /* background-color: green; */
+  }
+
+  /*@media (max-width: 650px) {
+  #charts .container {
+    margin-left: 250px;
+    display: block;
+    width: 100%;
+  }
+   #charts .card {
+    margin: 6px;
+    width: 300px;
+    padding-bottom: 3rem;
+    flex: 0 0 33.33333%;
+    margin-right: 6px;
+    /* background-color: green; */
+  /*}*/
+}
+
+
 </style>
 
 <%end%>
 
-<script>
-
-$(document).ready(function() {
-    console.log('Loaded.');
-    let ss = document.querySelector("#sidebar-button").querySelector("a");
-    var evt = document.createEvent("MouseEvents"); 
-    evt.initEvent("click", false, false);
-    ss.dispatchEvent(evt);
-});
-
-</script>
-
-
 <% content_for :title, "App List" %>
 
 <body data-turbolinks="false">
-<div class="container-fluid p-0">
+  <div class="my-5 mx-2">
+    <div class="row ml-5">
 
-    <div id="main-content" class="row no-gutters">
-
-    <div id="sidebar0" class="col">
+    <div id="sidebar0"class="col-lg-2 order-lg-1 mb-3">
     <nav class="menu pl-4 navbar navbar-light p-0">
     <ul class="menu-list navbar-nav">
         <li class="nav-item">
@@ -232,43 +236,39 @@ $(document).ready(function() {
     </nav>
     </div>
 
-      <div id="charts" class="col-10">
-        <div class="container">
-
-        <% @apps.each do |app| %>
-        <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
-          <div class="card col-3">
-            <header class="card-header">
-              <p class="card-header-title">
-                <%= app["name"] %>
-              </p>
-            </header>
-            <div class="card-image">
-              <div class="img-container">
-                <% if app.cover_image.attached? %>
-                    <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
-                <%  else %>
+      <div class="col-lg-9 order-lg-2">
+        <div class="row cols-xs-space cols-sm-space cols-md-space">
+          <% @apps.each do |app| %>
+          <% if String(@id) == "" || String(app["category_id"]) == String(@id) %>
+              <div class="col-lg-4 mb-4">
+                <div class="container-fluid container">
+                  <div class="card">
+                  <% if app.cover_image.attached? %>
+                    <%= image_tag app.cover_image, alt: "image" %>
+                  <%  else %>
                     [NO IMAGE]
-                <% end %>
+                  <% end %>
+                <div class="card-body">
+                  <h5 class="card-header-title">
+                    <b>
+                      <%= app["name"] %>
+                    </b>
+                  </h5>
+                  <% @des = String(app["description"]) %>
+                  <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
+                </div>
+                <div class="list-group list-group-flush">
+                  <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %>>
+                    <i class="far fa-eye"></i>
+                    View
+                  </a>
+                </div>
               </div>
+             </div>
             </div>
-            <div class="card-content">
-              <div class="content">
-                <% @des = String(app["description"]) %>
-                <%= @des.length > 200 ? @des[0, 200] + "..." : @des; %>
-              </div>
-            </div>
-            <footer class="card-footer">
-              <a class="card-footer-item" href=<%= "/apps/" + String(app["id"]) %>>
-                <i class="far fa-eye"></i>
-                View
-              </a>
-            </footer>
-          </div>
-        <% end %>
-        <% end %>
-
-        </div>
+          <% end %>
+          <% end %>
+      </div>
       </div>
     </div>
   </div>

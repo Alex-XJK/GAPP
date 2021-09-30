@@ -9,7 +9,13 @@
     </el-option>
   </el-select>
   <br>
-  <div v-for="app in apps" :key="app.id">
+  <div v-if="apps.length === 0 && value != ''">
+    <el-divider></el-divider>
+    <div class="p-3 mb-2 bg-secondary text-white"> 
+      This category has no app currently, please choose another one or try again later.
+    </div>
+  </div>
+  <div v-else v-for="app in apps" :key="app.id">
     <el-divider></el-divider>
     <!-- <h5 @click="gotoApp(app.Id)" id="appTitle"><i>{{app.name}}</i></h5> -->
     <h5><i class="far fa-bookmark"></i>{{app.name}}</h5>
@@ -28,7 +34,7 @@
 
     <div class="task-card">
       <el-row :gutter="12">
-        <div  v-for="task in tasks" :key="task.id">
+        <div v-for="task in tasks" :key="task.id">
           <div v-if="task.app_id === app.Id">
             <el-col :span="5">
               <el-card shadow="hover">
@@ -255,13 +261,19 @@ export default {
       });
     },
     SubmitTask(appId) {
-      console.log("here is appid for task " + appId)
+      // console.log("here is appid for task " + appId)
+      var fidAry = []
+      for (var i = 0; i < this.ruleForm.checkedData.length; i++) {
+        fidAry.push(this.ruleForm.checkedData[i].dataId)
+      }
+      console.log('fid =>')
+      console.log(fidAry)
       axios.post(
           `/submit/api`,
         objectToFormData({
           "app": appId,
           "uid": this.id,
-          "fid": this.ruleForm.checkedData[0].dataId
+          "fid": fidAry
         }),
         {
           headers: {
@@ -326,6 +338,12 @@ export default {
     },
     gotoApp(appId) {
       Turbolinks.visit(`/apps/${appId}`, {'action':'replace'})
+    },
+    addOne() {
+      this.taskCount += 1
+    },
+    setZero() {
+      this.taskCount = 0
     }
   },
     watch: {

@@ -1,25 +1,14 @@
 
-- Developer guide
+- User Guide
 
-  - [The Basics of Gutmeta Platform](basics.md)
-  - [How to upload your dataset](dataset.md)
-  - [How to add your database overview visulization](db-viz.md)
-  - [How to add a new visulization module](visualizer.md)
-  - [How to add submission port to the deepomics module](submit.md)
+  - [The Basics of GAPP Platform](basics.md)
+  - [How to create your tasks](taskCreate.md)
 
-<!-- - Developer guide
+- Producer Guide
 
-  - [Module development](module-dev.md)
-  - [Pipeline development](pipeline-dev.md)
-  - [Resources](resources.md)
-  - [PyOmics API](pyomics.md)
+  - [How to manage your apps](appManage.md)
 
-- Researcher guide
+- Admin guide
 
-  - [Project](project.md)
-
-- File explorer guide
-
-  - [File explorer](file-explorer.md)
-
-- [Changelog](changelog.md) -->
+  - [How to manage user accounts](accountManage.md)
+  - [How to manage Category / App / Task](adminManege.md)
