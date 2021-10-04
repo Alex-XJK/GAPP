@@ -521,7 +521,8 @@ class TasksController < ApplicationController
     @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
 
     system "mkdir #{@dir}"
-    system "cp #{@full_path} #{@dir}"
+    # system "cp #{@full_path} #{@dir}"
+    system "ln -s #{@full_path} #{@dir}"
 
   end
 
