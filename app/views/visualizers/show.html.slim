@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @visualizer.name
+p
+  strong Js module name:
+  = @visualizer.js_module_name
+p
+  strong Load data:
+  = @visualizer.load_data
+
+=> link_to 'Edit', edit_visualizer_path(@visualizer)
+'|
+=< link_to 'Back', visualizers_path
