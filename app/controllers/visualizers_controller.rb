@@ -10,6 +10,8 @@ class VisualizersController < ApplicationController
   # GET /visualizers/1
   # GET /visualizers/1.json
   def show
+    @visualizer = Visualizer.find_by(id:params[:id])
+    gon.push module_name: @visualizer.js_module_name
   end
 
   # GET /visualizers/new
