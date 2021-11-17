@@ -1,4 +1,3 @@
-
 import { call, viz_mode } from "page/visualizers";
 import { event } from "crux/dist/utils";
 
@@ -20,6 +19,7 @@ function checkResource() {
         if (window.gon.viz_mode === viz_mode.TASK_OUTPUT && !outputsLoaded) return;
         vizLoaded = true;
         const v = call(moduleName);
+        console.log(window.gon.module_name);
         if (Array.isArray(v)) {
             const [v_, opt] = v;
             currViz = v_;
@@ -64,4 +64,3 @@ document.addEventListener("turbolinks:before-cache", () => {
     vizLoaded = false;
     outputsLoaded = false;
 });
-

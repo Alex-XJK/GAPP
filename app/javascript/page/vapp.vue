@@ -115,14 +115,20 @@
                         });
                     });
             }
+            console.log("here at vapp created middle==>")
             event.on(
                 event.DATA_LOADING_FINISHED,
                 () => {
                     this.isLoading = false;
                     this.$root.$emit("data-loaded");
+                    console.log("here at vapp created event on & isloading to be==>")
+                    console.log(this.isLoading)
                 },
                 "vapp-load-finished",
             );
+            console.log("here at vapp created event.on 1 finished==>")
+            console.log("isloading to be -->")
+            console.log(this.isLoading)
             event.on(
                 "show-msgbox",
                 (_, { title, content, html }) => {
@@ -133,6 +139,7 @@
                 },
                 "vapp-show-msg-box",
             );
+            console.log("here at vapp created event.on 2 finished==>")
         },
         mounted() {
             event.emit(event.CANVAS_READY, this);

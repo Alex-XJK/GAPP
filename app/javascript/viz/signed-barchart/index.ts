@@ -61,7 +61,12 @@ function init() {
 
     const {visualizer} = Oviz.visualize({
         el: "#canvas",
-        template,
+        template: `
+        svg {
+            width = 100; height = 100
+            Rect.full;
+        }
+        `,
         theme: "light",
         data: {
             colors: {
@@ -73,24 +78,25 @@ function init() {
                 barWidth: 15,
             }
         },
-        loadData:  {
-            barchartData: {
-                // fileKey: `barchartData`,
-                // fileKey: `pathway`,
-                // content: "../../../data/pathway.xls",
-                content:  fileContent,
-                type: "tsv" ,
-                dsvRowDef: {Zscore: ["float"]},
-                loaded(data) {
-                   const valueRange = minmax(data, "Zscore");
-                   const lowerBound = -findBound(valueRange[0]*-1,0,1);
-                   const upperBound = findBound(valueRange[1],0,1);
-                   this.data.axisPos = -lowerBound/(upperBound - lowerBound)
-                   this.data.plotHeight = 15 * data.length;
-                   this.data.bounds = {lowerBound, upperBound};
-                },
-            },
-        },
+        // loadData:  {
+        //     barchartData: {
+        //         // fileKey: `barchartData`,
+        //         // fileKey: `pathway`,
+        //         // content: "../../../data/pathway.xls",
+        //         content:  fileContent,
+        //         type: "tsv" ,
+        //         dsvRowDef: {Zscore: ["float"]},
+        //         loaded(data) {
+        //             console.log("loading data...")
+        //            const valueRange = minmax(data, "Zscore");
+        //            const lowerBound = -findBound(valueRange[0]*-1,0,1);
+        //            const upperBound = findBound(valueRange[1],0,1);
+        //            this.data.axisPos = -lowerBound/(upperBound - lowerBound)
+        //            this.data.plotHeight = 15 * data.length;
+        //            this.data.bounds = {lowerBound, upperBound};
+        //         },
+        //     },
+        // },
         setup() {
             this.data.plotHeight = this.data.config.plotHeight;
             this.data.plotWidth = this.data.config.plotWidth;
@@ -101,5 +107,8 @@ function init() {
     return visualizer;
 }
 
+// export function registerSignedBarChart() {
+//     register(MODULE_NAME, init);
+// }
 
 register(MODULE_NAME, init);
