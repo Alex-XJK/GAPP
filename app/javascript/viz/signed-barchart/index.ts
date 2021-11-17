@@ -56,17 +56,12 @@ ABC transporters	-5.44246168775253	Healthy`;
 
 
 function init() {
-    console.log("here at index ===>")
+    // console.log("here at index ===>")
     if (!window.gon || window.gon.module_name !== MODULE_NAME) return;
 
     const {visualizer} = Oviz.visualize({
         el: "#canvas",
-        template: `
-        svg {
-            width = 100; height = 100
-            Rect.full;
-        }
-        `,
+        template,
         theme: "light",
         data: {
             colors: {
@@ -78,29 +73,30 @@ function init() {
                 barWidth: 15,
             }
         },
-        // loadData:  {
-        //     barchartData: {
-        //         // fileKey: `barchartData`,
-        //         // fileKey: `pathway`,
-        //         // content: "../../../data/pathway.xls",
-        //         content:  fileContent,
-        //         type: "tsv" ,
-        //         dsvRowDef: {Zscore: ["float"]},
-        //         loaded(data) {
-        //             console.log("loading data...")
-        //            const valueRange = minmax(data, "Zscore");
-        //            const lowerBound = -findBound(valueRange[0]*-1,0,1);
-        //            const upperBound = findBound(valueRange[1],0,1);
-        //            this.data.axisPos = -lowerBound/(upperBound - lowerBound)
-        //            this.data.plotHeight = 15 * data.length;
-        //            this.data.bounds = {lowerBound, upperBound};
-        //         },
-        //     },
-        // },
+        loadData:  {
+            barchartData: {
+                // fileKey: `barchartData`,
+                // fileKey: `pathway`,
+                // content: "../../../data/pathway.xls",
+                content:  fileContent,
+                type: "tsv" ,
+                dsvRowDef: {Zscore: ["float"]},
+                loaded(data) {
+                    console.log("loading data...")
+                   const valueRange = minmax(data, "Zscore");
+                   const lowerBound = -findBound(valueRange[0]*-1,0,1);
+                   const upperBound = findBound(valueRange[1],0,1);
+                   this.data.axisPos = -lowerBound/(upperBound - lowerBound)
+                   this.data.plotHeight = 15 * data.length;
+                   this.data.bounds = {lowerBound, upperBound};
+                },
+            },
+        },
         setup() {
+            console.log("data loading finished")
             this.data.plotHeight = this.data.config.plotHeight;
             this.data.plotWidth = this.data.config.plotWidth;
-            registerEditorConfig(editorConfig(this));
+            // registerEditorConfig(editorConfig(this));
         }
         
     });

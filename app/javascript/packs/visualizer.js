@@ -52,7 +52,7 @@ event.on("GMT:reset-query", () => {
     vizLoaded = false;
     outputsLoaded = false;
 });
-document.addEventListener("turbolinks:before-cache", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById("canvas");
     if (!canvas) { return; }
     const svgElm = canvas.getElementsByTagName("svg");
