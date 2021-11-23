@@ -41,5 +41,18 @@
   <script src="https://unpkg.com/docsify/lib/plugins/search.min.js"></script>
   <script src="https://unpkg.com/docsify-copy-code@2"></script>
   <script src="https://unpkg.com/prismjs/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
+  <!-- mermaid -->
+  <script src="//unpkg.com/mermaid/dist/mermaid.js"></script>
+  <script src="//unpkg.com/docsify-mermaid@latest/dist/docsify-mermaid.js">
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+  </script>
+  <style>
+    /* activate full width for content, for mermaid graphs benefit */
+    .markdown-section {
+      max-width: none;
+    }
+  </style>
 </body>
 </html>
