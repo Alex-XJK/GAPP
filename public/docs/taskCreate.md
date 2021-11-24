@@ -4,7 +4,7 @@ This documentation will teach you how to add your tasks for different applicatio
 
 **Before you start:**
 
-- you should have a authenticated account.
+- you should have an authenticated account.
 
 ## System Overview
 
