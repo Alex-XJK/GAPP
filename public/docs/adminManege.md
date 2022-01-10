@@ -20,6 +20,12 @@ The `Search` box can be used to search applications in a convenient way accordin
 
 Click the `View` button to check the application detail information.
 
+### Multiple apps management
+
+Applications are grouped by status into `Online`, `Audit` and `Offline`, click on each tab to view applications within each status. In these tabs, actions on multiple or all applications is allowed, such as bringing all online applications offline.
+
+To perform actions on multiple applications, use the checkbox in front of each app. To perfrom actions on all applications in certain status, check the `[Check All]` checkbox in the last line. You should be careful since there is no notice prior to actions.
+
 ## Task Management
 
 - Tasks are also sorted in two progressive standards already, which are application categories and furthermore the applications.
