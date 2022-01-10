@@ -2,6 +2,7 @@
 - User Guide
 
   - [The Basics of GAPP Platform](basics.md)
+  - [How to manage your own account](accountSetting.md)
   - [How to create your tasks](taskCreate.md)
 
 - Producer Guide

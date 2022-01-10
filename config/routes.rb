@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :visualizers
   # devise_for :accounts
   devise_for :accounts, controllers: { invitations: 'admin/invitations' }
   get '/admin/users/', to: 'admin/users#index'
