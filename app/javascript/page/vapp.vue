@@ -101,28 +101,35 @@
             event.rpcRegisterReceiver("getVue", () => this);
             this.isAnalysis = window.gon.viz_mode === viz_mode.ANALYSIS ? true : false
             
-            if (this.isAnalysis) {
-                this.chosenOutput = window.gon.chosen_output || 0
-                this.chosenOutputOld = window.gon.chosen_output || 0
-                axios.get(window.gon.urls.all_task_outputs)
-                    .then(response => {
-                        const outputs = response.data;
-                        outputs.forEach(d=> {
-                            this.taskOutputs.push({
-                                value: d.id,
-                                text: `task-${d.task_id}`,
-                            })
-                        });
-                    });
-            }
+            // if (this.isAnalysis) {
+            //     this.chosenOutput = window.gon.chosen_output || 0
+            //     this.chosenOutputOld = window.gon.chosen_output || 0
+            //     axios.get(window.gon.urls.all_task_outputs)
+            //         .then(response => {
+            //             const outputs = response.data;
+            //             outputs.forEach(d=> {
+            //                 this.taskOutputs.push({
+            //                     value: d.id,
+            //                     text: `task-${d.task_id}`,
+            //                 })
+            //             });
+            //         });
+            // }
+            // console.log("here at vapp created middle==>")
+            // console.log(this.isAnalysis)
             event.on(
                 event.DATA_LOADING_FINISHED,
                 () => {
                     this.isLoading = false;
                     this.$root.$emit("data-loaded");
+                    console.log("here at vapp created event on & isloading to be==>")
+                    console.log(this.isLoading)
                 },
                 "vapp-load-finished",
             );
+            console.log("here at vapp created event.on 1 finished==>")
+            console.log("isloading to be -->")
+            console.log(this.isLoading)
             event.on(
                 "show-msgbox",
                 (_, { title, content, html }) => {
@@ -133,17 +140,18 @@
                 },
                 "vapp-show-msg-box",
             );
+            console.log("here at vapp created event.on 2 finished==>")
         },
         mounted() {
             event.emit(event.CANVAS_READY, this);
         },
         updated() {
-            if (this.isAnalysis) {
-                axios.get(`${window.gon.urls.use_task_output}?task_output_id=${this.chosenOutput}`)
-                    .then(response => {
-                        if(response.data.code) location.reload();
-                    })
-            }
+            // if (this.isAnalysis) {
+            //     axios.get(`${window.gon.urls.use_task_output}?task_output_id=${this.chosenOutput}`)
+            //         .then(response => {
+            //             if(response.data.code) location.reload();
+            //         })
+            // }
             
         }
     }
