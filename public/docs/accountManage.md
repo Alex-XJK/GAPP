@@ -1,29 +1,42 @@
-## Introduction
+## Intro
 
-The PCA result is displayed as a scatterplot with error eclipses with 95% coverage of each cluster. The group info of the samples is represented by diffrent shapes, circle for group 1 and square for group 2. The cluster info is represented by different colors, seperated colors, green for cluster 1 and red for cluster 2.
+Admin is the one with the highest available permission level in our system.
 
-## Invitation Mechanism
+The entrance for the following actions can be found in the `User` page under the `ADMIN` column of the sidebar.
 
-### Coordinate TSV Data 
+## Actions
 
-The first line of the file should be a header that contains column names as keys.
+### Invite User
 
-Each row in the file should contain data for a sample.
+Two entrances - 
 
-The data has 3 columns at least, the first column lists sample names in each row, the column key name does not matter.
+- The `Invite User` page under the `ACCOUNT` column of the sidebar.
+- The `Invite User` button in the `ADMIN` - `User` page.
 
-The rest columns lists values for each attribute. The column key names must be different.
+In the user invitation interface, you need to enter the correct `Email address` of the user to generate a unique ID for confirm purpose.
 
-### Group TSV Data
+**However, the inviting email won't be sent automatically as the email system is disabled currently. In this case, you as the Admin need to send the confirmation code to the user manually so they can activate the account.**
 
-The first line of the file should be a header of the column keys.
+### Delete User
 
-The data has 2 columns, sample ID and group ID. The column key name does not matter.
+Permanently remove the chosen user account from system by clicking the `Delete` button.
 
-### Cluster TSV Data
+***This action is irrevocable.***
 
-The file should not have header.
+***This action CANNOT be performed on an admin account.***
 
-The data has 2 columns, 1.sample ID, 2.cluster ID.
+### Edit Role
 
+Click the `Edit` button to switch the chosen account role between ***user***, ***producer*** and ***admin***.
 
+***This action CANNOT be performed on an admin account.***
+
+### View User
+
+Click the `View` button to check the account detail information.
+
+### Search User
+
+The `Search` box can be used to search accounts in a convenient way according to `username`.
+
+You can also change the entries shown to adjust the display range.

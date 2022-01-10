@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) =>  {
         }, ALERT_TIMEOUT);
     });
 
-    console.log("=====>");
+    // console.log("=====>");
     vueLoadList.forEach(([selector, component, props = {}]) => {
         const el = document.querySelector(selector);
         if (!el) return;
