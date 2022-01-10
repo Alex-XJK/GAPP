@@ -15,7 +15,7 @@ Two entrances -
 
 In the user invitation interface, you need to enter the correct `Email address` of the user to generate a unique ID for confirm purpose.
 
-**However, the inviting email won't be sent automatically as the email system is disable currently. In this case, you as the Admin need to send the confirmation code to the user manually so they can activate the account.**
+**However, the inviting email won't be sent automatically as the email system is disabled currently. In this case, you as the Admin need to send the confirmation code to the user manually so they can activate the account.**
 
 ### Delete User
 
@@ -23,9 +23,13 @@ Permanently remove the chosen user account from system by clicking the `Delete` 
 
 ***This action is irrevocable.***
 
+***This action CANNOT be performed on an admin account.***
+
 ### Edit Role
 
 Click the `Edit` button to switch the chosen account role between ***user***, ***producer*** and ***admin***.
+
+***This action CANNOT be performed on an admin account.***
 
 ### View User
 
