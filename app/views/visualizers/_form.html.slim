@@ -1,0 +1,18 @@
+= form_for @visualizer do |f|
+  - if @visualizer.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@visualizer.errors.count, "error")} prohibited this visualizer from being saved:"
+      ul
+        - @visualizer.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :js_module_name
+    = f.text_field :js_module_name
+  .field
+    = f.label :load_data
+    = f.text_field :load_data
+  .actions = f.submit

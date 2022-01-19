@@ -29,5 +29,5 @@ function initVApp() {
 }
 
 
-document.addEventListener("turbolinks:load",initVApp);
+// document.addEventListener("turbolinks:load",initVApp);
 document.addEventListener("DOMContentLoaded", initVApp);
