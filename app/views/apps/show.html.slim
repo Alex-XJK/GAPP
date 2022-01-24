@@ -128,7 +128,7 @@
               .card-text
                 = simple_format(@app.description)
 
-      - if !@app.panel.attached? || @app.analysis_id==nil
+      - if @app.analysis_id==nil
         b style=("color: red; text-align: center; font-size: 1.5em; ")
           i.fas.fa-times
           | App not ready !
