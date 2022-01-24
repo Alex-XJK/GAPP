@@ -4,6 +4,10 @@ The entrances for the following managements can be found  under the `ADMIN` colu
 
 ## Category Management
 
+### New
+
+Click the `New Category` button to add a new category. `Name` is required.
+
 ### Edit
 
 Click the `Edit` button to modify the category name.
