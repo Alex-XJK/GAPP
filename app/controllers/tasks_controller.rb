@@ -171,11 +171,6 @@ class TasksController < ApplicationController
       floc1 = ActiveStorage::Blob.service.send(:path_for, file1.blob.key)
       floc2 = ActiveStorage::Blob.service.send(:path_for, file2.blob.key)
 
-      # Find the App Panel File
-      app = App.find(aid)
-      panl = app.panel
-      ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
-
       # Set system variables
       userid = id.to_s
       timestamp = Time.now.to_i.to_s
@@ -183,14 +178,21 @@ class TasksController < ApplicationController
       disk_data = "#{disk_user}/data/"
       file1_new_location = disk_data + timestamp + '_1.fq.gz'
       file2_new_location = disk_data + timestamp + '_2.fq.gz'
-      panel_new_location = disk_data + timestamp + '_panel.csv'
 
       # Copy the files to the target place and rename them to the system accepted one
       system "mkdir #{disk_user}"
       system "mkdir #{disk_data}"
       system "cp #{floc1} #{file1_new_location}"
       system "cp #{floc2} #{file2_new_location}"
-      system "cp #{ploc} #{panel_new_location}"
+
+      # Find the App Panel File
+      app = App.find(aid)
+      if app.panel.attached?
+        panl = app.panel
+        ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
+        panel_new_location = disk_data + timestamp + '_panel.txt'
+        system "cp #{ploc} #{panel_new_location}"
+      end
 
       # Prepare the API parameters
       anaid = Analysis.find(app.analysis_id).doap_id.to_i
