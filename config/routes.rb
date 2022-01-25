@@ -76,7 +76,7 @@ Rails.application.routes.draw do
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
-  get 'task-report', to: 'tasks#download_report'
+  # get 'task-report', to: 'tasks#download_report'
   # post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
