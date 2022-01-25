@@ -16,23 +16,25 @@
             | Task Name :  
             = @task.name
         p.project-desc
-            | App Name 
+            | App Name : 
             = App.find(@task.app_id).name
 
-    .card.analyses-card
-      .card-body
-        .card-title.m-0
-          h5
-            = icon 'fa', 'rss'
-            | Task Report
-        p
-        | Here should be a pre-view of the report content.
-        | Here should be a pre-view of the report content.
-        | Here should be a pre-view of the report content.
-        br/
-        button.float-right.mt-2.btn-secondary
-          = icon 'fa', 'save'
-          | Download Report
+    - if @task.generate_report
+      .card.analyses-card
+        .card-body
+          .card-title.m-0
+            h5
+              = icon 'fa', 'rss'
+              | Task Report
+          p
+          | Here should be a pre-view of the report content.
+          | Here should be a pre-view of the report content.
+          | Here should be a pre-view of the report content.
+          br/
+          button class='float-right mt-2 btn-secondary'
+            = icon 'fa', 'save'
+            = link_to 'Download Report', @download_path
+            
           
   .card.news-card
     .card-body

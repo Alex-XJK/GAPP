@@ -12,6 +12,19 @@ class TasksController < ApplicationController
   # GET /tasks/1.json
   def show
     gon.push(task_id: @task.id)
+    client = LocalApi::Client.new
+    @result = client.task_info(UID,  @task.id, 'app')
+    # Rails.logger.debug("lets check the @task itself first===>#{@task}")
+    # Rails.logger.debug("lets check the @result then===>#{@result}")
+    # Rails.logger.debug("here is the task id #{@task.id}")
+    @path = @result['message']["outputs"][0]["files"][0]["path"]
+    @full_path = "/home/platform/omics_rails/current/media/user/gapp" + @path + "/data.raw.vcf.gz"
+    @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/user")[0]
+    @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
+
+    system "mkdir #{@dir}"
+    # system "cp #{@full_path} #{@dir}"
+    system "ln -s #{@full_path} #{@dir}"
   end
 
   # GET /tasks/new
@@ -26,6 +39,7 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
+    @app = App.find(params[:app_id])
     @task = Task.new
     result_json = {
       code: false
@@ -36,6 +50,7 @@ class TasksController < ApplicationController
     @task.task_id = params[:task_id]
     # @task.usedData = params[:checkedData]
     @task.status = 'running'
+    @task.generate_report = @app.create_report
     @task.created_at = Time.now
     @task.updated_at = Time.now
     if @task.save
@@ -157,10 +172,11 @@ class TasksController < ApplicationController
 
       # Judge whether selected TWO files for *_1.fq.gz and *_2.fq.gz datafile
       if idx.length < 2
-        result_json[:code] = false
-        result_json[:data] = "The selected user data files number less than 2, which does not meet the analysis requirement!"
-        render json: result_json
-        exit(1)
+        raise "The selected user data files number less than 2, which does not meet the analysis requirement!"
+        # result_json[:code] = false
+        # result_json[:data] = "The selected user data files number less than 2, which does not meet the analysis requirement!"
+        # render json: result_json
+        # exit(1)
       end
 
       # Find the User Data Files
@@ -170,11 +186,6 @@ class TasksController < ApplicationController
       floc1 = ActiveStorage::Blob.service.send(:path_for, file1.blob.key)
       floc2 = ActiveStorage::Blob.service.send(:path_for, file2.blob.key)
 
-      # Find the App Panel File
-      app = App.find(aid)
-      panl = app.panel
-      ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
-
       # Set system variables
       userid = id.to_s
       timestamp = Time.now.to_i.to_s
@@ -182,14 +193,21 @@ class TasksController < ApplicationController
       disk_data = "#{disk_user}/data/"
       file1_new_location = disk_data + timestamp + '_1.fq.gz'
       file2_new_location = disk_data + timestamp + '_2.fq.gz'
-      panel_new_location = disk_data + timestamp + '_panel.csv'
 
       # Copy the files to the target place and rename them to the system accepted one
       system "mkdir #{disk_user}"
       system "mkdir #{disk_data}"
       system "cp #{floc1} #{file1_new_location}"
       system "cp #{floc2} #{file2_new_location}"
-      system "cp #{ploc} #{panel_new_location}"
+
+      # Find the App Panel File
+      app = App.find(aid)
+      if app.panel.attached?
+        panl = app.panel
+        ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
+        panel_new_location = disk_data + timestamp + '_panel.txt'
+        system "cp #{ploc} #{panel_new_location}"
+      end
 
       # Prepare the API parameters
       anaid = Analysis.find(app.analysis_id).doap_id.to_i
@@ -534,6 +552,14 @@ class TasksController < ApplicationController
     # system(exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini)
     `/disk2/apps/custom_library/python/bin/exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini`
   end
+
+  # def download_report
+  #   require 'open-uri'
+  #   download = open('')
+  #   IO.copy_stream(download, '~')
+  #   # IO.copy_stream(download, "~/#{download.base_uri.to_s.split('/')[-1]}")
+  #   redirect_back(fallback_location: root_path)
+  # end
 
   private
 

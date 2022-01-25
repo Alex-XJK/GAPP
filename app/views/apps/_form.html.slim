@@ -10,7 +10,7 @@
   = form.input :create_report
   = form.input :analysis_id, collection: analysis
   = form.input :cover_image, :input_html => { :accept => "image/jpeg,image/png,image/gif"}
-  = form.input :panel, :input_html => { :accept => "text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+  = form.input :panel, :input_html => { :accept => "text/plain, text/csv"}
   - if app.status == 'online'
     = form.input :status, as: :boolean, checked_value: 'offline', unchecked_value: 'audit', inline_label: 'Off the shelf?'
   - elsif app.status == 'audit'
