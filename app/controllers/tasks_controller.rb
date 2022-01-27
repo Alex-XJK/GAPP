@@ -12,24 +12,26 @@ class TasksController < ApplicationController
   # GET /tasks/1.json
   def show
     gon.push(task_id: @task.id)
-    client = LocalApi::Client.new
-    @rrot = Rails.root.to_s
-    @task_id = decode(@task.task_id)
-    @result = client.task_info(UID,  @task_id, 'app')
-    # Rails.logger.debug("lets check the @task_param first===>#{@task.task_id}")
-    # Rails.logger.debug("lets check the decode===>#{@task_id}")
-    # Rails.logger.debug("lets check the uid===>#{UID}")
-    # Rails.logger.debug("lets check the @task itself first===>#{@task}")
-    # Rails.logger.debug("lets check the @result then===>#{@result}")
-    # Rails.logger.debug("here is the task id #{@task.id}")
-    @path = @result['message']["outputs"][0]["files"][0]["path"]
-    @full_path = "/home/platform/omics_rails/current/media/user/gapp" + @path + "/data.raw.vcf.gz"
-    @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/user")[0]
-    @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
+    if @task.status =='success'
+      client = LocalApi::Client.new
+      @rrot = Rails.root.to_s
+      @task_id = decode(@task.task_id)
+      @result = client.task_info(UID,  @task_id, 'app')
+      # Rails.logger.debug("lets check the @task_param first===>#{@task.task_id}")
+      # Rails.logger.debug("lets check the decode===>#{@task_id}")
+      # Rails.logger.debug("lets check the uid===>#{UID}")
+      # Rails.logger.debug("lets check the @task itself first===>#{@task}")
+      # Rails.logger.debug("lets check the @result then===>#{@result}")
+      # Rails.logger.debug("here is the task id #{@task.id}")
+      @path = @result['message']["outputs"][0]["files"][0]["path"]
+      @full_path = "/home/platform/omics_rails/current/media/user/gapp" + @path + "/data.raw.vcf.gz"
+      @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/user")[0]
+      @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
 
-    system "mkdir #{@dir}"
-    # system "cp #{@full_path} #{@dir}"
-    system "ln -s #{@full_path} #{@dir}"
+      system "mkdir #{@dir}"
+      # system "cp #{@full_path} #{@dir}"
+      system "ln -s #{@full_path} #{@dir}"
+    end
   end
 
   # GET /tasks/new
