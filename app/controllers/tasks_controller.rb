@@ -12,6 +12,26 @@ class TasksController < ApplicationController
   # GET /tasks/1.json
   def show
     gon.push(task_id: @task.id)
+    if @task.status =='success'
+      client = LocalApi::Client.new
+      @rrot = Rails.root.to_s
+      @task_id = decode(@task.task_id)
+      @result = client.task_info(UID,  @task_id, 'app')
+      # Rails.logger.debug("lets check the @task_param first===>#{@task.task_id}")
+      # Rails.logger.debug("lets check the decode===>#{@task_id}")
+      # Rails.logger.debug("lets check the uid===>#{UID}")
+      # Rails.logger.debug("lets check the @task itself first===>#{@task}")
+      # Rails.logger.debug("lets check the @result then===>#{@result}")
+      # Rails.logger.debug("here is the task id #{@task.id}")
+      @path = @result['message']["outputs"][0]["files"][0]["path"]
+      @full_path = "/home/platform/omics_rails/current/media/user/gapp" + @path + "/data.raw.vcf.gz"
+      @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/user")[0]
+      @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
+
+      system "mkdir #{@dir}"
+      # system "cp #{@full_path} #{@dir}"
+      system "ln -s #{@full_path} #{@dir}"
+    end
   end
 
   # GET /tasks/new
@@ -26,6 +46,7 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
+    @app = App.find(params[:app_id])
     @task = Task.new
     result_json = {
       code: false
@@ -36,6 +57,7 @@ class TasksController < ApplicationController
     @task.task_id = params[:task_id]
     # @task.usedData = params[:checkedData]
     @task.status = 'running'
+    @task.generate_report = @app.create_report
     @task.created_at = Time.now
     @task.updated_at = Time.now
     if @task.save
@@ -537,6 +559,14 @@ class TasksController < ApplicationController
     # system(exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini)
     `/disk2/apps/custom_library/python/bin/exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini`
   end
+
+  # def download_report
+  #   require 'open-uri'
+  #   download = open('')
+  #   IO.copy_stream(download, '~')
+  #   # IO.copy_stream(download, "~/#{download.base_uri.to_s.split('/')[-1]}")
+  #   redirect_back(fallback_location: root_path)
+  # end
 
   private
 
