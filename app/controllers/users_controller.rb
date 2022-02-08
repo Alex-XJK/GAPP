@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :authenticate_account!
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-    
+    before_action :authenticate_account!
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
+
     def index
         @users = User.all
     end
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
                 redirect_to user_path(@user.id)
             end
         else
-            flash[:error] = "You should login first"
+            flash[:error] = 'You should login first'
             redirect_to root_path
         end
     end
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
-    
+
         respond_to do |format|
             if @user.save
                 format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
         # Rails.logger.debug "file size #{params[:dataFiles][0].size}"
         # Rails.logger.debug "Here is #{@user}"
         # Rails.logger.debug "size #{@user.dataFiles.length}"
-        if params[:dataFiles] == nil
+        if params[:dataFiles].nil?
             result_json[:msg] = 'Empty file cannot be saved!'
         elsif @user.dataFiles.length >= 2
             result_json[:msg] = 'You have exceeded the maximum number of files!'
@@ -90,6 +90,50 @@ class UsersController < ApplicationController
         if @user.save && canBeSave
             result_json[:code] = true
             result_json[:msg] = 'Done!'
+        end
+        render json: result_json
+    end
+
+    def data_file_attach
+        result_json = {
+            code: false,
+            msg: ''
+        }
+        begin
+            # Get the target user
+            user = User.find(params[:id])
+
+            # Server path settings
+            dirname = '/disk2/workspace/platform/gapp/upload/'
+            filename = params[:path]
+            extension = '.fq.gz'
+            mimetype = 'application/x-gzip'
+
+            # For security reasons, compose file path instead.
+            basename = filename + extension
+            pathname = dirname + basename
+            # TODO: Use rails method to read the file basename and compose one more time.
+
+            # Data file checks
+            if params[:path].nil?
+                raise 'Empty file path!'
+            elsif user.dataFiles.length >= 2
+                raise 'You have exceeded the maximum number of files!'
+            elsif !File.exist?(pathname)
+                raise 'Cannot find your file, please double check!'
+            end
+
+            # Core file operation
+            user.dataFiles.attach(io: File.open(pathname), filename: basename, content_type: mimetype)
+
+            # Save and judge
+            if user.save
+                result_json[:code] = true
+                result_json[:msg] = 'Done!'
+            end
+        rescue StandardError => e
+            result_json[:code] = false
+            result_json[:data] = e.message
         end
         render json: result_json
     end
@@ -138,7 +182,7 @@ class UsersController < ApplicationController
         end
         render json: result_json
     end
-        
+
     private
         def set_user
             @user = User.find_by(account_id: current_account.id)

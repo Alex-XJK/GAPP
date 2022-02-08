@@ -29,7 +29,6 @@ class TasksController < ApplicationController
       @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
 
       system "mkdir #{@dir}"
-      # system "cp #{@full_path} #{@dir}"
       system "ln -s #{@full_path} #{@dir}"
     end
   end
@@ -180,10 +179,6 @@ class TasksController < ApplicationController
       # Judge whether selected TWO files for *_1.fq.gz and *_2.fq.gz datafile
       if idx.length < 2
         raise "The selected user data files number less than 2, which does not meet the analysis requirement!"
-        # result_json[:code] = false
-        # result_json[:data] = "The selected user data files number less than 2, which does not meet the analysis requirement!"
-        # render json: result_json
-        # exit(1)
       end
 
       # Find the User Data Files
