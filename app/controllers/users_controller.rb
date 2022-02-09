@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :authenticate_account!
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-    
+    before_action :authenticate_account!
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
+
     def index
         @users = User.all
     end
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
                 redirect_to user_path(@user.id)
             end
         else
-            flash[:error] = "You should login first"
+            flash[:error] = 'You should login first'
             redirect_to root_path
         end
     end
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
-    
+
         respond_to do |format|
             if @user.save
                 format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
         # Rails.logger.debug "file size #{params[:dataFiles][0].size}"
         # Rails.logger.debug "Here is #{@user}"
         # Rails.logger.debug "size #{@user.dataFiles.length}"
-        if params[:dataFiles] == nil
+        if params[:dataFiles].nil?
             result_json[:msg] = 'Empty file cannot be saved!'
         elsif @user.dataFiles.length >= 2
             result_json[:msg] = 'You have exceeded the maximum number of files!'
@@ -90,6 +90,71 @@ class UsersController < ApplicationController
         if @user.save && canBeSave
             result_json[:code] = true
             result_json[:msg] = 'Done!'
+        end
+        render json: result_json
+    end
+
+    def data_file_attach
+        # Rails.logger.debug("check hhaaa====>")
+        # Rails.logger.debug(params)
+        result_json = {
+            code: false,
+            msg: ''
+        }
+        begin
+            # Get the target user and check current file count
+            if params[:id].nil?
+                raise 'ERR: Cannot locate user profile!'
+            end
+            user = User.find(params[:id])
+            if user.dataFiles.length >= 2
+                raise 'NOTICE: You have exceeded the maximum number of files!'
+            end
+
+            # Server path settings
+            dirname = '/disk2/workspace/platform/gapp/upload/'
+            extension = '.fq.gz'
+            mimetype = 'application/x-gzip'
+            switch = 'Pool_Status.open'
+
+            # Check input parameter for path
+            if params[:path].nil?
+                raise 'WARNING: No file path received!'
+            end
+            filename = params[:path]
+
+            # For security reasons, server status checking
+            indicator = dirname + switch
+            unless File.exist?(indicator)
+                raise 'ERR: The default uploading pool is closed...'
+            end
+
+            # For security reasons, check original file path - Part I
+            basename = filename + extension
+            pathname = dirname + basename
+            unless File.exist?(pathname)
+                raise 'NOTICE: Cannot find your file, please double check!'
+            end
+
+            # For security reasons, compose secure file path - Part II
+            s_filename = File.basename(pathname, extension)
+            s_basename = s_filename + extension
+            s_pathname = dirname + s_basename
+            unless File.exist?(s_pathname)
+                raise 'ALERT: Potential LFI attacks or illegal file reading!'
+            end
+
+            # Core file attach operation
+            user.dataFiles.attach(io: File.open(s_pathname), filename: s_basename, content_type: mimetype)
+
+            # Save and judge
+            if user.save
+                result_json[:code] = true
+                result_json[:msg] = 'Done!'
+            end
+        rescue StandardError => e
+            result_json[:code] = false
+            result_json[:data] = e.message
         end
         render json: result_json
     end
@@ -138,7 +203,7 @@ class UsersController < ApplicationController
         end
         render json: result_json
     end
-        
+
     private
         def set_user
             @user = User.find_by(account_id: current_account.id)
