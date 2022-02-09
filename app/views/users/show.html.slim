@@ -32,7 +32,6 @@
         h5.mb-3
           = icon 'fa', 'rss'
           | Data Management
-
       <button class="btn btn-outline-secondary" href="#carouselExampleControls" role="button" data-slide="prev">Switch the Method of Obtaining Data (Upload/Input)</button>
       <hr>
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"  data-interval="false">
@@ -56,15 +55,17 @@
             .sub-content
               h6 
                 | Input File Path of the Server Side
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="">File Path</span>
+            <form action="" method="POST" id="getPathFile">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="text" name="name">File Path</span>
+                </div>
+                <input type="text" class="form-control">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="submit" id="getPathFile">Get</button>
+                </div>
               </div>
-              <input type="text" class="form-control">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Get</button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
