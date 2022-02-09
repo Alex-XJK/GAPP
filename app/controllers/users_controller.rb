@@ -102,31 +102,50 @@ class UsersController < ApplicationController
             msg: ''
         }
         begin
-            # Get the target user
+            # Get the target user and check current file count
+            if params[:id].nil?
+                raise 'ERR: Cannot locate user profile!'
+            end
             user = User.find(params[:id])
+            if user.dataFiles.length >= 2
+                raise 'NOTICE: You have exceeded the maximum number of files!'
+            end
 
             # Server path settings
             dirname = '/disk2/workspace/platform/gapp/upload/'
-            filename = params[:path]
             extension = '.fq.gz'
             mimetype = 'application/x-gzip'
+            switch = 'Pool_Status.open'
 
-            # For security reasons, compose file path instead.
-            basename = filename + extension
-            pathname = dirname + basename
-            # TODO: Use rails method to read the file basename and compose one more time.
-
-            # Data file checks
+            # Check input parameter for path
             if params[:path].nil?
-                raise 'Empty file path!'
-            elsif user.dataFiles.length >= 2
-                raise 'You have exceeded the maximum number of files!'
-            elsif !File.exist?(pathname)
-                raise 'Cannot find your file, please double check!'
+                raise 'WARNING: No file path received!'
+            end
+            filename = params[:path]
+
+            # For security reasons, server status checking
+            indicator = dirname + switch
+            unless File.exist?(indicator)
+                raise 'ERR: The default uploading pool is closed...'
             end
 
-            # Core file operation
-            user.dataFiles.attach(io: File.open(pathname), filename: basename, content_type: mimetype)
+            # For security reasons, check original file path - Part I
+            basename = filename + extension
+            pathname = dirname + basename
+            unless File.exist?(pathname)
+                raise 'NOTICE: Cannot find your file, please double check!'
+            end
+
+            # For security reasons, compose secure file path - Part II
+            s_filename = File.basename(pathname, extension)
+            s_basename = s_filename + extension
+            s_pathname = dirname + s_basename
+            unless File.exist?(s_pathname)
+                raise 'ALERT: Potential LFI attacks or illegal file reading!'
+            end
+
+            # Core file attach operation
+            user.dataFiles.attach(io: File.open(s_pathname), filename: s_basename, content_type: mimetype)
 
             # Save and judge
             if user.save
