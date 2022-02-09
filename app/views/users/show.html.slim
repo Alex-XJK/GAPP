@@ -55,14 +55,16 @@
             .sub-content
               h6 
                 | Input File Path of the Server Side
-            <form action="" method="POST" id="getPathFile">
+            <form action="/data-file-attach" method="POST" id="getPathFile">
+              = hidden_field_tag :authenticity_token, form_authenticity_token
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="text" name="name">File Path</span>
+                  <span class="input-group-text">File Path</span>
                 </div>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" name="path" id="text">
+                <input type="hidden" value=#{@user.id} name="id" id="text_">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="submit" id="getPathFile">Get</button>
+                  <button class="btn btn-outline-secondary" type="submit" id="data_file_attach">Get</button>
                 </div>
               </div>
             </form>
