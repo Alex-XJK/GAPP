@@ -95,20 +95,23 @@ class UsersController < ApplicationController
     end
 
     def data_file_attach
-        # Rails.logger.debug("check hhaaa====>")
-        # Rails.logger.debug(params)
-        result_json = {
-            code: false,
-            msg: ''
-        }
+        level = Hash[
+            'EMERG'     => 0,   'ALERT'     => 1,   'CRIT'      => 2,
+            'ERR'       => 3,   'WARNING'   => 4,   'NOTICE'    => 5,
+            'INFO'      => 6,   'DEBUG'     => 7,   'NONE'      => 8,
+        ]
+        status = level['EMERG']
+        user = 1
         begin
             # Get the target user and check current file count
             if params[:id].nil?
-                raise 'ERR: Cannot locate user profile!'
+                status = level['ERR']
+                raise 'Cannot locate user profile!'
             end
             user = User.find(params[:id])
             if user.dataFiles.length >= 2
-                raise 'NOTICE: You have exceeded the maximum number of files!'
+                status = level['NOTICE']
+                raise 'You have exceeded the maximum number of files!'
             end
 
             # Server path settings
@@ -118,22 +121,25 @@ class UsersController < ApplicationController
             switch = 'Pool_Status.open'
 
             # Check input parameter for path
-            if params[:path].nil?
-                raise 'WARNING: No file path received!'
+            if params[:path].nil? || params[:path] == ''
+                status = level['WARNING']
+                raise 'No file path received!'
             end
             filename = params[:path]
 
             # For security reasons, server status checking
             indicator = dirname + switch
             unless File.exist?(indicator)
-                raise 'ERR: The default uploading pool is closed...'
+                status = level['ERR']
+                raise 'Server not available'
             end
 
             # For security reasons, check original file path - Part I
             basename = filename + extension
             pathname = dirname + basename
             unless File.exist?(pathname)
-                raise 'NOTICE: Cannot find your file, please double check!'
+                status = level['NOTICE']
+                raise 'Cannot find your file, please double check!'
             end
 
             # For security reasons, compose secure file path - Part II
@@ -141,7 +147,8 @@ class UsersController < ApplicationController
             s_basename = s_filename + extension
             s_pathname = dirname + s_basename
             unless File.exist?(s_pathname)
-                raise 'ALERT: Potential LFI attacks or illegal file reading!'
+                status = level['ALERT']
+                raise 'Potential LFI attacks or illegal file reading!'
             end
 
             # Core file attach operation
@@ -149,14 +156,16 @@ class UsersController < ApplicationController
 
             # Save and judge
             if user.save
-                result_json[:code] = true
-                result_json[:msg] = 'Done!'
+                flash[:notice] = 'Done!'
             end
         rescue StandardError => e
-            result_json[:code] = false
-            result_json[:data] = e.message
+            if status <= level['ERR']
+                flash[:error] = e.message
+            else
+                flash[:alert] = e.message
+            end
         end
-        render json: result_json
+        redirect_to user_path(user)
     end
 
     def data_file_info

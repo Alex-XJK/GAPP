@@ -68,7 +68,7 @@ Rails.application.routes.draw do
     resources :tasks
   end
   post  'data-file-upload', to: 'users#data_file_upload', format: 'json'
-  post  'data-file-attach', to: 'users#data_file_attach', format: 'json'
+  post  'data-file-attach', to: 'users#data_file_attach'
   post  'data-file-info', to: 'users#data_file_info', format: 'json'
   post  'data-file-delete', to: 'users#data_file_delete', format: 'json'
   post  'data-file-rename', to: 'users#data_file_rename', format: 'json'
