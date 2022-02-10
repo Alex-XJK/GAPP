@@ -95,6 +95,8 @@ class UsersController < ApplicationController
     end
 
     def data_file_attach
+        # Rails.logger.debug("check hhaaa====>")
+        # Rails.logger.debug(params)
         result_json = {
             code: false,
             msg: ''

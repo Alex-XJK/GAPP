@@ -32,19 +32,45 @@
         h5.mb-3
           = icon 'fa', 'rss'
           | Data Management
-      .sub-content
-        h6 
-          | Upload File(s) 
-        i 
-          | Only .bam and .fq file can be accepted.    
-        #vapp-data-upload
-      br/
-      br/
-      hr.dash
-      .sub-content
-        h6
-          | Data
-        #vapp-data-form
+      <button class="btn btn-outline-secondary" href="#carouselExampleControls" role="button" data-slide="prev">Switch the Method of Obtaining Data (Upload/Input)</button>
+      <hr>
+      <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"  data-interval="false">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            .sub-content
+              h6 
+                | Upload File(s) 
+              i 
+                | Only .bam and .fq file can be accepted.    
+              #vapp-data-upload
+            br/
+            br/
+            hr.dash
+            .sub-content
+              h6
+                | Data
+              #vapp-data-form
+          </div>
+          <div class="carousel-item">
+            .sub-content
+              h6 
+                | Input File Path of the Server Side
+            <form action="/data-file-attach" method="POST" id="getPathFile">
+              = hidden_field_tag :authenticity_token, form_authenticity_token
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">File Path</span>
+                </div>
+                <input type="text" class="form-control" name="path" id="text">
+                <input type="hidden" value=#{@user.id} name="id" id="text_">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="submit" id="data_file_attach">Get</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
     /   .news-container
     /     - @analysis_categories.flat_map(&:analyses).each do |a|
