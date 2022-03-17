@@ -16,7 +16,7 @@
             | Task Name :  
             = @task.name
         p.project-desc
-            | App Name 
+            | App Name : 
             = App.find(@task.app_id).name
 
     .card.analyses-card
@@ -30,9 +30,18 @@
         | Here should be a pre-view of the report content.
         | Here should be a pre-view of the report content.
         br/
-        button.float-right.mt-2.btn-secondary
-          = icon 'fa', 'save'
-          | Download Report
+        - if @task.generate_report
+          - if @task.status == 'finished'
+            button class='float-right mt-2 btn-secondary'
+              = icon 'fa', 'save'
+              = link_to 'Download Report', @download_path
+          - elsif @task.status == 'failed'
+            p.project-desc
+              | Unfortunately the report generating is FAILED, please re-run it later.
+          - else
+            p.project-desc
+              | The task is under processing. Report wouldn't be availible unless the process is done.
+            
           
   .card.news-card
     .card-body

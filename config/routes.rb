@@ -67,15 +67,17 @@ Rails.application.routes.draw do
   resources :users do
     resources :tasks
   end
-  post 'data-file-upload', to: 'users#data_file_upload', format: 'json'
-  post  'data-file-info', to: 'users#data_file_info', format:'json'
-  post  'data-file-delete', to: 'users#data_file_delete', format:'json'
-  post  'data-file-rename', to: 'users#data_file_rename', format:'json'
+  post  'data-file-upload', to: 'users#data_file_upload', format: 'json'
+  post  'data-file-attach', to: 'users#data_file_attach'
+  post  'data-file-info', to: 'users#data_file_info', format: 'json'
+  post  'data-file-delete', to: 'users#data_file_delete', format: 'json'
+  post  'data-file-rename', to: 'users#data_file_rename', format: 'json'
   get 'all-categories', to: 'categories#all_categories', format: 'json'
   post 'apps-info', to: 'apps#apps_info', format: 'json'
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
+  # get 'task-report', to: 'tasks#download_report'
   # post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
