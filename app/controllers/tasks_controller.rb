@@ -12,31 +12,65 @@ class TasksController < ApplicationController
   # GET /tasks/1.json
   def show
     gon.push(task_id: @task.id)
-    if @task.status =='finished'
+    if @task.status == 'finished'
+      # The default page link
+      error_link = "#"
+
       # Query result from server
       client = LocalApi::Client.new
       task_id = decode(@task.task_id)
-      result = client.task_info(UID,  task_id, 'app')
+      result = client.task_info(UID, task_id,'app')
+      Rails.logger.info("TaskShow >> Query: rails [#{@task.id}], deepomics [#{@task.task_id}]")
 
-      # Prepare project download
-      rrot = Rails.root.to_s
-      server_path = result['message']["outputs"][0]["files"][0]["path"]
-      server_id = server_path.split("task_")[1].split("/user")[0]
-      rails_path = rrot + "/public/result/task_" + server_id
-      system "mkdir #{rails_path}"
+      begin
+        # Nil result checking
+        if result == nil
+          raise 'TaskShow >> Cannot perform API query, Nil result'
+        end
 
-      # Download raw data
-      data_server_path = "/home/platform/omics_rails/current/media/user/gapp" + server_path + "/data.raw.vcf.gz"
-      @data_download_path = "/result/task_" + server_id + "/data.raw.vcf.gz"
-      system "ln -s #{data_server_path} #{rails_path}"
+        # Not success query checking
+        if result['status'] != 'success'
+          status_msg = result['status']
+          raise "TaskShow >> Bad API query, [status]: #{status_msg}"
+        end
 
-      # Download PDF report
-      # # Server PDF Processing...
-      @pdf_download_path = "/result/task_" + server_id
+        # Prepare project download
+        rrot = Rails.root.to_s
+        server_path = result['message']["outputs"][0]["files"][0]["path"]
+        server_id = server_path.split("task_")[1].split("/user")[0]
+        rails_path = rrot + "/public/result/task_" + server_id
+        system "mkdir #{rails_path}"
 
-      # Access HTML page
-      # # Server HTML Processing...
-      @html_download_path = "/result/task_" + server_id
+        # Download raw data
+        data_server_path = "/home/platform/omics_rails/current/media/user/gapp" + server_path + "/data.raw.vcf.gz"
+        @data_download_path = "/result/task_" + server_id + "/data.raw.vcf.gz"
+        unless File.exist?(data_server_path)
+          raise "TaskShow >> Raw Data does not exist at #{data_server_path}"
+        end
+        system "ln -s #{data_server_path} #{rails_path}"
+
+        # # Download PDF report
+        # # Server PDF Processing...
+        # pdf_server_path = ""
+        @pdf_download_path = "/result/task_" + server_id
+        # unless File.exist?(pdf_server_path)
+        #   raise "TaskShow >> Report PDF does not exist at #{pdf_server_path}"
+        # end
+
+        # # Access HTML page
+        # # Server HTML Processing...
+        # html_server_path = ""
+        @html_download_path = "/result/task_" + server_id
+        # unless File.exist?(html_server_path)
+        #   raise "TaskShow >> Report HTML does not exist at #{html_server_path}"
+        # end
+
+      rescue StandardError => e
+        Rails.logger.error("#{e.message}")
+        @data_download_path = error_link
+        @pdf_download_path = error_link
+        @html_download_path = error_link
+      end
     end
   end
 
