@@ -12,24 +12,31 @@ class TasksController < ApplicationController
   # GET /tasks/1.json
   def show
     gon.push(task_id: @task.id)
-    if @task.status =='success'
+    if @task.status =='finished'
+      # Query result from server
       client = LocalApi::Client.new
-      @rrot = Rails.root.to_s
-      @task_id = decode(@task.task_id)
-      @result = client.task_info(UID,  @task_id, 'app')
-      # Rails.logger.debug("lets check the @task_param first===>#{@task.task_id}")
-      # Rails.logger.debug("lets check the decode===>#{@task_id}")
-      # Rails.logger.debug("lets check the uid===>#{UID}")
-      # Rails.logger.debug("lets check the @task itself first===>#{@task}")
-      # Rails.logger.debug("lets check the @result then===>#{@result}")
-      # Rails.logger.debug("here is the task id #{@task.id}")
-      @path = @result['message']["outputs"][0]["files"][0]["path"]
-      @full_path = "/home/platform/omics_rails/current/media/user/gapp" + @path + "/data.raw.vcf.gz"
-      @dir = @rrot + "/public/result/task_" + @path.split("task_")[1].split("/user")[0]
-      @download_path = "/result/task_" + @path.split("task_")[1].split("/user")[0] + "/data.raw.vcf.gz"
+      task_id = decode(@task.task_id)
+      result = client.task_info(UID,  task_id, 'app')
 
-      system "mkdir #{@dir}"
-      system "ln -s #{@full_path} #{@dir}"
+      # Prepare project download
+      rrot = Rails.root.to_s
+      server_path = result['message']["outputs"][0]["files"][0]["path"]
+      server_id = server_path.split("task_")[1].split("/user")[0]
+      rails_path = rrot + "/public/result/task_" + server_id
+      system "mkdir #{rails_path}"
+
+      # Download raw data
+      data_server_path = "/home/platform/omics_rails/current/media/user/gapp" + server_path + "/data.raw.vcf.gz"
+      @data_download_path = "/result/task_" + server_id + "/data.raw.vcf.gz"
+      system "ln -s #{data_server_path} #{rails_path}"
+
+      # Download PDF report
+      # # Server PDF Processing...
+      @pdf_download_path = "/result/task_" + server_id
+
+      # Access HTML page
+      # # Server HTML Processing...
+      @html_download_path = "/result/task_" + server_id
     end
   end
 
