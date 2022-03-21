@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
-    http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:submit_task_debug, :query_task_debug]
+    # http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:submit_task_debug, :query_task_debug]
+    before_action :authenticate_account!
 
   # GET /tasks
   # GET /tasks.json
@@ -8,9 +9,22 @@ class TasksController < ApplicationController
     @tasks = Task.all
   end
 
+  def check_user
+    if account_signed_in?
+      if String(params[:user_id]) != String(current_account.id)
+          flash[:error] = "You should not visit other's profile page. Redirect to your own page"
+          redirect_to user_path(current_account.id)
+      end
+    else
+        flash[:error] = 'You should login first'
+        redirect_to root_path
+    end
+  end
+
   # GET /tasks/1
   # GET /tasks/1.json
   def show
+    check_user()
     gon.push(task_id: @task.id)
     if @task.status == 'finished'
       # The default page link
