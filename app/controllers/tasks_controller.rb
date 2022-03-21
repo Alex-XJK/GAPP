@@ -21,6 +21,8 @@ class TasksController < ApplicationController
       task_id = decode(@task.task_id)
       result = client.task_info(UID, task_id,'app')
       Rails.logger.info("TaskShow >> Query: rails [#{@task.id}], deepomics [#{@task.task_id}]")
+      Rails.logger.info(result)
+      Rails.logger.info("#{result}")
 
       begin
         # Nil result checking
