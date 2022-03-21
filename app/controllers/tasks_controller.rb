@@ -38,6 +38,12 @@ class TasksController < ApplicationController
 
         # Prepare project download
         rrot = Rails.root.to_s
+        if result['message']["outputs"].length() == 0
+          raise "TaskShow >> Error: Output Length is ZERO!"
+        end
+        if result['message']["outputs"][0]["files"].length() == 0
+          raise "TaskShow >> Error: The first output file Length is ZERO!"
+        end
         server_path = result['message']["outputs"][0]["files"][0]["path"]
         server_id = server_path.split("task_")[1].split("/user")[0]
         rails_path = rrot + "/public/result/task_" + server_id
