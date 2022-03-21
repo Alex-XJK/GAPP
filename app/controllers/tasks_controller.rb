@@ -21,6 +21,8 @@ class TasksController < ApplicationController
       task_id = decode(@task.task_id)
       result = client.task_info(UID, task_id,'app')
       Rails.logger.info("TaskShow >> Query: rails [#{@task.id}], deepomics [#{@task.task_id}]")
+      Rails.logger.info(result)
+      Rails.logger.info("#{result}")
 
       begin
         # Nil result checking
@@ -36,6 +38,12 @@ class TasksController < ApplicationController
 
         # Prepare project download
         rrot = Rails.root.to_s
+        if result['message']["outputs"].length() == 0
+          raise "TaskShow >> Error: Output Length is ZERO!"
+        end
+        if result['message']["outputs"][0]["files"].length() == 0
+          raise "TaskShow >> Error: The first output file Length is ZERO!"
+        end
         server_path = result['message']["outputs"][0]["files"][0]["path"]
         server_id = server_path.split("task_")[1].split("/user")[0]
         rails_path = rrot + "/public/result/task_" + server_id
@@ -60,7 +68,7 @@ class TasksController < ApplicationController
         # # Access HTML page
         # # Server HTML Processing...
         # html_server_path = ""
-        @html_download_path = "/result/task_" + server_id
+        @html_download_path = "/result/task_" + server_id + "/report.html"
         # unless File.exist?(html_server_path)
         #   raise "TaskShow >> Report HTML does not exist at #{html_server_path}"
         # end
