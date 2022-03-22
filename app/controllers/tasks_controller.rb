@@ -27,8 +27,10 @@ class TasksController < ApplicationController
     check_user()
     gon.push(task_id: @task.id)
     if @task.status == 'finished'
+      
       # The default page link
       error_link = "#"
+      error_link_html = "https://gapp.deepomics.org/result/newexps/output/child/html/P2021020001.html"
 
       # Query result from server
       client = LocalApi::Client.new
@@ -91,7 +93,7 @@ class TasksController < ApplicationController
         Rails.logger.error("#{e.message}")
         @data_download_path = error_link
         @pdf_download_path = error_link
-        @html_download_path = error_link
+        @html_download_path = error_link_html
       end
     end
   end
