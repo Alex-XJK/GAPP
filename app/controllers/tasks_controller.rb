@@ -11,7 +11,7 @@ class TasksController < ApplicationController
 
   def check_user
     if account_signed_in?
-      if String(params[:user_id]) != String(current_account.id)
+      if String(params[:user_id]) != String(User.find_by(account_id: current_account.id).id)
           flash[:error] = "You should not visit other's profile page. Redirect to your own page"
           redirect_to user_path(current_account.id)
       end
