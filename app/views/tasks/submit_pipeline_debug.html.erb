@@ -1,0 +1,76 @@
+<h2>Direct Pipeline Submit Test</h2>
+
+<br>
+
+<h4>Test Params (as shown in log):</h4>
+
+Pipeline ID <br>
+==> <%= @pipe_id %> <br>
+
+inputs <br>
+==> <span  style="color: darkblue"><%= @inputs %></span> <br>
+
+params <br>
+==> <span  style="color: darkgreen"><%= @params %></span> <br>
+
+<br>
+
+<h4>Server response</h4>
+
+<%= @result %>
+<br>
+
+<br>
+
+<h4>Returned result:</h4>
+
+<b style="color: red">
+  <%= @result_json %>
+</b>
+
+<br>
+
+<p>
+  Pipeline Input Ports >> <a href="https://deepomics.org/api/pipeline_flowchart/62">~deepomics~/api/pipeline_flowchart/62</a>
+</p>
+
+<br>
+
+<hr>
+
+<!--<h3>API test</h3>-->
+
+<!--<h4>API 1 :</h4>-->
+
+<!--<pre>-->
+<!--  @url      ~/submit/api-->
+<!--  @alias    submit_api-->
+<!--  @method   POST-->
+<!--  @param    uid   User_ID-->
+<!--  @param    fid   File_ID/Index-->
+<!--  @param    app   App_ID-->
+<!--  @return   JSON-->
+<!--  @example  {-->
+<!--                :code=>true,-->
+<!--                :data=>{-->
+<!--                    :msg=>"Task submitted.",-->
+<!--                    :task_id=>"xxx...16_digits...xxx"-->
+<!--                }-->
+<!--            }-->
+<!--  @author   Alex-->
+<!--  @since    Aug. 19, 2021-->
+<!--</pre>-->
+
+<%#= form_with url: "/submit/api", method: :post do |form| %>
+  <%#= form.label :uid, "User id:" %>
+  <%#= form.text_field :uid %>
+  <%#= form.label :fid, "Data File id:" %>
+  <%#= form.text_field :fid %>
+  <%#= form.label :app, "App id:" %>
+  <%#= form.text_field :app %>
+  <%#= form.submit "Test" %>
+<%# end %>
+
+<!--<br>-->
+
+<!--<hr>-->
