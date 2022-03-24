@@ -26,21 +26,35 @@
             = icon 'fa', 'rss'
             | Task Report
         p
-        | Here should be a pre-view of the report content.
-        | Here should be a pre-view of the report content.
-        | Here should be a pre-view of the report content.
+        / | Here should be a pre-view of the report content.
+        / | Here should be a pre-view of the report content.
+        / | Here should be a pre-view of the report content.
+        #accordion
+          .card
+            .card-header
+              a.collapsed.card-link.text-primary data-toggle="collapse" href="#collapseOne"
+                i.fas.fa-angle-down
+                | Report Preview
+            .collapse#collapseOne data-parent="#accordion"
+              .card-body
+                iframe src=@html_download_path title="report" style="width: 100%; height: 650px; border: 0;"
+        
         br/
         - if @task.status == 'finished'
-          button class='float-right mt-2 btn-secondary'
-            = icon 'fa', 'save'
-            = link_to 'Download Data', @data_download_path
+          = link_to  @data_download_path
+            button class='float-right mt-2 btn-secondary'
+              = icon 'fa', 'save'
+              | Download Data
+            
           - if @task.generate_report
-            button class='float-right mt-2 btn-secondary'
-              = icon 'fa', 'save'
-              = link_to 'Download PDF', @pdf_download_path
-            button class='float-right mt-2 btn-secondary'
-              = icon 'fa', 'save'
-              = link_to 'View HTML', @html_download_path
+            = link_to @pdf_download_path
+              button class='float-right mt-2 btn-secondary'
+                = icon 'fa', 'save'
+                | Download PDF
+            = link_to @html_download_path, target: :_blank
+              button class='float-right mt-2 btn-secondary'
+                = icon 'fa', 'save'
+                | View HTML
         - elsif @task.status == 'failed'
           p.project-desc
             | Unfortunately the task is FAILED, please re-run it later.
