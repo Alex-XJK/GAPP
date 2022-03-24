@@ -11,7 +11,7 @@ class TasksController < ApplicationController
 
   def check_user
     if account_signed_in?
-      if String(params[:user_id]) != String(current_account.id)
+      if String(params[:user_id]) != String(User.find_by(account_id: current_account.id).id)
           flash[:error] = "You should not visit other's profile page. Redirect to your own page"
           redirect_to user_path(current_account.id)
       end
@@ -445,15 +445,15 @@ class TasksController < ApplicationController
       @pipe_id = 62
       logger.debug "In SPD :: #{@pipe_id} >>"
       @inputs = Array.new
-      in1_id = 146
+      in1_id = "i-146"
       in1_cn = "1"
-      in2_id = 147
+      in2_id = "i-147"
       in2_cn = "R"
-      in3_id = 148
+      in3_id = "i-148"
       in3_cn = Time.now.to_i.to_s
-      in4_id = 150
+      in4_id = "i-150"
       in4_cn = "male"
-      in5_id = 151
+      in5_id = "i-151"
       in5_cn = "TestUser"
       @inputs.push({ in1_id.to_s => in1_cn, })
       @inputs.push({ in2_id.to_s => in2_cn, })
