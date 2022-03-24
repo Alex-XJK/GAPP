@@ -84,7 +84,7 @@ class TasksController < ApplicationController
         # # Access HTML page
         # # Server HTML Processing...
         # html_server_path = ""
-        @html_download_path = "/result/task_" + server_id + "/report.html"
+        @html_download_path = "/result/task_" + server_id + "/report/output/child/html/P2021020001.html"
         # unless File.exist?(html_server_path)
         #   raise "TaskShow >> Report HTML does not exist at #{html_server_path}"
         # end
