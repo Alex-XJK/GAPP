@@ -433,6 +433,62 @@ class TasksController < ApplicationController
     logger.debug "In STD :: now every thing done with JSON: #{@result_json} !"
   end
 
+  def submit_pipeline_debug
+    # init
+    @result_json = {
+        code: false,
+        data: ''
+    }
+    begin
+
+      # Prepare the API parameters (redirect to stdout for debug now)
+      @pipe_id = 62
+      logger.debug "In SPD :: #{@pipe_id} >>"
+      @inputs = Array.new
+      in1_id = 146
+      in1_cn = "1"
+      in2_id = 147
+      in2_cn = "R"
+      in3_id = 148
+      in3_cn = Time.now.to_i.to_s
+      in4_id = 150
+      in4_cn = "male"
+      in5_id = 151
+      in5_cn = "TestUser"
+      @inputs.push({ in1_id.to_s => in1_cn, })
+      @inputs.push({ in2_id.to_s => in2_cn, })
+      @inputs.push({ in3_id.to_s => in3_cn, })
+      @inputs.push({ in4_id.to_s => in4_cn, })
+      @inputs.push({ in5_id.to_s => in5_cn, })
+      logger.debug "In SPD :: #{@inputs} >>"
+      @params = Array.new
+      logger.debug "In SPD :: #{@params} >>"
+
+      # submit task
+      client = LocalApi::Client.new
+      @result = client.run_pipeline(UID, PROJECT_ID, @pipe_id.to_i, @inputs, @params)
+
+      logger.debug "In SPD :: after submit get result #{@result} !"
+
+      if @result['message']['code']
+        @result_json[:code] = true
+        @result_json[:data] = {
+            'msg': @result['message']['data']['msg'],
+            'task_id': encode(@result['message']['data']['task_id'])
+        }
+      else
+        @result_json[:code] = false
+        @result_json[:data] = {
+            'msg': @result['message']
+        }
+      end
+    rescue StandardError => e
+      @result_json[:code] = false
+      @result_json[:data] = e.message
+    end
+    logger.debug "In SPD :: now every thing done with JSON: #{@result_json} !"
+  end
+
   def submit_task_traditional
 
     result_json = {
