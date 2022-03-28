@@ -140,7 +140,7 @@ Rails.application.routes.draw do
   # post 'submit-app-task', to: 'tasks#submit_app_task', format: 'json'
   # # < QUERY > Added by Alex
   get 'query/debug/:tid', to: 'tasks#query_task_debug', as: 'query_print'
-  get 'query/pipeline/debug/:tid', to: 'tasks#query_pipeline_debug', as: 'pipeline_print'
+  get 'query/pipeline/debug/:tid', to: 'tasks#query_pipeline_debug', as: 'querypipe_print'
   post 'query/api', to: 'tasks#query_task', as: 'query_api', format: 'json'
   post 'query/status/api', to: 'tasks#query_task_status', as: 'query_status_api', format: 'json'
   # # End of useful things
