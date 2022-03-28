@@ -667,6 +667,41 @@ class TasksController < ApplicationController
 
   end
 
+  def query_pipeline_debug
+    @result_json = {
+        code: false,
+        data: ''
+    }
+    begin
+      # Receive and decode task id
+      @task_param = params[:tid]
+      @task_id = decode(@task_param)
+
+      if @task_id
+        # Query task
+        client = LocalApi::Client.new
+        @result = client.task_info(UID, @task_id, 'pipeline')
+
+        logger.debug "In QPD :: after query get result #{@result} !"
+
+        # Interpret result
+        @result_json[:code] = @result['status']
+        @result_json[:data] = @result['message']
+      else
+        @result_json[:code] = true
+        @result_json[:data] = {
+            'msg': 'Task not found!',
+            'task_id': @task_param
+        }
+      end
+    rescue StandardError => e
+      @result_json[:code] = false
+      @result_json[:data] = e.message
+    end
+    # render json: result_json
+    logger.debug "In QPD :: now every thing done with JSON: #{@result_json} !"
+  end
+
   def reportGenerate
     # `#{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json`
     # `#{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini`
