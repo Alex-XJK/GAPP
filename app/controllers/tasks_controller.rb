@@ -702,6 +702,43 @@ class TasksController < ApplicationController
     logger.debug "In QPD :: now every thing done with JSON: #{@result_json} !"
   end
 
+  def submit_json_debug
+    # Require JSON lib
+    require 'json'
+
+    # JSON data
+    uinf = {
+        "name" => "alex",
+        "gender" => "male",
+        "age" => 21,
+        "tel" => "010-123456789"
+    }
+    ainf = {
+        "name" => "Doctor's Friend No.1",
+        "id" => 100,
+        "report" => true,
+        "template" => true,
+        "panel" => false,
+        "credit" => "AHYGB9FX7W"
+    }
+    job_info = {
+        "uid" => User.find_by(account_id: current_account.id).id,
+        "fid" => Time.now.to_i.to_s,
+        "user" => uinf,
+        "app" => ainf
+    }
+    count = 0
+    floc = "deepomics_job.json"
+    File.open(floc,"w") do |f|
+      prt_data = JSON.pretty_generate(job_info)
+      count = f.write(prt_data)
+    end
+
+    # Display Part
+    @rrot = Rails.root.to_s
+    @dloc = @rrot+'/'+floc
+    @fcount = "That was #{count} bytes of data!"
+  end
 
   private
 
