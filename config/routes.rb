@@ -77,7 +77,6 @@ Rails.application.routes.draw do
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
-  # get 'task-report', to: 'tasks#download_report'
   # post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
@@ -147,7 +146,6 @@ Rails.application.routes.draw do
   post 'query-app-task', to: 'tasks#query_app_task', format: 'json'
   post 'query-all-tasks', to: 'tasks#query_all', format: 'json'
   post 'remove-task', to: 'tasks#remove_task', format: 'json'
-  get 'report-generate', to: 'tasks#reportGenerate', format: 'json'
 
   # admin
   get '/admin', to: 'admin#index', as: "admin"

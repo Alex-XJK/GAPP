@@ -702,22 +702,6 @@ class TasksController < ApplicationController
     logger.debug "In QPD :: now every thing done with JSON: #{@result_json} !"
   end
 
-  def reportGenerate
-    # `#{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json`
-    # `#{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini`
-    # logger.debug "report generate infres -- #{Rails.configuration.infres} #{Rails.configuration.generate_report_template}template.json"
-    # logger.debug "report generate exps -- #{Rails.configuration.exps} #{Rails.configuration.generate_report_result}.json -c #{Rails.configuration.template_loader_path}rare_disease_CHN/test.ini"
-    # system(exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini)
-    `/disk2/apps/custom_library/python/bin/exps -i /home/platform/exps_test/template.json -c /home/platform/exps_test/report/templates/rare_disease_CHN/test.ini`
-  end
-
-  # def download_report
-  #   require 'open-uri'
-  #   download = open('')
-  #   IO.copy_stream(download, '~')
-  #   # IO.copy_stream(download, "~/#{download.base_uri.to_s.split('/')[-1]}")
-  #   redirect_back(fallback_location: root_path)
-  # end
 
   private
 
