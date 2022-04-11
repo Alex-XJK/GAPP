@@ -77,7 +77,6 @@ Rails.application.routes.draw do
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
-  # get 'task-report', to: 'tasks#download_report'
   # post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
@@ -128,6 +127,7 @@ Rails.application.routes.draw do
   get 'submit/traditional/:id', to: 'tasks#index', as: 'submit_manual'
   get 'submit/debug/:uid/:fid/:app', to: 'tasks#submit_task_debug', as: 'submit_print'
   get 'submit/pipeline/debug/', to: 'tasks#submit_pipeline_debug', as: 'pipeline_print'
+  get 'submit/json/debug/', to: 'tasks#submit_json_debug', as: 'submit_json'
   post 'submit/api', to: 'tasks#submit_task', as: 'submit_api', format: 'json'
   post 'submit/manual', to: 'tasks#submit_task_traditional', format: 'json'
   # # End of useful things
@@ -147,7 +147,6 @@ Rails.application.routes.draw do
   post 'query-app-task', to: 'tasks#query_app_task', format: 'json'
   post 'query-all-tasks', to: 'tasks#query_all', format: 'json'
   post 'remove-task', to: 'tasks#remove_task', format: 'json'
-  get 'report-generate', to: 'tasks#reportGenerate', format: 'json'
 
   # admin
   get '/admin', to: 'admin#index', as: "admin"
