@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_24_051628) do
+ActiveRecord::Schema.define(version: 2022_04_11_093457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2022_01_24_051628) do
     t.integer "doap_id", null: false
     t.string "param_for_userid"
     t.string "param_for_filename"
+    t.boolean "ispipeline"
   end
 
   create_table "apps", force: :cascade do |t|
