@@ -211,23 +211,14 @@ class TasksController < ApplicationController
     # render json: result
   end
 
-  # def task_status
-  #   result_json = {
-  #     code: false,
-  #     data:[]
-  #   }
-  #   @task = Task.find(params[:task_id])
-  #   return_status = @task.status
-  #   result_json[:code] = true
-  #   result_json[:data] = return_status
-  #   render json: result_json
-  # end
-
   # Used for GAPP only!
   UID = 50
   # Used for our GAPP_TEST project only!
   PROJECT_ID = 344
 
+  # @api Our Core Task Submission API, please be careful when you edit this part,
+  #     and only on-the-server debugging is valid, no local testing for this function.
+  # @author Contact Mr. Jiakai XU for details (for further development only)
   def submit_task
     # init
     result_json = {
