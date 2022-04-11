@@ -211,23 +211,14 @@ class TasksController < ApplicationController
     # render json: result
   end
 
-  # def task_status
-  #   result_json = {
-  #     code: false,
-  #     data:[]
-  #   }
-  #   @task = Task.find(params[:task_id])
-  #   return_status = @task.status
-  #   result_json[:code] = true
-  #   result_json[:data] = return_status
-  #   render json: result_json
-  # end
-
   # Used for GAPP only!
   UID = 50
   # Used for our GAPP_TEST project only!
   PROJECT_ID = 344
 
+  # @api Our Core Task Submission API, please be careful when you edit this part,
+  #     and only on-the-server debugging is valid, no local testing for this function.
+  # @author Contact Mr. Jiakai XU for details (for further development only)
   def submit_task
     # init
     result_json = {
@@ -235,7 +226,6 @@ class TasksController < ApplicationController
       data: ''
     }
     begin
-
       # Receive parameters from fronten-end
       id = params[:uid]
       idx = params[:fid]
@@ -267,41 +257,65 @@ class TasksController < ApplicationController
       system "cp #{floc1} #{file1_new_location}"
       system "cp #{floc2} #{file2_new_location}"
 
-      # Find the App Panel File
+      # Find the App Specified Files
       app = App.find(aid)
+      # App Panel File
       if app.panel.attached?
         panl = app.panel
         ploc = ActiveStorage::Blob.service.send(:path_for, panl.blob.key)
         panel_new_location = disk_data + timestamp + '_panel.txt'
         system "cp #{ploc} #{panel_new_location}"
       end
-
-      # Prepare the API parameters
-      anaid = Analysis.find(app.analysis_id).doap_id.to_i
-      logger.debug "In SuT :: #{anaid} >>"
-
-      p4uid = Analysis.find(app.analysis_id).param_for_userid.to_s
-      p4fid = Analysis.find(app.analysis_id).param_for_filename.to_s
+      # TODO: App Template Package
+      # TODO: App Operator File (or operator needed text script in the future)
 
       # Generate Json
       jsonkey = "u" + userid + "f" + timestamp
       generate_json(user.id, current_account.id, timestamp, app.id, jsonkey)
 
-      # Build the file input dictionary
+      # Get analyses information
+      analysis = Analysis.find(app.analysis_id)
+      anaid = analysis.doap_id.to_i
+
+      # Prepare the API parameters
+      p4uid = analysis.param_for_userid.to_s
+      p4fid = analysis.param_for_filename.to_s
       inputs = Array.new
-      logger.debug "In SuT :: #{inputs} >>"
-
-      # Build the parameter input dictionary
       params = Array.new
-      params.push({ p4uid => userid, })
-      params.push({ p4fid => timestamp, })
-      logger.debug "In SuT :: #{params} >>"
-
-      # Submit task
       client = LocalApi::Client.new
-      result = client.run_module(UID, PROJECT_ID, anaid, inputs, params)
+      logger.debug "In SuT :: Analysis #{anaid} >> p4uid: #{p4uid}; p4fid: #{p4fid} >>"
 
-      logger.debug "In SuT :: after submit get result #{result} !"
+      if analysis.ispipeline?
+        ## GAPP -> SuT -> DEEPOMICS -> PIPELINE block
+        logger.debug "In SuT :: Submit to [P] PIPELINE >>"
+
+        # Build the file input dictionary
+        jsondirectory = "/data/input_transmit/" + jsonkey.to_s + ".json"
+        inputs.push({ p4uid => jsondirectory, })
+        logger.debug "In SuT :: #{inputs} >>"
+
+        # Build the parameter input dictionary
+        logger.debug "In SuT :: #{params} >>"
+
+        # Submit task to pipeline
+        result = client.run_pipeline(UID, PROJECT_ID, anaid, inputs, params)
+        logger.debug "In SuT :: after submit get result #{result} !"
+      else
+        ## GAPP -> SuT -> DEEPOMICS -> MODULE block
+        logger.debug "In SuT :: Submit to [M] MODULE >>"
+
+        # Build the file input dictionary
+        logger.debug "In SuT :: #{inputs} >>"
+
+        # Build the parameter input dictionary
+        params.push({ p4uid => userid, })
+        params.push({ p4fid => timestamp, })
+        logger.debug "In SuT :: #{params} >>"
+
+        # Submit task to module
+        result = client.run_module(UID, PROJECT_ID, anaid, inputs, params)
+        logger.debug "In SuT :: after submit get result #{result} !"
+      end
 
       # Interpret and encode the result
       if result['message']['code']
@@ -317,6 +331,7 @@ class TasksController < ApplicationController
         }
       end
     rescue StandardError => e
+      # Error Handler
       result_json[:code] = false
       result_json[:data] = e.message
     end
@@ -849,13 +864,13 @@ class TasksController < ApplicationController
 
     # Final Json data
     job_info = {
-        "uid"       =>  user.id,
-        "fid"       =>  file,
-        "key"       =>  key.to_s,
-        "credit"    =>  credt,
-        "app"       =>  ainf,
-        "user"      =>  uinf,
-        "analysis"  =>  ninf
+        "uid"         =>  user.id,
+        "fid"         =>  file,
+        "key"         =>  key.to_s,
+        "credentials" =>  credt,
+        "app"         =>  ainf,
+        "user"        =>  uinf,
+        "analysis"    =>  ninf
     }
 
     # Write to json
