@@ -283,6 +283,10 @@ class TasksController < ApplicationController
       p4uid = Analysis.find(app.analysis_id).param_for_userid.to_s
       p4fid = Analysis.find(app.analysis_id).param_for_filename.to_s
 
+      # Generate Json
+      jsonkey = "u" + userid + "f" + timestamp
+      generate_json(user.id, current_account.id, timestamp, app.id, jsonkey)
+
       # Build the file input dictionary
       inputs = Array.new
       logger.debug "In SuT :: #{inputs} >>"
@@ -738,6 +742,8 @@ class TasksController < ApplicationController
     @rrot = Rails.root.to_s
     @dloc = @rrot+'/'+floc
     @fcount = "That was #{count} bytes of data!"
+
+    generate_json(1, 1, "2022", 42, "test")
   end
 
   private
@@ -799,6 +805,68 @@ class TasksController < ApplicationController
       # Write to DB
       ta.update(status: statusStr)
     end
+  end
+
+  def generate_json(uid, cid, fid, aid, key)
+    # Require JSON lib
+    require 'json'
+
+    # Parameter Read in
+    user = User.find(uid)
+    account = Account.find(cid)
+    app = App.find(aid)
+    analysis = Analysis.find(app.analysis_id)
+    file = fid.to_s
+    json_location = "/home/platform/omics_rails/current/media/user/gapp/data/input_transmit/" + key.to_s + ".json"
+
+    # Constant variable
+    nif = "Not_In_File"
+    credt = Digest::SHA256.hexdigest(key.to_s + "ALEX")
+
+    # JSON data
+    uinf = {
+        "id"      =>  user.id,
+        "name"    =>  user.username,
+        "gender"  =>  nif,
+        "age"     =>  nif,
+        "birth"   =>  nif,
+        "tel"     =>  nif,
+        "email"   =>  account.email
+    }
+    ainf = {
+        "id"        =>  app.app_no,
+        "name"      =>  app.name,
+        "report"    =>  app.create_report,
+        "panel"     =>  app.panel.attached?,
+        "template"  =>  nif,
+        "operator"  =>  nif
+    }
+    ninf = {
+        "id"          =>  analysis.doap_id,
+        "name"        =>  analysis.name,
+        "isPiepline"  =>  nif,
+    }
+
+    # Final Json data
+    job_info = {
+        "uid"       =>  user.id,
+        "fid"       =>  file,
+        "key"       =>  key.to_s,
+        "credit"    =>  credt,
+        "app"       =>  ainf,
+        "user"      =>  uinf,
+        "analysis"  =>  ninf
+    }
+
+    # Write to json
+    count = 0
+    File.open(json_location,"w") do |f|
+      prt_data = JSON.pretty_generate(job_info)
+      count = f.write(prt_data)
+    end
+
+    # Debug information
+    Rails.logger.info("GenJson >> #{count} bytes have been write to [#{json_location}]")
   end
 
   # Use callbacks to share common setup or constraints between actions.
