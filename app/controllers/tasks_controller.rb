@@ -660,7 +660,7 @@ class TasksController < ApplicationController
     tasks.each do |ta|
       # If task already finished, then no need to check again
       orista = ta.status
-      if orista == 'finished' || orista == 'failed'
+      if orista == 'finished'
         next
       end
   
