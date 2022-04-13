@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
-    # http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:submit_task_debug, :query_task_debug]
+    http_basic_authenticate_with name: "gappdevsec", password: "hyqxjkzxdeb", only: [:submit_task_debug, :query_task_debug, :submit_pipeline_debug]
     before_action :authenticate_account!
 
   # GET /tasks
@@ -35,7 +35,13 @@ class TasksController < ApplicationController
       # Query result from server
       client = LocalApi::Client.new
       task_id = decode(@task.task_id)
-      result = client.task_info(UID, task_id,'app')
+      curapp = App.find(@task.app_id)
+      curana = Analysis.find(curapp.analysis_id)
+      if curana.ispipeline?
+        result = client.task_info(UID, task_id,'pipeline')
+      else
+        result = client.task_info(UID, task_id,'app')
+      end
       Rails.logger.info("TaskShow >> Query: rails [#{@task.id}], deepomics [#{@task.task_id}]")
       Rails.logger.info(result)
       Rails.logger.info("#{result}")
@@ -216,6 +222,7 @@ class TasksController < ApplicationController
   # Used for our GAPP_TEST project only!
   PROJECT_ID = 344
 
+  # < SuT > Submit Task
   # @api Our Core Task Submission API, please be careful when you edit this part,
   #     and only on-the-server debugging is valid, no local testing for this function.
   # @author Contact Mr. Jiakai XU for details (for further development only)
@@ -339,6 +346,7 @@ class TasksController < ApplicationController
     render json: result_json
   end
 
+  # < STD > Submit Task Debug
   def submit_task_debug
     # init
     @result_json = {
@@ -396,36 +404,7 @@ class TasksController < ApplicationController
       # # Optimize disk storage
       # @optf = @floc.to_s.gsub(@uproot, '/data')
       # @optp = @ploc.to_s.gsub(@uproot, '/data')
-      #
-      # # The hard code area, used to set the location path
-      # datafn = 'i-1004'
-      # panefn = 'i-1005'
-      # tarloc = '/home/platform/omics_rails/current/media/user/meta_platform/data/'
-      #
-      # # Create the string of filename
-      # @file_new_location = tarloc + @fnam + '(NO_NEED_ANY_MORE)'
-      # @panel_new_location = tarloc + @pnam + '(NO_NEED_ANY_MORE)'
 
-      # # Copy the files to the target place and rename them to the system accepted one
-      # system "cp #{@floc} #{@file_new_location}"
-      # system "cp #{@ploc} #{@panel_new_location}"
-
-      # # Prepare the API parameters (redirect to stdout for debug now)
-      # @anaid = Analysis.find(app.analysis_id).doap_id.to_i
-      # logger.debug "In STD :: #{@anaid} >>"
-      # @inputs = Array.new
-      # # @inputs.push({ datafn => '/data/' + @fnam, })
-      # @inputs.push({ datafn => @optf, })
-      # # @inputs.push({ panefn => '/data/' + @pnam, })
-      # # @inputs.push({ panefn => @optp, })
-      # logger.debug "In STD :: #{@inputs} >>"
-      # @params = Array.new
-      # @params.push({ 'p-1761' => '/disk2/workspace/platform/gapp/websrl.list', })
-      # @params.push({ 'p-1760' => './gapp/code', })
-      # @params.push({ 'p-1758' => './gapp', })
-      # logger.debug "In STD :: #{@params} >>"
-
-      # Already existing code
       # submit task
       client = LocalApi::Client.new
       @result = client.run_module(UID, PROJECT_ID, @anaid, @inputs, @params)
@@ -453,42 +432,20 @@ class TasksController < ApplicationController
   end
 
   def submit_pipeline_debug
-    # init
     @result_json = {
         code: false,
         data: ''
     }
     begin
-
-      # Prepare the API parameters (redirect to stdout for debug now)
-      @pipe_id = 62
-      logger.debug "In SPD :: #{@pipe_id} >>"
-      @inputs = Array.new
-      in1_id = "i-146"
-      in1_cn = "1"
-      in2_id = "i-147"
-      in2_cn = "R"
-      in3_id = "i-148"
-      in3_cn = Time.now.to_i.to_s
-      in4_id = "i-150"
-      in4_cn = "male"
-      in5_id = "i-151"
-      in5_cn = "TestUser"
-      @inputs.push({ in1_id.to_s => in1_cn, })
-      @inputs.push({ in2_id.to_s => in2_cn, })
-      @inputs.push({ in3_id.to_s => in3_cn, })
-      @inputs.push({ in4_id.to_s => in4_cn, })
-      @inputs.push({ in5_id.to_s => in5_cn, })
-      logger.debug "In SPD :: #{@inputs} >>"
-      @params = Array.new
-      logger.debug "In SPD :: #{@params} >>"
-
-      # submit task
+      timestamp = Time.now.to_i.to_s
+      jsonkey = "utf" + timestamp
+      jsondirectory = "/data/input_transmit/" + jsonkey.to_s + ".json"
+      generate_json(1, 1, "R", 45, jsonkey)
+      inputs = Array.new
+      inputs.push({ "i-160" => jsondirectory, })
+      params = Array.new
       client = LocalApi::Client.new
-      @result = client.run_pipeline(UID, PROJECT_ID, @pipe_id.to_i, @inputs, @params)
-
-      logger.debug "In SPD :: after submit get result #{@result} !"
-
+      @result = client.run_pipeline(UID, PROJECT_ID, 65, inputs, params)
       if @result['message']['code']
         @result_json[:code] = true
         @result_json[:data] = {
@@ -505,72 +462,12 @@ class TasksController < ApplicationController
       @result_json[:code] = false
       @result_json[:data] = e.message
     end
-    logger.debug "In SPD :: now every thing done with JSON: #{@result_json} !"
   end
 
-  def submit_task_traditional
-
-    result_json = {
-      code: false,
-      data: ''
-    }
-    begin
-      app_id = params[:app_id]
-      app_inputs = params[:inputs]
-      app_params = params[:params]
-
-      inputs = Array.new
-      params = Array.new
-
-      # store input file to user's data folder
-      app_inputs&.each do |k, v|
-        uploader = JobInputUploader.new
-        uploader.store!(v)
-        inputs.push({
-                      k => '/data/' + v.original_filename,
-                    })
-        logger.debug "In STT :: app_inputs :: file #{k} ==> #{v.original_filename} done !"
-      end
-
-      app_params&.each do |p|
-        p.each do |k, v|
-          params.push({
-                        k => v,
-                      })
-          logger.debug "In STT :: app_params :: param #{k} ==> #{v} done !"
-        end
-      end
-
-      logger.debug 'In STT :: ready to submit!'
-
-      # submit task
-      client = LocalApi::Client.new
-      result = client.run_module(UID, PROJECT_ID, app_id.to_i, inputs, params)
-
-      logger.debug "In STT :: after submit get result #{result} !"
-
-      if result['message']['code']
-        result_json[:code] = true
-        result_json[:data] = {
-          'msg': result['message']['data']['msg'],
-          'task_id': encode(result['message']['data']['task_id'])
-        }
-      else
-        result_json[:code] = false
-        result_json[:data] = {
-          'msg': result['message']
-        }
-      end
-    rescue StandardError => e
-      result_json[:code] = false
-      result_json[:data] = e.message
-    end
-
-    logger.debug "In STT :: now every thing done with JSON: #{result_json} !"
-
-    render json: result_json
-  end
-
+  # < QuT > Query Task
+  # @api Our Core Task Query API, please be careful when you edit this part,
+  #     and only on-the-server debugging is valid, no local testing for this function.
+  # @author Contact Mr. Jiakai XU for details (for further development only)
   def query_task
     result_json = {
       code: false,
@@ -587,8 +484,13 @@ class TasksController < ApplicationController
       if task_id
         # Query task
         client = LocalApi::Client.new
-        result = client.task_info(UID, task_id, 'app')
-
+        curapp = App.find(@task.app_id)
+        curana = Analysis.find(curapp.analysis_id)
+        if curana.ispipeline?
+          result = client.task_info(UID, task_id,'pipeline')
+        else
+          result = client.task_info(UID, task_id,'app')
+        end
         logger.debug "In QuT :: after query get result #{result} !"
 
         # Interpret result
@@ -622,7 +524,14 @@ class TasksController < ApplicationController
       if task_id
         # Query task
         client = LocalApi::Client.new
-        result = client.task_info(UID, task_id, 'app')
+        curtsk = Task.find_by(task_id: task_param)
+        curapp = App.find(curtsk.app_id)
+        curana = Analysis.find(curapp.analysis_id)
+        if curana.ispipeline?
+          result = client.task_info(UID, task_id,'pipeline')
+        else
+          result = client.task_info(UID, task_id,'app')
+        end
 
         logger.debug "In QTs :: after query get result #{result} !"
 
@@ -751,7 +660,7 @@ class TasksController < ApplicationController
     tasks.each do |ta|
       # If task already finished, then no need to check again
       orista = ta.status
-      if orista == 'finished' || orista == 'failed'
+      if orista == 'finished'
         next
       end
   
@@ -761,8 +670,13 @@ class TasksController < ApplicationController
       # Query task
       if taskID
         client = LocalApi::Client.new
-        result = client.task_info(UID, taskID, 'app')
-  
+        curapp = App.find(ta.app_id)
+        curana = Analysis.find(curapp.analysis_id)
+        if curana.ispipeline?
+          result = client.task_info(UID, taskID,'pipeline')
+        else
+          result = client.task_info(UID, taskID,'app')
+        end
         logger.debug "In QAT :: query #{taskID} then get result #{result} !"
   
         # Interpret result
