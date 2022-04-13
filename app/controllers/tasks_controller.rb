@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
-    # http_basic_authenticate_with name: "gappdev", password: "hyqxjkzx", only: [:submit_task_debug, :query_task_debug]
+    http_basic_authenticate_with name: "gappdevsec", password: "hyqxjkzxdeb", only: [:submit_task_debug, :query_task_debug, :submit_pipeline_debug]
     before_action :authenticate_account!
 
   # GET /tasks
@@ -35,7 +35,13 @@ class TasksController < ApplicationController
       # Query result from server
       client = LocalApi::Client.new
       task_id = decode(@task.task_id)
-      result = client.task_info(UID, task_id,'app')
+      curapp = App.find(@task.app_id)
+      curana = Analysis.find(curapp.analysis_id)
+      if curana.ispipeline?
+        result = client.task_info(UID, task_id,'pipeline')
+      else
+        result = client.task_info(UID, task_id,'app')
+      end
       Rails.logger.info("TaskShow >> Query: rails [#{@task.id}], deepomics [#{@task.task_id}]")
       Rails.logger.info(result)
       Rails.logger.info("#{result}")
@@ -564,7 +570,13 @@ class TasksController < ApplicationController
       if task_id
         # Query task
         client = LocalApi::Client.new
-        result = client.task_info(UID, task_id, 'app')
+        curapp = App.find(@task.app_id)
+        curana = Analysis.find(curapp.analysis_id)
+        if curana.ispipeline?
+          result = client.task_info(UID, task_id,'pipeline')
+        else
+          result = client.task_info(UID, task_id,'app')
+        end
 
         logger.debug "In QuT :: after query get result #{result} !"
 
@@ -599,7 +611,14 @@ class TasksController < ApplicationController
       if task_id
         # Query task
         client = LocalApi::Client.new
-        result = client.task_info(UID, task_id, 'app')
+        curtsk = Task.find_by(task_id: task_param)
+        curapp = App.find(curtsk.app_id)
+        curana = Analysis.find(curapp.analysis_id)
+        if curana.ispipeline?
+          result = client.task_info(UID, task_id,'pipeline')
+        else
+          result = client.task_info(UID, task_id,'app')
+        end
 
         logger.debug "In QTs :: after query get result #{result} !"
 
@@ -738,8 +757,13 @@ class TasksController < ApplicationController
       # Query task
       if taskID
         client = LocalApi::Client.new
-        result = client.task_info(UID, taskID, 'app')
-  
+        curapp = App.find(ta.app_id)
+        curana = Analysis.find(curapp.analysis_id)
+        if curana.ispipeline?
+          result = client.task_info(UID, taskID,'pipeline')
+        else
+          result = client.task_info(UID, taskID,'app')
+        end
         logger.debug "In QAT :: query #{taskID} then get result #{result} !"
   
         # Interpret result
