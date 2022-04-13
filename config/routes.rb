@@ -127,7 +127,6 @@ Rails.application.routes.draw do
   get 'submit/traditional/:id', to: 'tasks#index', as: 'submit_manual'
   get 'submit/debug/:uid/:fid/:app', to: 'tasks#submit_task_debug', as: 'submit_print'
   get 'submit/pipeline/debug/', to: 'tasks#submit_pipeline_debug', as: 'pipeline_print'
-  get 'submit/json/debug/', to: 'tasks#submit_json_debug', as: 'submit_json'
   post 'submit/api', to: 'tasks#submit_task', as: 'submit_api', format: 'json'
   post 'submit/manual', to: 'tasks#submit_task_traditional', format: 'json'
   # # End of useful things
