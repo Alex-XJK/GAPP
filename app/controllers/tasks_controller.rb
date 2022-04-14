@@ -88,10 +88,12 @@ class TasksController < ApplicationController
         puts response.read_body
 
         output_gz_name = response["outputs"]["files"][0]["name"]
+        output_gz_name_ = result['message']["outputs"][0]["files"][24]["name"]
+        output_pdf_name_ = result['message']["outputs"][2]["files"][0]["name"]
 
         # Download raw data
-        data_server_path = "/home/platform/omics_rails/current/media/user/gapp" + server_path + output_gz_name
-        @data_download_path = "/result/task_" + server_id + output_gz_name
+        data_server_path = "/home/platform/omics_rails/current/media/user/gapp" + server_path + output_gz_name_
+        @data_download_path = "/result/task_" + server_id + output_gz_name_
         unless File.exist?(data_server_path)
           raise "TaskShow >> Raw Data does not exist at #{data_server_path}"
         end
@@ -108,7 +110,7 @@ class TasksController < ApplicationController
         # # Access HTML page
         # # Server HTML Processing...
         # html_server_path = ""
-        @html_download_path = "/result/task_" + server_id + "/report/output/child/html/P2021020001.html"
+        @html_download_path = "/result/task_" + server_id + "/report/output/child/html/" + output_pdf_name_
         # unless File.exist?(html_server_path)
         #   raise "TaskShow >> Report HTML does not exist at #{html_server_path}"
         # end
