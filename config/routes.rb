@@ -77,7 +77,6 @@ Rails.application.routes.draw do
   post 'create-task', to: 'tasks#create', format: 'json'
   post '/users/:user_id/tasks/tasks-info', to: 'tasks#tasks_info', format: 'json'
   post '/task-page', to: 'tasks#task_page'
-  # get 'task-report', to: 'tasks#download_report'
   # post '/users/:user_id/tasks/task-status', to: 'tasks#task_status', format: 'json'
 
   # get 'welcome/index'
@@ -127,6 +126,7 @@ Rails.application.routes.draw do
   # # < SUBMIT > Added by Alex
   get 'submit/traditional/:id', to: 'tasks#index', as: 'submit_manual'
   get 'submit/debug/:uid/:fid/:app', to: 'tasks#submit_task_debug', as: 'submit_print'
+  get 'submit/pipeline/debug/', to: 'tasks#submit_pipeline_debug', as: 'pipeline_print'
   post 'submit/api', to: 'tasks#submit_task', as: 'submit_api', format: 'json'
   post 'submit/manual', to: 'tasks#submit_task_traditional', format: 'json'
   # # End of useful things
@@ -139,13 +139,13 @@ Rails.application.routes.draw do
   # post 'submit-app-task', to: 'tasks#submit_app_task', format: 'json'
   # # < QUERY > Added by Alex
   get 'query/debug/:tid', to: 'tasks#query_task_debug', as: 'query_print'
+  get 'query/pipeline/debug/:tid', to: 'tasks#query_pipeline_debug', as: 'querypipe_print'
   post 'query/api', to: 'tasks#query_task', as: 'query_api', format: 'json'
   post 'query/status/api', to: 'tasks#query_task_status', as: 'query_status_api', format: 'json'
   # # End of useful things
   post 'query-app-task', to: 'tasks#query_app_task', format: 'json'
   post 'query-all-tasks', to: 'tasks#query_all', format: 'json'
   post 'remove-task', to: 'tasks#remove_task', format: 'json'
-  get 'report-generate', to: 'tasks#reportGenerate', format: 'json'
 
   # admin
   get '/admin', to: 'admin#index', as: "admin"
