@@ -17,10 +17,15 @@
           tr
             td
               | [#{@category.name}] #{@app.app_no}
-            td style=("float: right;")
-              button class="btn btn-outline-info"
-                i.fas.fa-video
-                | See Demo
+            // ATTENTION!
+            //  This part of the code has been temporarily deprecated.
+            //    Because the customer did not provide specific design details about the relevant apps' demo,
+            //    this part was temporarily hidden to avoid misunderstandings on the webpage,
+            //    and can be restored in the future during further development as appropriate.
+            / td style=("float: right;")
+            /   button class="btn btn-outline-info"
+            /     i.fas.fa-video
+            /     | See Demo
 
       .card-body
         - if @app.cover_image.attached?
