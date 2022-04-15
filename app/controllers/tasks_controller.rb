@@ -71,9 +71,29 @@ class TasksController < ApplicationController
         rails_path = rrot + "/public/result/task_" + server_id
         system "mkdir #{rails_path}"
 
+        require 'uri'
+        require 'net/http'
+
+        url = URI("https://deepomics.org/api/task_info/?task_id=" + @task.task_id + "&task_type=app_task")
+
+        http = Net::HTTP.new(url.host, url.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        request = Net::HTTP::Get.new(url)
+        request["x-api-key"] = ENV["SYGIC_API_KEY"]
+        request["cache-control"] = 'no-cache'
+
+        response = http.request(request)
+        puts response.read_body
+
+        output_gz_name = response["outputs"]["files"][0]["name"]
+        output_gz_name_ = result['message']["outputs"][0]["files"][24]["name"]
+        output_pdf_name_ = result['message']["outputs"][2]["files"][0]["name"]
+
         # Download raw data
-        data_server_path = "/home/platform/omics_rails/current/media/user/gapp" + server_path + "/data.raw.vcf.gz"
-        @data_download_path = "/result/task_" + server_id + "/data.raw.vcf.gz"
+        data_server_path = "/home/platform/omics_rails/current/media/user/gapp" + server_path + output_gz_name_
+        @data_download_path = "/result/task_" + server_id + output_gz_name_
         unless File.exist?(data_server_path)
           raise "TaskShow >> Raw Data does not exist at #{data_server_path}"
         end
@@ -90,7 +110,7 @@ class TasksController < ApplicationController
         # # Access HTML page
         # # Server HTML Processing...
         # html_server_path = ""
-        @html_download_path = "/result/task_" + server_id + "/report/output/child/html/P2021020001.html"
+        @html_download_path = "/result/task_" + server_id + "/report/output/child/html/" + output_pdf_name_
         # unless File.exist?(html_server_path)
         #   raise "TaskShow >> Report HTML does not exist at #{html_server_path}"
         # end
