@@ -124,11 +124,7 @@ Rails.application.routes.draw do
 
   # submit pages
   # # < SUBMIT > Added by Alex
-  get 'submit/traditional/:id', to: 'tasks#index', as: 'submit_manual'
-  get 'submit/debug/:uid/:fid/:app', to: 'tasks#submit_task_debug', as: 'submit_print'
-  get 'submit/pipeline/debug/', to: 'tasks#submit_pipeline_debug', as: 'pipeline_print'
   post 'submit/api', to: 'tasks#submit_task', as: 'submit_api', format: 'json'
-  post 'submit/manual', to: 'tasks#submit_task_traditional', format: 'json'
   # # End of useful things
   get "submit/analyses", to: "tasks#analyses"
   get "submit/pipelines", to: "tasks#pipelines"
@@ -138,8 +134,6 @@ Rails.application.routes.draw do
   
   # post 'submit-app-task', to: 'tasks#submit_app_task', format: 'json'
   # # < QUERY > Added by Alex
-  get 'query/debug/:tid', to: 'tasks#query_task_debug', as: 'query_print'
-  get 'query/pipeline/debug/:tid', to: 'tasks#query_pipeline_debug', as: 'querypipe_print'
   post 'query/api', to: 'tasks#query_task', as: 'query_api', format: 'json'
   post 'query/status/api', to: 'tasks#query_task_status', as: 'query_status_api', format: 'json'
   # # End of useful things
