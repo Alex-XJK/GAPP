@@ -132,6 +132,8 @@
                 | Description:
               .card-text
                 = simple_format(@app.description)
+        .col-4
+          = image_tag 'no-data.jpg', alt: "Cover Image", style: "width:85%"
 
       - if @app.analysis_id==nil
         b style=("color: red; text-align: center; font-size: 1.5em; ")

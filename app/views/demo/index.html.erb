@@ -203,7 +203,7 @@ $(document).ready(function() {
                 <% if app.cover_image.attached? %>
                     <%= image_tag app.cover_image, alt: "image", style: "height:100px" %>
                 <%  else %>
-                    [NO IMAGE]
+                    <%= image_tag 'no-data.jpg', alt: "image" %>
                 <% end %>
               </div>
             </div>
