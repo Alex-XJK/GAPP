@@ -26,7 +26,7 @@
       Create
     </b-btn>
 
-    <b-btn class="mt-2 float-right taskButton" @click="gotoApp(app.Id)">
+    <b-btn class="mt-2 float-right taskButton" :href="`/apps/${app.Id}`">
       <i class="fas fa-info-circle"></i>
       Detail
     </b-btn>
@@ -139,7 +139,8 @@ export default {
           this.url = response.data.toString().split('\"')[1]
           console.log(this.url)
         }).finally(() => {
-          Turbolinks.visit(this.url, {"action":"replace"})
+          // Turbolinks.visit(this.url, {"action":"replace"})
+          location.replace(this.url)
       });
       },
       getCategoies() {
@@ -336,9 +337,9 @@ export default {
           this.resetForm()
         });
     },
-    gotoApp(appId) {
-      Turbolinks.visit(`/apps/${appId}`, {'action':'replace'})
-    },
+    // gotoApp(appId) {
+    //   Turbolinks.visit(`/apps/${appId}`, {'action':'replace'})
+    // },
     addOne() {
       this.taskCount += 1
     },
