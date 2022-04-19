@@ -245,8 +245,8 @@ ul {
                   <div class="card">
                   <% if app.cover_image.attached? %>
                     <%= image_tag app.cover_image, alt: "image" %>
-                  <%  else %>
-                    [NO IMAGE]
+                  <%  else %>=
+                    <%= image_tag 'no-data.jpg', alt: "image" %>
                   <% end %>
                 <div class="card-body">
                   <h5 class="card-header-title">

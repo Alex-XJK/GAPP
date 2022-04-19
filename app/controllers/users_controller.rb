@@ -77,9 +77,11 @@ class UsersController < ApplicationController
         # Rails.logger.debug "Here is #{@user}"
         # Rails.logger.debug "size #{@user.dataFiles.length}"
         if params[:dataFiles].nil?
-            result_json[:msg] = 'Empty file cannot be saved!'
+            result_json[:msg] = 'Nothing was selected!'
         elsif @user.dataFiles.length >= 2
             result_json[:msg] = 'You have exceeded the maximum number of files!'
+        elsif params[:dataFiles][0].size == 0
+            result_json[:msg] = `Empty file cannot be saved!`
         elsif params[:dataFiles][0].size > maxSize
             result_json[:msg] = `You have exceeded the maximum size of the file(#{maxSize})!`
         else
