@@ -551,7 +551,7 @@ class TasksController < ApplicationController
     ninf = {
         "id"          =>  analysis.doap_id,
         "name"        =>  analysis.name,
-        "isPiepline"  =>  nif,
+        "isPiepline"  =>  analysis.ispipeline
     }
 
     # Final Json data
