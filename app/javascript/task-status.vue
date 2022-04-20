@@ -106,10 +106,10 @@ export default {
       rules: {
         taskName: [
           { required: true, message: 'Task name cannot be empty!' },
-          { min: 3, max: 5, message: 'Length should be between 3 and 5 characters.', trigger: 'blur' }
+          { min: 3, max: 5, message: 'Length should be between 3 and 5 characters.'}
         ],
         checkedData: [
-          { type: 'array', required: true, message: 'Please choose at least one file.', trigger: 'change' }
+          { type: 'array', required: true, message: 'Please choose at least one file.'}
         ]
       },
       currentApp: {}
@@ -224,6 +224,10 @@ export default {
             console.log("toCreate taskNAme  "+this.ruleForm.taskName)
             console.log(this.ruleForm.checkedData)
           } else {
+            this.$message({
+              type: 'error',
+              message: 'Invalid Input. Please try it again. (Task name cannot be empty, should has length between 3 and 5 characters. Correct number of files should be chosen.)'
+            })
             this.resetForm()
             return false
           }
